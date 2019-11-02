@@ -1,0 +1,29 @@
+{
+    "name": "struturizr-php/structurizr-php",
+    "description": "Structurizr for PHP",
+    "type": "library",
+    "require": {
+        "php": "^7.3",
+        "ext-json": "*",
+        "beberlei/assert": "^3.2",
+        "psr/http-client": "^1.0",
+        "symfony/http-client": "^4.3",
+        "nyholm/psr7": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "StructurizrPHP\\": "src/"
+        }
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "vimeo/psalm": "^3.6"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "norzechowicz",
+            "email": "norbert@orzechowicz.pl"
+        }
+    ]
+}
