@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Structurizr SDK for PHP.
+ * This file is part of the Structurizr for PHP.
  *
  * (c) Norbert Orzechowicz <norbert@orzechowicz.pl>
  *
