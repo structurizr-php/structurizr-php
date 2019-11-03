@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\View\Configuration;
 
+use StructurizrPHP\StructurizrPHP\Assertion;
+
 final class Styles
 {
     /**
@@ -33,9 +35,11 @@ final class Styles
 
     public function addElementStyle(string $tag) : ElementStyle
     {
+        Assertion::keyNotExists($this->elementsStyles, $tag, \sprintf("An element style for the tag \"%s\" already exists .", $tag));
+
         $elementStyle = new ElementStyle($tag);
 
-        $this->elementsStyles[] = $elementStyle;
+        $this->elementsStyles[$tag] = $elementStyle;
 
         return $elementStyle;
     }
@@ -43,9 +47,9 @@ final class Styles
     public function toArray() : array
     {
         return [
-            'elements' => \array_map(function (ElementStyle $elementStyle) {
+            'elements' => \array_values(\array_map(function (ElementStyle $elementStyle) {
                 return $elementStyle->toArray();
-            }, $this->elementsStyles),
+            }, $this->elementsStyles)),
         ];
     }
 }

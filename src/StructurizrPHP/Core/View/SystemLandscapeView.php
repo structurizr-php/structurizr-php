@@ -13,18 +13,29 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\View;
 
-use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
+use StructurizrPHP\StructurizrPHP\Core\Model\Model;
 
-final class SystemContextView extends StaticView
+final class SystemLandscapeView extends StaticView
 {
+    /**
+     * @var Model
+     */
+    private $model;
+
     /**
      * @var bool
      */
     private $enterpriseBoundaryVisible = true;
 
-    public function __construct(SoftwareSystem $softwareSystem, string $title, string $description, string $key, ViewSet $viewSet)
+    public function __construct(Model $model, string $description, string $key, ViewSet $viewSet)
     {
-        parent::__construct($softwareSystem, $title, $description, $key, $viewSet);
+        parent::__construct(null, null, $description, $key, $viewSet);
+        $this->model = $model;
+    }
+
+    protected function model(): ?Model
+    {
+        return $this->model;
     }
 
     public function addAllElements(): void

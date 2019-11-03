@@ -39,14 +39,14 @@ $workspace = new Workspace(
 $workspace->model()->setEnterprise(new Enterprise('Norbert Enterprise'));
 
 $system1 = $workspace->model()->addSoftwareSystem(
-    Location::internal(),
     $name = 'Software System 1',
-    $description = 'First Software System'
+    $description = 'First Software System',
+    Location::internal()
 );
 $authorizedUser = $workspace->model()->addPerson(
-    Location::internal(),
     $name = 'Authorized User',
-    $description = '...'
+    $description = '...',
+    Location::internal()
 );
 
 $authorizedUser->setProperties(new Properties(new Property('domain', 'example.com')));
@@ -55,6 +55,6 @@ $authorizedUser->usesSoftwareSystem($system1, 'Uses', 'Http');
 $system1View = $workspace->viewSet()->createSystemContextView($system1, 'System 1 view', 'system01', 'System 1 view description');
 $system1View->addAllElements();
 
-$workspace->viewSet()->configuration()->styles()->addElementStyle(Tags::PERSON)->setShape(Shape::person());
+$workspace->viewSet()->getConfiguration()->getStyles()->addElementStyle(Tags::PERSON)->shape(Shape::person());
 
 $client->put($workspace);

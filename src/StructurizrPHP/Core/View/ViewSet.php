@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\View;
 
+use StructurizrPHP\StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
 
 final class ViewSet
@@ -23,14 +24,26 @@ final class ViewSet
     private $systemContextViews;
 
     /**
+     * @var SystemLandscapeView[]
+     */
+    private $systemLandscapeViews;
+
+    /**
      * @var Configuration
      */
     private $configuration;
 
-    public function __construct()
+    /**
+     * @var Model
+     */
+    private $model;
+
+    public function __construct(Model $model)
     {
         $this->systemContextViews = [];
+        $this->systemLandscapeViews = [];
         $this->configuration = new Configuration();
+        $this->model = $model;
     }
 
     public function createSystemContextView(
@@ -52,25 +65,63 @@ final class ViewSet
         return $view;
     }
 
-    public function configuration(): Configuration
+    public function createSystemLandscapeView(string $key, string $description) : SystemLandscapeView
+    {
+        $view = new SystemLandscapeView(
+            $this->model,
+            $description,
+            $key,
+            $this
+        );
+
+        $this->systemLandscapeViews [] = $view;
+
+        return $view;
+    }
+
+    public function getConfiguration(): Configuration
     {
         return $this->configuration;
     }
 
     public function toArray() : ?array
     {
-        if (!\count($this->systemContextViews)) {
+        if (!\count($this->systemContextViews) && !\count($this->systemLandscapeViews)) {
             return null;
         }
 
-        return [
-            'systemContextViews' => \array_map(
-                function (SystemContextView $systemContextView) {
-                    return $systemContextView->toArray();
-                },
-                $this->systemContextViews
-            ),
+        $data = [
             'configuration' => $this->configuration->toArray(),
         ];
+
+        if (\count($this->systemContextViews)) {
+            $data = \array_merge(
+                $data,
+                [
+                    'systemContextViews' => \array_map(
+                        function (SystemContextView $systemContextView) {
+                            return $systemContextView->toArray();
+                        },
+                        $this->systemContextViews
+                    ),
+                ]
+            );
+        }
+
+        if (\count($this->systemLandscapeViews)) {
+            $data = \array_merge(
+                $data,
+                [
+                    'systemLandscapeViews' => \array_map(
+                        function (SystemLandscapeView $systemLandscapeView) {
+                            return $systemLandscapeView->toArray();
+                        },
+                        $this->systemLandscapeViews
+                    ),
+                ]
+            );
+        }
+
+        return $data;
     }
 }

@@ -20,12 +20,12 @@ use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
 abstract class View
 {
     /**
-     * @var SoftwareSystem
+     * @var SoftwareSystem|null
      */
     private $softwareSystem;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $title;
 
@@ -65,8 +65,8 @@ abstract class View
     private $automaticLayout;
 
     public function __construct(
-        SoftwareSystem $softwareSystem,
-        string $title,
+        ?SoftwareSystem $softwareSystem,
+        ?string $title,
         string $description,
         string $key,
         ViewSet $viewSet
@@ -78,12 +78,12 @@ abstract class View
         $this->viewSet = $viewSet;
         $this->elementViews = [];
         $this->relationshipsViews = [];
-        $this->setAutomaticLayout(true);
+//        $this->setAutomaticLayout(true);
     }
 
-    protected function model() : Model
+    protected function model() : ?Model
     {
-        return $this->softwareSystem->model();
+        return $this->softwareSystem ? $this->softwareSystem->model() : null;
     }
 
     public function setPaperSize(PaperSize $paperSize) : void
@@ -132,11 +132,10 @@ abstract class View
 
     public function toArray() : array
     {
-        return [
-            'title' => $this->title,
+        $data = [
+            'title' => $this->title ? $this->title : null,
             'description' => $this->description,
             'key' => $this->key,
-            'softwareSystemId' => $this->softwareSystem->id(),
             'paperSize' => $this->paperSize ? $this->paperSize->size() : null,
             'automaticLayout' => $this->automaticLayout ? $this->automaticLayout->toArray() : null,
             'elements' => \array_map(
@@ -152,5 +151,16 @@ abstract class View
                 $this->relationshipsViews
             ),
         ];
+
+        if ($this->softwareSystem) {
+            $data = \array_merge(
+                $data,
+                [
+                    'softwareSystemId' => $this->softwareSystem->id(),
+                ]
+            );
+        }
+
+        return $data;
     }
 }

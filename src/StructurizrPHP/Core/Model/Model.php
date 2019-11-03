@@ -84,13 +84,13 @@ final class Model
         return $relationship;
     }
 
-    public function addPerson(Location $location, string $name, string $description) : Person
+    public function addPerson(string $name, string $description, Location $location = null) : Person
     {
         $person = new Person(
             $this->idGenerator->generateId(),
             $name,
             $description,
-            $location,
+            $location ? $location : Location::unspecified(),
             $this
         );
 
@@ -99,13 +99,13 @@ final class Model
         return $person;
     }
 
-    public function addSoftwareSystem(Location $location, string $name, string $description) : SoftwareSystem
+    public function addSoftwareSystem(string $name, string $description, Location $location = null) : SoftwareSystem
     {
         $softwareSystem = new SoftwareSystem(
             $this->idGenerator->generateId(),
             $name,
             $description,
-            $location,
+            $location ? $location : Location::unspecified(),
             $this
         );
 
