@@ -21,7 +21,7 @@
     },
     "suggest": {
         "symfony/http-client": "Psr18Client http factory works out of the box with StructurizrPHP\\StructurizrPHP\\SDK\\Client",
-        "nyholm/psr7": "Makes possibile to use StructurizrPHP\\StructurizrPHP\\Infrastructure\\Http\\SymfonyRequestFactory instead of writing custom implementation"
+        "nyholm/psr7": "Makes possible to use StructurizrPHP\\StructurizrPHP\\Infrastructure\\Http\\SymfonyRequestFactory instead of writing custom implementation"
     },
     "license": "MIT",
     "authors": [
