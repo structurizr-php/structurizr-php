@@ -9,10 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use StructurizrPHP\StructurizrPHP\Core\Model\Enterprise;
-use StructurizrPHP\StructurizrPHP\Core\Model\Location;
-use StructurizrPHP\StructurizrPHP\Core\Model\Properties;
-use StructurizrPHP\StructurizrPHP\Core\Model\Property;
 use StructurizrPHP\StructurizrPHP\Core\Model\Tags;
 use StructurizrPHP\StructurizrPHP\Core\View\Configuration\Shape;
 use StructurizrPHP\StructurizrPHP\Core\View\PaperSize;

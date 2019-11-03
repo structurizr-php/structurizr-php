@@ -156,7 +156,7 @@ abstract class View
             $data = \array_merge(
                 $data,
                 [
-                    'softwareSystemId' => $this->softwareSystem->id()
+                    'softwareSystemId' => $this->softwareSystem->id(),
                 ]
             );
         }
