@@ -27,7 +27,7 @@ final class Configuration
         $this->styles = new Styles();
     }
 
-    public function styles(): Styles
+    public function getStyles(): Styles
     {
         return $this->styles;
     }

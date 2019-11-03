@@ -19,4 +19,11 @@ use StructurizrPHP\StructurizrPHP\Exception\AssertionException;
 final class Assertion extends BaseAssertion
 {
     protected static $exceptionClass = AssertionException::class;
+
+    public static function hexColorCode(string $colorAsString) : bool
+    {
+        self::regex($colorAsString, '/^#[A-Fa-f0-9]{6}/');
+
+        return true;
+    }
 }

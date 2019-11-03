@@ -54,7 +54,7 @@ final class Workspace
         $this->name = $name;
         $this->description = $description;
         $this->model = new Model();
-        $this->viewSet = new ViewSet();
+        $this->viewSet = new ViewSet($this->model);
     }
 
     public function id(): string

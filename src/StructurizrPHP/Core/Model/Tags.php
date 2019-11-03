@@ -19,11 +19,19 @@ final class Tags
     public const PERSON = "Person";
     public const SOFTWARE_SYSTEM = "Software System";
 
+    /**
+     * @var string[]
+     */
     private $tags;
 
     public function __construct(string ...$tags)
     {
         $this->tags = $tags;
+    }
+
+    public function add(string $tag) : void
+    {
+        $this->tags [] = $tag;
     }
 
     public function toArray() : ?string

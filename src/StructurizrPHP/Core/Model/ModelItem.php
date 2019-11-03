@@ -51,6 +51,13 @@ abstract class ModelItem
         $this->tags = $tags;
     }
 
+    public function addTags(string ...$tags) : void
+    {
+        foreach ($tags as $tag) {
+            $this->tags->add($tag);
+        }
+    }
+
     public function setProperties(Properties $properties): void
     {
         $this->properties = $properties;

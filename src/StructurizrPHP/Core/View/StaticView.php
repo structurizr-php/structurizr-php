@@ -17,14 +17,26 @@ abstract class StaticView extends View
 {
     public function addAllSoftwareSystems(bool $addRelationships = true) : void
     {
-        foreach ($this->model()->softwareSystems() as $softwareSystem) {
+        $model = $this->model();
+
+        if (null === $model) {
+            return ;
+        }
+
+        foreach ($model->softwareSystems() as $softwareSystem) {
             $this->addElement($softwareSystem, $addRelationships);
         }
     }
 
     public function addAllPeople(bool $addRelationships = true) : void
     {
-        foreach ($this->model()->people() as $person) {
+        $model = $this->model();
+
+        if (null === $model) {
+            return ;
+        }
+
+        foreach ($model->people() as $person) {
             $this->addElement($person, $addRelationships);
         }
     }
