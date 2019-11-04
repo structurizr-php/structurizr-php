@@ -6,18 +6,25 @@
         "php": "^7.3",
         "ext-json": "*",
         "beberlei/assert": "^3.2",
-        "psr/http-client": "^1.0"
+        "psr/http-client": "^1.0",
+        "doctrine/instantiator": "^1.2"
     },
     "autoload": {
         "psr-4": {
             "StructurizrPHP\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "StructurizrPHP\\Tests\\": "tests/"
+        }
+    },
     "require-dev": {
         "symfony/http-client": "^4.3",
         "nyholm/psr7": "^1.2",
         "friendsofphp/php-cs-fixer": "^2.15",
-        "vimeo/psalm": "^3.6"
+        "vimeo/psalm": "^3.6",
+        "phpunit/phpunit": "^8.4"
     },
     "suggest": {
         "symfony/http-client": "Psr18Client http factory works out of the box with StructurizrPHP\\StructurizrPHP\\SDK\\Client",
@@ -33,7 +40,8 @@
     "scripts": {
         "test" : [
             "psalm",
-            "php-cs-fixer fix --dry-run"
+            "php-cs-fixer fix --dry-run",
+            "phpunit"
         ],
         "cs:fix": [
             "php-cs-fixer fix"

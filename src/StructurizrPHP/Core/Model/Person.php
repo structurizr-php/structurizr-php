@@ -36,4 +36,66 @@ final class Person extends StaticStructureElement
             parent::toArray()
         );
     }
+
+    /**
+     * @param array{
+     *    id: string,
+     *    name: string,
+     *    description: string,
+     *    location:string,
+     *    tags: string,
+     *    properties: array<string, string>|null,
+     *    relationships: array|null
+     *  } $personData
+     * @param Model $model
+     * @return static
+     * @throws \StructurizrPHP\StructurizrPHP\Exception\RuntimeException
+     */
+    public static function hydrate(array $personData, Model $model) : self
+    {
+        $person = new self(
+            $personData['id'],
+            $personData['name'],
+            $personData['description'],
+            Location::hydrate($personData['location']),
+            $model
+        );
+
+        $model->idGenerator()->found($person->id());
+
+        if (\array_key_exists('tags', $personData)) {
+            $person->setTags(new Tags(...\explode(', ', $personData['tags'])));
+        }
+
+        if (\array_key_exists('properties', $personData)) {
+            $properties = new Properties();
+            if (\is_array($personData['properties'])) {
+                foreach ($personData['properties'] as $key => $value) {
+                    $properties->addProperty(new Property($key, $value));
+                }
+            }
+
+            $person->setProperties($properties);
+        }
+
+        if (\array_key_exists('relationships', $personData)) {
+            if (\is_array($personData['relationships'])) {
+                /** @var array{destinationId: string, id: string, interactionStyle: string, sourceId: string, technology: string, description: string} $relationshipData */
+                foreach ($personData['relationships'] as $relationshipData) {
+                    $relationship = Relationship::hydrate($relationshipData, $person, $model);
+                    $person->addRelationship($relationship);
+                }
+            }
+        }
+
+        // sort relationships by ID
+        \usort(
+            $person->relationships,
+            function (Relationship $relationshipA, Relationship $relationshipB) {
+                return (int)$relationshipA->id() > (int)$relationshipB->id() ? 1 : 0;
+            }
+        );
+
+        return $person;
+    }
 }

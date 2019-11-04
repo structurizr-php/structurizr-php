@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace StructurizrPHP\StructurizrPHP\SDK;
 
 use StructurizrPHP\StructurizrPHP\Assertion;
-use StructurizrPHP\StructurizrPHP\Core\Workspace;
 
 final class UrlMap
 {
@@ -30,13 +29,13 @@ final class UrlMap
         $this->serverUrl = \rtrim($serverUrl, '/');
     }
 
-    public function workspaceUrl(Workspace $workspace) : string
+    public function workspaceUrl(string $workspaceId) : string
     {
-        return $this->serverUrl . $this->workspaceURIPath($workspace);
+        return $this->serverUrl . $this->workspaceURIPath($workspaceId);
     }
 
-    public function workspaceURIPath(Workspace $workspace) : string
+    public function workspaceURIPath(string $workspaceId) : string
     {
-        return \sprintf('/workspace/%s', $workspace->id());
+        return \sprintf('/workspace/%s', $workspaceId);
     }
 }

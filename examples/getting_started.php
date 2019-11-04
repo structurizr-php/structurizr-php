@@ -20,6 +20,7 @@ use StructurizrPHP\StructurizrPHP\Infrastructure\Http\SymfonyRequestFactory;
 use StructurizrPHP\StructurizrPHP\SDK\Client;
 use StructurizrPHP\StructurizrPHP\SDK\Credentials;
 use StructurizrPHP\StructurizrPHP\SDK\UrlMap;
+use StructurizrPHP\StructurizrPHP\SDK\WorkspaceHydrator;
 use Symfony\Component\HttpClient\Psr18Client;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -28,7 +29,7 @@ $client = new Client(
     new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
     new UrlMap('https://api.structurizr.com'),
     new Psr18Client(),
-    new SymfonyRequestFactory()
+    new SymfonyRequestFactory(),
 );
 
 $workspace = new Workspace(

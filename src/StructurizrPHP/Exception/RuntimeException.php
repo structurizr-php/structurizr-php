@@ -11,11 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\Model;
+namespace StructurizrPHP\StructurizrPHP\Exception;
 
-interface IdGenerator
+final class RuntimeException extends Exception
 {
-    public function generateId(): string;
-
-    public function found(string $id): void;
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
+use StructurizrPHP\StructurizrPHP\Assertion;
+
 final class Location
 {
     private $type;
@@ -40,5 +42,12 @@ final class Location
     public static function unspecified() : self
     {
         return new self('Unspecified');
+    }
+
+    public static function hydrate(string $type) : self
+    {
+        Assertion::inArray($type, ['External', 'Internal', 'Unspecified']);
+
+        return new self($type);
     }
 }

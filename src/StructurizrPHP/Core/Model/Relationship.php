@@ -85,4 +85,27 @@ final class Relationship extends ModelItem
             parent::toArray()
         );
     }
+
+    /**
+     * @param array{destinationId: string, id: string, interactionStyle: string, sourceId: string, technology: string, description: string} $relationshipData $relationshipData
+     * @param Element $source
+     * @param Model $model
+     * @return static
+     * @throws \StructurizrPHP\StructurizrPHP\Exception\RuntimeException
+     */
+    public static function hydrate(array $relationshipData, Element $source, Model $model) : self
+    {
+        $relationship = new Relationship(
+            $relationshipData['id'],
+            $source,
+            $model->getElement($relationshipData['destinationId']),
+            $relationshipData['description'],
+            $relationshipData['technology'],
+            InteractionStyle::hydrate($relationshipData['interactionStyle'])
+        );
+
+        $model->idGenerator()->found($relationship->id());
+
+        return $relationship;
+    }
 }

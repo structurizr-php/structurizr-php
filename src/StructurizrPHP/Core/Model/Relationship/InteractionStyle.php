@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model\Relationship;
 
+use StructurizrPHP\StructurizrPHP\Assertion;
+
 final class InteractionStyle
 {
     private $style;
@@ -35,5 +37,12 @@ final class InteractionStyle
     public static function asynchronous() : self
     {
         return new self('Asynchronous');
+    }
+
+    public static function hydrate(string $style) : self
+    {
+        Assertion::inArray($style, ['Synchronous', 'Asynchronous']);
+
+        return new self($style);
     }
 }

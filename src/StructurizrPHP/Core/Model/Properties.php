@@ -22,6 +22,11 @@ final class Properties
         $this->properties = $properties;
     }
 
+    public function addProperty(Property $property) : void
+    {
+        $this->properties[] = $property;
+    }
+
     public function toArray() : ?array
     {
         return
