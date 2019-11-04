@@ -26,4 +26,11 @@ final class SequentialIntegerIdGeneratorStrategy implements IdGenerator
 
         return (string) $this->id;
     }
+
+    public function found(string $id): void
+    {
+        if ((int) $id > $this->id) {
+            $this->id = (int) $id;
+        }
+    }
 }

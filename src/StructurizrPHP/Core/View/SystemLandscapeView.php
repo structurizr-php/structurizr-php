@@ -53,4 +53,33 @@ final class SystemLandscapeView extends StaticView
             parent::toArray()
         );
     }
+
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedArrayAccess
+     * @psalm-suppress MixedAssignment
+     */
+    public static function hydrate(array $viewData, ViewSet $viewSet) : self
+    {
+        $view = new SystemLandscapeView($viewSet->model(), $viewData['description'], $viewData['key'], $viewSet);
+
+        if ($viewData['paperSize']) {
+            $view->setPaperSize(PaperSize::hydrate($viewData['paperSize']));
+        }
+
+        foreach ($viewData['elements'] as $elementData) {
+            $elementView = $view->addElement($viewSet->model()->getElement($elementData['id']), true);
+
+            if (isset($viewData['x'], $viewData['y']) && $viewData['x'] && $viewData['y']) {
+                $elementView->setX((int) $viewData['x'])->sety((int) $viewData['y']);
+            }
+        }
+
+        if (isset($viewData['automaticLayout'])) {
+            $view->automaticLayout = AutomaticLayout::hydrate($viewData['automaticLayout']);
+        }
+
+        return $view;
+    }
 }

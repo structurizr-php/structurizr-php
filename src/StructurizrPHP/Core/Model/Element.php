@@ -37,7 +37,7 @@ abstract class Element extends ModelItem
     /**
      * @var Relationship[]
      */
-    private $relationships;
+    protected $relationships;
 
     public function __construct(string $id, string $name, string $description, Model $model)
     {

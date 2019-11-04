@@ -28,7 +28,7 @@ $client = new Client(
     new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
     new UrlMap('https://api.structurizr.com'),
     new Psr18Client(),
-    new SymfonyRequestFactory()
+    new SymfonyRequestFactory(),
 );
 
 $workspace = new Workspace(

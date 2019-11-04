@@ -36,4 +36,9 @@ final class Border
     {
         return new self('Dashed');
     }
+
+    public static function hydrate(string $type) : self
+    {
+        return new self($type);
+    }
 }

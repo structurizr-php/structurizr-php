@@ -61,12 +61,15 @@ final class Client
 
         try {
             $workspaceDefinition = \json_encode($workspace->toArray(self::AGENT_NAME), JSON_THROW_ON_ERROR);
+
+            $url = $this->urlMap->workspaceUrl($workspace->id());
+
             $response = $this->httpClient->sendRequest(
                 $this->httpRequestFactory->create(
-                    $this->urlMap->workspaceUrl($workspace),
+                    $url,
                     'PUT',
                     [
-                        'X-Authorization' => $this->credentials->apiKey() . ':' . \base64_encode($this->credentials->hmac('PUT', $this->urlMap->workspaceURIPath($workspace), $nonce, $workspaceDefinition)),
+                        'X-Authorization' => $this->credentials->apiKey() . ':' . \base64_encode($this->credentials->hmac('PUT', $this->urlMap->workspaceURIPath($workspace->id()), $nonce, $workspaceDefinition)),
                         'Nonce' => $nonce,
                         'User-Agent' => self::AGENT_NAME,
                         'Content-Type' => 'application/json; charset=UTF-8',
@@ -79,6 +82,43 @@ final class Client
             if ($response->getStatusCode() !== 200) {
                 throw new Exception(\sprintf('Status: %d, Message: %s', $response->getStatusCode(), $response->getBody()->getContents()));
             }
+        } catch (ClientExceptionInterface $e) {
+            throw new Exception('Can\'t put Workspace', 0, $e);
+        }
+    }
+
+    public function get(string $workspaceId) : Workspace
+    {
+        $nonce = \time() * 1000;
+
+        try {
+            $response = $this->httpClient->sendRequest(
+                $this->httpRequestFactory->create(
+                    $this->urlMap->workspaceUrl($workspaceId),
+                    'GET',
+                    [
+                        'X-Authorization' => $this->credentials->apiKey() . ':' . \base64_encode($this->credentials->hmac('GET', $this->urlMap->workspaceURIPath($workspaceId), $nonce, null)),
+                        'Nonce' => $nonce,
+                        'User-Agent' => self::AGENT_NAME,
+                        'Content-Type' => 'application/json; charset=UTF-8',
+                        'Content-MD5' => \base64_encode("d41d8cd98f00b204e9800998ecf8427e"),
+                    ],
+                    null
+                )
+            );
+
+            if ($response->getStatusCode() !== 200) {
+                throw new Exception(\sprintf("Invalid API responses, expected 200, got %d", $response->getStatusCode()));
+            }
+
+            $workspaceDefinition = (array) \json_decode(
+                $response->getBody()->getContents(),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+
+            return Workspace::hydrate($workspaceDefinition);
         } catch (ClientExceptionInterface $e) {
             throw new Exception('Can\'t put Workspace', 0, $e);
         }

@@ -91,4 +91,9 @@ final class Shape
     {
         return new self('MobileDeviceLandscape');
     }
+
+    public static function hydrate(string $name) : self
+    {
+        return new self($name);
+    }
 }

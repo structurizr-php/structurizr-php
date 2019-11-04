@@ -85,4 +85,26 @@ final class Relationship extends ModelItem
             parent::toArray()
         );
     }
+
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedAssignment
+     * @psalm-suppress MixedArgumentTypeCoercion
+     */
+    public static function hydrate(array $relationshipData, Element $source, Model $model) : self
+    {
+        $relationship = new Relationship(
+            $relationshipData['id'],
+            $source,
+            $model->getElement($relationshipData['destinationId']),
+            $relationshipData['description'],
+            $relationshipData['technology'],
+            InteractionStyle::hydrate($relationshipData['interactionStyle'])
+        );
+
+        $model->idGenerator()->found($relationship->id());
+
+        return $relationship;
+    }
 }

@@ -36,4 +36,57 @@ final class SoftwareSystem extends StaticStructureElement
             parent::toArray()
         );
     }
+
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedAssignment
+     * @psalm-suppress MixedArgumentTypeCoercion
+     */
+    public static function hydrate(array $softwareSystemData, Model $model) : self
+    {
+        $softwareSystem = new self(
+            $softwareSystemData['id'],
+            $softwareSystemData['name'],
+            $softwareSystemData['description'],
+            Location::hydrate($softwareSystemData['location']),
+            $model
+        );
+
+        $model->idGenerator()->found($softwareSystem->id());
+
+        if (\array_key_exists('tags', $softwareSystemData)) {
+            $softwareSystem->setTags(new Tags(...\explode(', ', $softwareSystemData['tags'])));
+        }
+
+        if (\array_key_exists('properties', $softwareSystemData)) {
+            $properties = new Properties();
+            if (\is_array($softwareSystemData['properties'])) {
+                foreach ($softwareSystemData['properties'] as $key => $value) {
+                    $properties->addProperty(new Property($key, $value));
+                }
+            }
+
+            $softwareSystem->setProperties($properties);
+        }
+
+        if (\array_key_exists('relationships', $softwareSystemData)) {
+            if (\is_array($softwareSystemData['relationships'])) {
+                foreach ($softwareSystemData['relationships'] as $relationshipData) {
+                    $relationship = Relationship::hydrate($relationshipData, $softwareSystem, $model);
+                    $softwareSystem->addRelationship($relationship);
+                }
+            }
+        }
+
+        // sort relationships by ID
+        \usort(
+            $softwareSystem->relationships,
+            function (Relationship $relationshipA, Relationship $relationshipB) {
+                return (int) $relationshipA->id() > (int)$relationshipB->id() ? 1 : 0;
+            }
+        );
+
+        return $softwareSystem;
+    }
 }

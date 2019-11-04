@@ -40,7 +40,7 @@ final class Workspace
     private $model;
 
     /**
-     * @var \StructurizrPHP\StructurizrPHP\Core\View\ViewSet
+     * @var ViewSet
      */
     private $viewSet;
 
@@ -85,5 +85,23 @@ final class Workspace
             'documentation' => null,
             'configuration' => null,
         ];
+    }
+
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     */
+    public static function hydrate(array $workspaceData) : self
+    {
+        $workspace = new self(
+            (string) $workspaceData['id'],
+            $workspaceData['name'],
+            $workspaceData['description']
+        );
+
+        $workspace->model = Model::hydrate((array) $workspaceData['model']);
+        $workspace->viewSet = ViewSet::hydrate((array) $workspaceData['views'], $workspace->model);
+
+        return $workspace;
     }
 }

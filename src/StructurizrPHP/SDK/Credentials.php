@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace StructurizrPHP\StructurizrPHP\SDK;
 
 use StructurizrPHP\StructurizrPHP\Assertion;
-use StructurizrPHP\StructurizrPHP\Core\Workspace;
 
 final class Credentials
 {

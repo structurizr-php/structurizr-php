@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\View;
 
+use StructurizrPHP\StructurizrPHP\Assertion;
 use StructurizrPHP\StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
 
@@ -44,6 +45,11 @@ final class ViewSet
         $this->systemLandscapeViews = [];
         $this->configuration = new Configuration();
         $this->model = $model;
+    }
+
+    public function model(): Model
+    {
+        return $this->model;
     }
 
     public function createSystemContextView(
@@ -123,5 +129,61 @@ final class ViewSet
         }
 
         return $data;
+    }
+
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     */
+    public static function hydrate(?array $viewSetData, Model $model) : self
+    {
+        $viewSet = new self($model);
+
+        if (!$viewSetData) {
+            return $viewSet;
+        }
+
+        $viewSetDataModel = new ViewSetDataModel($viewSetData);
+
+        if ($viewSetDataModel->hasViews('systemLandscapeViews')) {
+            $viewSetDataModel->mapLandscapeViews(
+                function (array $viewData) use ($viewSet) {
+                    return SystemLandscapeView::hydrate($viewData, $viewSet);
+                }
+            );
+        }
+
+        $viewSet->configuration = Configuration::hydrate($viewSetData['configuration']);
+
+        return $viewSet;
+    }
+}
+
+final class ViewSetDataModel
+{
+    /**
+     * @var array
+     */
+    private $viewSetData;
+
+    public function __construct(array $viewSetData)
+    {
+        $this->viewSetData = $viewSetData;
+    }
+
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     */
+    public function mapLandscapeViews(callable $callback) : array
+    {
+        return \array_map($callback, $this->viewSetData['systemLandscapeViews']);
+    }
+
+    public function hasViews(string $name) : bool
+    {
+        Assertion::inArray($name, ['systemLandscapeViews', 'systemContextViews']);
+
+        return \array_key_exists($name, $this->viewSetData) && \is_array($this->viewSetData[$name]);
     }
 }
