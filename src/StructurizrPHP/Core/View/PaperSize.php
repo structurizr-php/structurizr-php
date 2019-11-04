@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\View;
 
+use StructurizrPHP\StructurizrPHP\Assertion;
+
 /**
  * These represent paper sizes in pixels at 300dpi.
  */
@@ -108,5 +110,12 @@ final class PaperSize
     public static function Slide_16_9() : self
     {
         return new self('Slide_16_9');
+    }
+
+    public static function hydrate(string $size) : self
+    {
+        // Todo: Add size validation
+
+        return new self($size);
     }
 }

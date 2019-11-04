@@ -87,11 +87,10 @@ final class Relationship extends ModelItem
     }
 
     /**
-     * @param array{destinationId: string, id: string, interactionStyle: string, sourceId: string, technology: string, description: string} $relationshipData $relationshipData
-     * @param Element $source
-     * @param Model $model
-     * @return static
-     * @throws \StructurizrPHP\StructurizrPHP\Exception\RuntimeException
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedAssignment
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     public static function hydrate(array $relationshipData, Element $source, Model $model) : self
     {

@@ -88,17 +88,19 @@ final class Workspace
     }
 
     /**
-     * @param array{id: string, name: string, description: string, model: array} $workspaceData
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
      */
     public static function hydrate(array $workspaceData) : self
     {
         $workspace = new self(
-            $workspaceData['id'],
+            (string) $workspaceData['id'],
             $workspaceData['name'],
             $workspaceData['description']
         );
 
         $workspace->model = Model::hydrate((array) $workspaceData['model']);
+        $workspace->viewSet = ViewSet::hydrate((array) $workspaceData['views'], $workspace->model);
 
         return $workspace;
     }

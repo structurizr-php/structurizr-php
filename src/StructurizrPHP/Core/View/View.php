@@ -62,7 +62,7 @@ abstract class View
     /**
      * @var AutomaticLayout|null
      */
-    private $automaticLayout;
+    protected $automaticLayout;
 
     public function __construct(
         ?SoftwareSystem $softwareSystem,
@@ -78,7 +78,6 @@ abstract class View
         $this->viewSet = $viewSet;
         $this->elementViews = [];
         $this->relationshipsViews = [];
-//        $this->setAutomaticLayout(true);
     }
 
     protected function model() : ?Model
@@ -100,7 +99,7 @@ abstract class View
         }
     }
 
-    public function addElement(Element $element, bool $addRelationships) : void
+    public function addElement(Element $element, bool $addRelationships) : ElementView
     {
         $elementView = new ElementView($element);
 
@@ -109,6 +108,8 @@ abstract class View
         }
 
         $this->elementViews[] = $elementView;
+
+        return $elementView;
     }
 
     private function addRelationships(Element $element) : void

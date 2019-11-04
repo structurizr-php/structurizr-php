@@ -219,4 +219,57 @@ final class ElementStyle
 
         return $data;
     }
+
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedArrayOffset
+     * @psalm-suppress MixedAssignment
+     */
+    public static function hydrate(array $elementData) : self
+    {
+        $element = new self($elementData['tag']);
+
+        if (isset($elementData['width'])) {
+            $element->width = (int) $elementData['width'];
+        }
+
+        if (isset($elementData['height'])) {
+            $element->height = (int) $elementData['height'];
+        }
+
+        if (isset($elementData['background'])) {
+            $element->background = (string) $elementData['background'];
+        }
+
+        if (isset($elementData['color'])) {
+            $element->color = (string) $elementData['color'];
+        }
+
+        if (isset($elementData['fontSize'])) {
+            $element->fontSize = (int) $elementData['fontSize'];
+        }
+
+        if (isset($elementData['border'])) {
+            $element->border = Border::hydrate($elementData['border']);
+        }
+
+        if (isset($elementData['metadata'])) {
+            $element->metadata = (bool) $elementData['metadata'];
+        }
+
+        if (isset($elementData['icon'])) {
+            $element->icon = $elementData['icon'];
+        }
+
+        if (isset($elementData['description'])) {
+            $element->description = $elementData['description'];
+        }
+
+        if (isset($elementData['shape'])) {
+            $element->shape = Shape::hydrate($elementData['shape']);
+        }
+
+        return $element;
+    }
 }

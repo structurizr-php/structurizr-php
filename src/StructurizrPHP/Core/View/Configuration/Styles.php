@@ -52,4 +52,21 @@ final class Styles
             }, $this->elementsStyles)),
         ];
     }
+
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedArrayOffset
+     * @psalm-suppress MixedAssignment
+     */
+    public static function hydrate(array $stylesData) : self
+    {
+        $styles = new self();
+
+        foreach ($stylesData['elements'] as $elementData) {
+            $styles->elementsStyles[$elementData['tag']] = ElementStyle::hydrate($elementData);
+        }
+
+        return $styles;
+    }
 }

@@ -64,4 +64,19 @@ final class AutomaticLayout
             'vertices' => $this->vertices,
         ];
     }
+
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     */
+    public static function hydrate(array $automaticLayoutData) : self
+    {
+        return new self(
+            RankDirection::hydrate($automaticLayoutData['rankDirection']),
+            (int) $automaticLayoutData['rankSeparation'],
+            (int) $automaticLayoutData['nodeSeparation'],
+            (int) $automaticLayoutData['edgeSeparation'],
+            $automaticLayoutData['vertices'],
+        );
+    }
 }

@@ -38,18 +38,10 @@ final class Person extends StaticStructureElement
     }
 
     /**
-     * @param array{
-     *    id: string,
-     *    name: string,
-     *    description: string,
-     *    location:string,
-     *    tags: string,
-     *    properties: array<string, string>|null,
-     *    relationships: array|null
-     *  } $personData
-     * @param Model $model
-     * @return static
-     * @throws \StructurizrPHP\StructurizrPHP\Exception\RuntimeException
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedAssignment
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     public static function hydrate(array $personData, Model $model) : self
     {
@@ -80,7 +72,6 @@ final class Person extends StaticStructureElement
 
         if (\array_key_exists('relationships', $personData)) {
             if (\is_array($personData['relationships'])) {
-                /** @var array{destinationId: string, id: string, interactionStyle: string, sourceId: string, technology: string, description: string} $relationshipData */
                 foreach ($personData['relationships'] as $relationshipData) {
                     $relationship = Relationship::hydrate($relationshipData, $person, $model);
                     $person->addRelationship($relationship);

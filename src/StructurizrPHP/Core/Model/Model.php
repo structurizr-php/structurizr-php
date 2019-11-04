@@ -175,23 +175,21 @@ final class Model
 
         $modelDataObject = new ModelDataObject($modelData);
 
-        $model->people = $modelDataObject->hydratePeopleByRelationships(false, $model);
-
-        $model->softwareSystems = $modelDataObject->hydrateSoftwareSystemByRelationships(false, $model);
+        $model->people = $modelDataObject->hydratePeopleByRelationships($withRelationships = false, $model);
+        $model->softwareSystems = $modelDataObject->hydrateSoftwareSystemByRelationships($withRelationships = false, $model);
 
         // People with relationships
         $model->people = \array_merge(
-            $modelDataObject->hydratePeopleByRelationships(true, $model),
+            $modelDataObject->hydratePeopleByRelationships($withRelationships = true, $model),
             $model->people
         );
 
         // Software Systems with relationships
         $model->softwareSystems = \array_merge(
-            $modelDataObject->hydrateSoftwareSystemByRelationships(true, $model),
+            $modelDataObject->hydrateSoftwareSystemByRelationships($withRelationships = true, $model),
             $model->softwareSystems
         );
 
-        // sort things by ID
         \usort(
             $model->people,
             function (Person $personA, Person $personB) {
@@ -209,6 +207,7 @@ final class Model
                     : 0;
             }
         );
+
 
         return $model;
     }
@@ -266,7 +265,13 @@ final class ModelDataObject
         return \array_filter(
             $this->modelData['people'],
             function (array $personData) use ($withRelationships) {
-                return ($withRelationships) ? \is_array($personData['relationships']) : !\is_array($personData['relationships']) ;
+                if (!isset($personData['relationships'])) {
+                    return !$withRelationships;
+                }
+
+                return ($withRelationships && isset($personData['relationships']))
+                    ? \is_array($personData['relationships'])
+                    : !\is_array($personData['relationships']);
             }
         );
     }
@@ -279,8 +284,14 @@ final class ModelDataObject
 
         return \array_filter(
             $this->modelData['softwareSystems'],
-            function (array $softwareSystemDAta) use ($withRelationships) {
-                return ($withRelationships) ? \is_array($softwareSystemDAta['relationships']) : !\is_array($softwareSystemDAta['relationships']) ;
+            function (array $softwareSystemData) use ($withRelationships) {
+                if (!isset($softwareSystemData['relationships'])) {
+                    return !$withRelationships;
+                }
+
+                return ($withRelationships)
+                    ? \is_array($softwareSystemData['relationships'])
+                    : !\is_array($softwareSystemData['relationships']);
             }
         );
     }

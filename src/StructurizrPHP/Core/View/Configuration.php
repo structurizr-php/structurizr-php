@@ -38,4 +38,16 @@ final class Configuration
             'styles' => $this->styles->toArray(),
         ];
     }
+
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     */
+    public static function hydrate(array $configurationData) : self
+    {
+        $configuration = new self();
+        $configuration->styles = Styles::hydrate($configurationData['styles']);
+
+        return $configuration;
+    }
 }

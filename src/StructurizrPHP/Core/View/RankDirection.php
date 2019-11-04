@@ -46,4 +46,9 @@ final class RankDirection
     {
         return new self('RightLeft');
     }
+
+    public static function hydrate(string $direction) : self
+    {
+        return new self($direction);
+    }
 }
