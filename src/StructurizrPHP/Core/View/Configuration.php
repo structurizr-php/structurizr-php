@@ -22,6 +22,11 @@ final class Configuration
      */
     private $styles;
 
+    /**
+     * @var string|null
+     */
+    private $lastSavedView;
+
     public function __construct()
     {
         $this->styles = new Styles();
@@ -32,9 +37,15 @@ final class Configuration
         return $this->styles;
     }
 
+    public function copyConfigurationFrom(self $configuration) : void
+    {
+        $this->lastSavedView = $configuration->lastSavedView;
+    }
+
     public function toArray() : array
     {
         return [
+            'lastSavedView' => $this->lastSavedView,
             'styles' => $this->styles->toArray(),
         ];
     }
@@ -42,11 +53,16 @@ final class Configuration
     /**
      * @psalm-suppress InvalidArgument
      * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedAssignment
      */
     public static function hydrate(array $configurationData) : self
     {
         $configuration = new self();
         $configuration->styles = Styles::hydrate($configurationData['styles']);
+
+        if (isset($configurationData['lastSavedView'])) {
+            $configuration->lastSavedView = $configurationData['lastSavedView'];
+        }
 
         return $configuration;
     }

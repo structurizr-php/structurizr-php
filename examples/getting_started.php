@@ -24,37 +24,37 @@ use Symfony\Component\HttpClient\Psr18Client;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+$workspace = new Workspace(
+    $id = (string)\getenv('STRUCTURIZR_WORKSPACE_ID'),
+    $name = 'Getting Started',
+    $description = 'This is a model of my software system. by structurizr-php/structurizr-php'
+);
+$workspace->getModel()->setEnterprise(new Enterprise('Structurizr PHP'));
+$person = $workspace->getModel()->addPerson(
+    $name = 'User',
+    $description = 'A user of my software system.',
+    Location::internal()
+);
+$softwareSystem = $workspace->getModel()->addSoftwareSystem(
+    $name = 'Software System',
+    $description = 'My software system.',
+    Location::internal()
+);
+$person->usesSoftwareSystem($softwareSystem, 'Uses', 'Http');
+
+$contextView = $workspace->getViews()->createSystemContextView($softwareSystem, 'System Context', 'system01', 'An example of a System Context diagram.');
+$contextView->addAllElements();
+$contextView->setAutomaticLayout(true);
+
+$styles = $workspace->getViews()->getConfiguration()->getStyles();
+
+$styles->addElementStyle(Tags::SOFTWARE_SYSTEM)->background("#1168bd")->color('#ffffff');
+$styles->addElementStyle(Tags::PERSON)->background("#08427b")->color('#ffffff')->shape(Shape::person());
+
 $client = new Client(
     new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
     new UrlMap('https://api.structurizr.com'),
     new Psr18Client(),
     new SymfonyRequestFactory(),
 );
-
-$workspace = new Workspace(
-    $id = (string)\getenv('STRUCTURIZR_WORKSPACE_ID'),
-    $name = 'Test Workspace',
-    $description = 'This is just a test workspace created by structurizr-php/sdk'
-);
-$workspace->model()->setEnterprise(new Enterprise('Norbert Enterprise'));
-
-$system1 = $workspace->model()->addSoftwareSystem(
-    $name = 'Software System 1',
-    $description = 'First Software System',
-    Location::internal()
-);
-$authorizedUser = $workspace->model()->addPerson(
-    $name = 'Authorized User',
-    $description = '...',
-    Location::internal()
-);
-
-$authorizedUser->setProperties(new Properties(new Property('domain', 'example.com')));
-$authorizedUser->usesSoftwareSystem($system1, 'Uses', 'Http');
-
-$system1View = $workspace->viewSet()->createSystemContextView($system1, 'System 1 view', 'system01', 'System 1 view description');
-$system1View->addAllElements();
-
-$workspace->viewSet()->getConfiguration()->getStyles()->addElementStyle(Tags::PERSON)->shape(Shape::person());
-
 $client->put($workspace);

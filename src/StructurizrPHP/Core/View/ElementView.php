@@ -43,22 +43,38 @@ final class ElementView
         return $this->element;
     }
 
-    public function setX(int $x) : self
+    public function setX(?int $x) : self
     {
-        Assertion::greaterThan($x, 0);
+        Assertion::greaterOrEqualThan($x, 0);
 
         $this->x = $x;
 
         return $this;
     }
 
-    public function sety(int $y) : self
+    public function setY(?int $y) : self
     {
-        Assertion::greaterThan($y, 0);
+        Assertion::greaterOrEqualThan($y, 0);
 
         $this->y = $y;
 
         return $this;
+    }
+
+    public function getX(): ?int
+    {
+        return $this->x;
+    }
+
+    public function getY(): ?int
+    {
+        return $this->y;
+    }
+
+    public function copyLayoutInformationFrom(ElementView $source) : void
+    {
+        $this->setX($source->getX());
+        $this->setY($source->getY());
     }
 
     public function toArray() : array
@@ -66,7 +82,7 @@ final class ElementView
         return [
             'id' => $this->element->id(),
             'x' => $this->x,
-            'y' => null,
+            'y' => $this->y,
         ];
     }
 }

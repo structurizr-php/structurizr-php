@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core;
 
 use PHPUnit\Framework\TestCase;
+use StructurizrPHP\StructurizrPHP\Core\Model\Tags;
+use StructurizrPHP\StructurizrPHP\Core\View\Configuration\Shape;
 use StructurizrPHP\StructurizrPHP\Core\Workspace;
 
 final class WorkspaceTest extends TestCase
@@ -25,6 +27,31 @@ final class WorkspaceTest extends TestCase
             "name",
             "description"
         );
+
+        $this->assertEquals($workspace, Workspace::hydrate($workspace->toArray("test")));
+    }
+
+    public function test_hydraing_with_relationships_and_views()
+    {
+        $workspace = new Workspace(
+            "1",
+            "name",
+            "description"
+        );
+
+        $person = $workspace->getModel()->addPerson('person', 'test');
+        $system = $workspace->getModel()->addSoftwareSystem('system2', 'test');
+
+        $person->usesSoftwareSystem($system, 'uses', 'browser');
+
+        $contextView = $workspace->getViews()->createSystemContextView($system, 'systemcontext', 'contextview', 'test');
+        $contextView->addAllElements();
+
+        $landscapeView = $workspace->getViews()->createSystemContextView($system, 'landscale', 'landscapeview', 'test');
+        $landscapeView->addElement($person, true)->setY(100)->setX(200);
+
+        $workspace->getViews()->getConfiguration()->getStyles()->addElementStyle(Tags::PERSON)
+            ->shape(Shape::person());
 
         $this->assertEquals($workspace, Workspace::hydrate($workspace->toArray("test")));
     }

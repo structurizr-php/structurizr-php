@@ -21,7 +21,7 @@ use StructurizrPHP\StructurizrPHP\SDK\Exception\Exception;
 
 final class Client
 {
-    public const AGENT_NAME = 'structurizr-php/sdk:0.0.1';
+    public const AGENT_NAME = 'structurizr-php/structurizr-php:0.0.1';
 
     /**
      * @var Credentials
@@ -43,6 +43,11 @@ final class Client
      */
     private $httpRequestFactory;
 
+    /**
+     * @var bool
+     */
+    private $mergeFromRemote;
+
     public function __construct(
         Credentials $credentials,
         UrlMap $urlMap,
@@ -53,13 +58,33 @@ final class Client
         $this->httpClient = $httpClient;
         $this->httpRequestFactory = $httpRequestFactory;
         $this->credentials = $credentials;
+        $this->mergeFromRemote = true;
+    }
+
+    /**
+     * Specifies whether the layout of diagrams from a remote workspace should be retained when putting
+     * a new version of the workspace.
+     *
+     * @param bool $mergeFromRemote   true if layout information should be merged from the remote workspace, false otherwise
+     */
+    public function setMergeRemote(bool $mergeFromRemote) : void
+    {
+        $this->mergeFromRemote = $mergeFromRemote;
     }
 
     public function put(Workspace $workspace) : void
     {
-        $nonce = \time() * 1000;
+        if ($this->mergeFromRemote) {
+            $remoteWorkspace = $this->get($workspace->id());
+            if ($remoteWorkspace !== null) {
+                $workspace->getViews()->copyLayoutInformationFrom($remoteWorkspace->getViews());
+                $workspace->getViews()->getConfiguration()->copyConfigurationFrom($remoteWorkspace->getViews()->getConfiguration());
+            }
+        }
 
         try {
+            $nonce = (int) \round(\microtime(true) * 1000);
+
             $workspaceDefinition = \json_encode($workspace->toArray(self::AGENT_NAME), JSON_THROW_ON_ERROR);
 
             $url = $this->urlMap->workspaceUrl($workspace->id());
@@ -87,9 +112,9 @@ final class Client
         }
     }
 
-    public function get(string $workspaceId) : Workspace
+    public function get(string $workspaceId) : ?Workspace
     {
-        $nonce = \time() * 1000;
+        $nonce = (int) \round(\microtime(true) * 1000);
 
         try {
             $response = $this->httpClient->sendRequest(
@@ -106,6 +131,11 @@ final class Client
                     null
                 )
             );
+
+
+            if ($response->getStatusCode() === 401) {
+                return null;
+            }
 
             if ($response->getStatusCode() !== 200) {
                 throw new Exception(\sprintf("Invalid API responses, expected 200, got %d", $response->getStatusCode()));

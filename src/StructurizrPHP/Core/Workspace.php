@@ -62,12 +62,12 @@ final class Workspace
         return $this->id;
     }
 
-    public function model(): Model
+    public function getModel(): Model
     {
         return $this->model;
     }
 
-    public function viewSet(): ViewSet
+    public function getViews(): ViewSet
     {
         return $this->viewSet;
     }

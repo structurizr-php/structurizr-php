@@ -35,7 +35,7 @@ $workspace = new Workspace(
     "An example of all shapes available in Structurizr."
 );
 
-$model = $workspace->model();
+$model = $workspace->getModel();
 
 $model->addSoftwareSystem("Box", "Description")->addTags("Box");
 $model->addSoftwareSystem("RoundedBox", "Description")->addTags("RoundedBox");
@@ -51,7 +51,7 @@ $model->addSoftwareSystem("Folder", "Description")->addTags("Folder");
 $model->addSoftwareSystem("Robot", "Description")->addTags("Robot");
 $model->addPerson("Person", "Description")->addTags("Person");
 
-$views = $workspace->viewSet();
+$views = $workspace->getViews();
 
 $view = $views->createSystemLandscapeView("shapes", "An example of all shapes available in Structurizr.");
 $view->addAllElements();

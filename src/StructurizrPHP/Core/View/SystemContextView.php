@@ -52,7 +52,7 @@ final class SystemContextView extends StaticView
      */
     public static function hydrate(array $viewData, ViewSet $viewSet) : self
     {
-        $view = new SystemContextView(
+        $view = new self(
             $viewSet->model()->getElement($viewData['softwareSystemId']),
             $viewData['title'],
             $viewData['description'],
@@ -60,15 +60,17 @@ final class SystemContextView extends StaticView
             $viewSet
         );
 
-        if ($viewData['paperSize']) {
+        if (isset($viewData['paperSize'])) {
             $view->setPaperSize(PaperSize::hydrate($viewData['paperSize']));
         }
 
         foreach ($viewData['elements'] as $elementData) {
             $elementView = $view->addElement($viewSet->model()->getElement($elementData['id']), true);
 
-            if (isset($viewData['x'], $viewData['y']) && $viewData['x'] && $viewData['y']) {
-                $elementView->setX((int) $viewData['x'])->sety((int) $viewData['y']);
+            if (isset($elementData['x']) && isset($elementData['y'])) {
+                $elementView
+                    ->setX((int) $elementData['x'])
+                    ->setY((int) $elementData['y']);
             }
         }
 

@@ -62,7 +62,12 @@ final class SystemLandscapeView extends StaticView
      */
     public static function hydrate(array $viewData, ViewSet $viewSet) : self
     {
-        $view = new SystemLandscapeView($viewSet->model(), $viewData['description'], $viewData['key'], $viewSet);
+        $view = new SystemLandscapeView(
+            $viewSet->model(),
+            $viewData['description'],
+            $viewData['key'],
+            $viewSet
+        );
 
         if ($viewData['paperSize']) {
             $view->setPaperSize(PaperSize::hydrate($viewData['paperSize']));
@@ -71,8 +76,10 @@ final class SystemLandscapeView extends StaticView
         foreach ($viewData['elements'] as $elementData) {
             $elementView = $view->addElement($viewSet->model()->getElement($elementData['id']), true);
 
-            if (isset($viewData['x'], $viewData['y']) && $viewData['x'] && $viewData['y']) {
-                $elementView->setX((int) $viewData['x'])->sety((int) $viewData['y']);
+            if (isset($elementData['x']) && isset($elementData['y'])) {
+                $elementView
+                    ->setX((int) $elementData['x'])
+                    ->setY((int) $elementData['y']);
             }
         }
 

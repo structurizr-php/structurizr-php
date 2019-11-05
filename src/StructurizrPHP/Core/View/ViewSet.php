@@ -90,6 +90,35 @@ final class ViewSet
         return $this->configuration;
     }
 
+    public function copyLayoutInformationFrom(ViewSet $source) : void
+    {
+        foreach ($this->systemContextViews as $contextView) {
+            $sourceSystemContextView = \current(\array_filter(
+                $source->systemContextViews,
+                function (SystemContextView $nextSystemContextView) use ($contextView) {
+                    return $nextSystemContextView->keyEquals($contextView);
+                }
+            ));
+
+            if ($sourceSystemContextView) {
+                $contextView->copyLayoutInformationFrom($sourceSystemContextView);
+            }
+        }
+
+        foreach ($this->systemLandscapeViews as $landscapeView) {
+            $sourceLandscapeView = \current(\array_filter(
+                $source->systemLandscapeViews,
+                function (SystemLandscapeView $nextLandscapeView) use ($landscapeView) {
+                    return $nextLandscapeView->keyEquals($landscapeView);
+                }
+            ));
+
+            if ($sourceLandscapeView) {
+                $landscapeView->copyLayoutInformationFrom($sourceLandscapeView);
+            }
+        }
+    }
+
     public function toArray() : ?array
     {
         if (!\count($this->systemContextViews) && !\count($this->systemLandscapeViews)) {
@@ -134,6 +163,7 @@ final class ViewSet
     /**
      * @psalm-suppress InvalidArgument
      * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedPropertyTypeCoercion
      */
     public static function hydrate(?array $viewSetData, Model $model) : self
     {
@@ -146,9 +176,17 @@ final class ViewSet
         $viewSetDataModel = new ViewSetDataModel($viewSetData);
 
         if ($viewSetDataModel->hasViews('systemLandscapeViews')) {
-            $viewSetDataModel->mapLandscapeViews(
+            $viewSet->systemLandscapeViews = $viewSetDataModel->mapLandscapeViews(
                 function (array $viewData) use ($viewSet) {
                     return SystemLandscapeView::hydrate($viewData, $viewSet);
+                }
+            );
+        }
+
+        if ($viewSetDataModel->hasViews('systemContextViews')) {
+            $viewSet->systemContextViews = $viewSetDataModel->mapSystemContextViews(
+                function (array $viewData) use ($viewSet) {
+                    return SystemContextView::hydrate($viewData, $viewSet);
                 }
             );
         }
@@ -179,6 +217,16 @@ final class ViewSetDataModel
     {
         return \array_map($callback, $this->viewSetData['systemLandscapeViews']);
     }
+
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     */
+    public function mapSystemContextViews(callable $callback) : array
+    {
+        return \array_map($callback, $this->viewSetData['systemContextViews']);
+    }
+
 
     public function hasViews(string $name) : bool
     {
