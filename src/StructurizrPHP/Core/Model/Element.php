@@ -51,6 +51,11 @@ abstract class Element extends ModelItem
         $this->relationships = [];
     }
 
+    public function getCanonicalName() : string
+    {
+        return \mb_strtolower(\str_replace(self::CANONICAL_NAME_SEPARATOR, "", $this->name));
+    }
+
     public function description(): string
     {
         return $this->description;

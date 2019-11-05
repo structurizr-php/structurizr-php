@@ -24,7 +24,8 @@
         "nyholm/psr7": "^1.2",
         "friendsofphp/php-cs-fixer": "^2.15",
         "vimeo/psalm": "^3.6",
-        "phpunit/phpunit": "^8.4"
+        "phpunit/phpunit": "^8.4",
+        "symfony/var-dumper": "^4.3"
     },
     "suggest": {
         "symfony/http-client": "Psr18Client http factory works out of the box with StructurizrPHP\\StructurizrPHP\\SDK\\Client",

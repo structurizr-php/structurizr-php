@@ -64,6 +64,11 @@ abstract class View
      */
     protected $automaticLayout;
 
+    /**
+     * @var LayoutMergeStrategy
+     */
+    private $layoutMergeStrategy;
+
     public function __construct(
         ?SoftwareSystem $softwareSystem,
         ?string $title,
@@ -78,6 +83,7 @@ abstract class View
         $this->viewSet = $viewSet;
         $this->elementViews = [];
         $this->relationshipsViews = [];
+        $this->layoutMergeStrategy = new DefaultLayoutMergeStrategy();
     }
 
     protected function model() : ?Model
@@ -85,9 +91,27 @@ abstract class View
         return $this->softwareSystem ? $this->softwareSystem->model() : null;
     }
 
-    public function setPaperSize(PaperSize $paperSize) : void
+    public function keyEquals(View $other) : bool
+    {
+        return $this->key === $other->key;
+    }
+
+    /**
+     * @return ElementView[]
+     */
+    public function getElements(): array
+    {
+        return $this->elementViews;
+    }
+
+    public function setPaperSize(?PaperSize $paperSize) : void
     {
         $this->paperSize = $paperSize;
+    }
+
+    public function getPaperSize(): ?PaperSize
+    {
+        return $this->paperSize;
     }
 
     public function setAutomaticLayout(bool $enabled) : void
@@ -128,6 +152,13 @@ abstract class View
                     $this->relationshipsViews[] = new RelationshipView($r);
                 }
             }
+        }
+    }
+
+    public function copyLayoutInformationFrom(?View $source) : void
+    {
+        if ($source) {
+            $this->layoutMergeStrategy->copyLayoutInformation($source, $this);
         }
     }
 
