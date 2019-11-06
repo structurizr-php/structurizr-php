@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\Model\Configuration;
+namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\Configuration;
 
 use PHPUnit\Framework\TestCase;
-use StructurizrPHP\StructurizrPHP\Core\Model\Configuration\Role;
-use StructurizrPHP\StructurizrPHP\Core\Model\Configuration\User;
+use StructurizrPHP\StructurizrPHP\Core\Configuration\Role;
+use StructurizrPHP\StructurizrPHP\Core\Configuration\User;
 
 class UserTest extends TestCase
 {

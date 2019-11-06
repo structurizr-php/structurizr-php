@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\Model\Configuration;
+namespace StructurizrPHP\StructurizrPHP\Core\Configuration;
 
 use Assert\AssertionFailedException;
 use StructurizrPHP\StructurizrPHP\Assertion;
