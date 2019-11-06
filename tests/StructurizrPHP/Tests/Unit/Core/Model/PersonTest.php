@@ -24,14 +24,14 @@ final class PersonTest extends TestCase
 {
     public function test_hydrating_person()
     {
-        $person = new Person('1', 'name', 'description', Location::unspecified(), $model = new Model());
+        $person = new Person('1', $model = new Model());
 
         $this->assertEquals($person, Person::hydrate($person->toArray(), $model));
     }
 
     public function test_hydrating_person_with_properties()
     {
-        $person = new Person('1', 'name', 'description', Location::unspecified(), $model = new Model());
+        $person = new Person('1', $model = new Model());
         $person->setProperties(new Properties(new Property('key', 'value')));
 
         $this->assertEquals($person, Person::hydrate($person->toArray(), $model));

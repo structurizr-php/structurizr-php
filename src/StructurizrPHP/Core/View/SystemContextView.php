@@ -22,9 +22,9 @@ final class SystemContextView extends StaticView
      */
     private $enterpriseBoundaryVisible = true;
 
-    public function __construct(SoftwareSystem $softwareSystem, string $title, string $description, string $key, ViewSet $viewSet)
+    public function __construct(SoftwareSystem $softwareSystem, string $description, string $key, ViewSet $viewSet)
     {
-        parent::__construct($softwareSystem, $title, $description, $key, $viewSet);
+        parent::__construct($softwareSystem, $description, $key, $viewSet);
     }
 
     public function addAllElements(): void
@@ -54,11 +54,14 @@ final class SystemContextView extends StaticView
     {
         $view = new self(
             $viewSet->model()->getElement($viewData['softwareSystemId']),
-            $viewData['title'],
             $viewData['description'],
             $viewData['key'],
             $viewSet
         );
+
+        if (isset($viewData['title'])) {
+            $view->setTitle($viewData['title']);
+        }
 
         if (isset($viewData['paperSize'])) {
             $view->setPaperSize(PaperSize::hydrate($viewData['paperSize']));

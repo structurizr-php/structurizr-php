@@ -54,13 +54,11 @@ final class ViewSet
 
     public function createSystemContextView(
         SoftwareSystem $softwareSystem,
-        string $title,
         string $key,
         string $description
     ) : SystemContextView {
         $view = new SystemContextView(
             $softwareSystem,
-            $title,
             $description,
             $key,
             $this

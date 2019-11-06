@@ -20,10 +20,11 @@ final class Person extends StaticStructureElement
      */
     private $location;
 
-    public function __construct(string $id, string $name, string $description, Location $location, Model $model)
+    public function __construct(string $id, Model $model)
     {
-        parent::__construct($id, $name, $description, $model);
-        $this->location = $location;
+        parent::__construct($id, $model);
+
+        $this->location = Location::unspecified();
         $this->setTags(new Tags(Tags::ELEMENT, Tags::PERSON));
     }
 
@@ -38,6 +39,14 @@ final class Person extends StaticStructureElement
     }
 
     /**
+     * @param Location $location
+     */
+    public function setLocation(Location $location): void
+    {
+        $this->location = $location;
+    }
+
+    /**
      * @psalm-suppress InvalidArgument
      * @psalm-suppress MixedArgument
      * @psalm-suppress MixedAssignment
@@ -47,19 +56,32 @@ final class Person extends StaticStructureElement
     {
         $person = new self(
             $personData['id'],
-            $personData['name'],
-            $personData['description'],
-            Location::hydrate($personData['location']),
             $model
         );
 
         $model->idGenerator()->found($person->id());
 
-        if (\array_key_exists('tags', $personData)) {
+        if (isset($personData['name'])) {
+            $person->setName($personData['name']);
+        }
+
+        if (isset($personData['description'])) {
+            $person->setDescription($personData['description']);
+        }
+
+        if (isset($personData['location'])) {
+            $person->setLocation(Location::hydrate($personData['location']));
+        }
+
+        if (isset($personData['tags'])) {
             $person->setTags(new Tags(...\explode(', ', $personData['tags'])));
         }
 
-        if (\array_key_exists('properties', $personData)) {
+        if (isset($personData['url'])) {
+            $person->setUrl($personData['url']);
+        }
+
+        if (isset($personData['properties'])) {
             $properties = new Properties();
             if (\is_array($personData['properties'])) {
                 foreach ($personData['properties'] as $key => $value) {
@@ -70,7 +92,7 @@ final class Person extends StaticStructureElement
             $person->setProperties($properties);
         }
 
-        if (\array_key_exists('relationships', $personData)) {
+        if (isset($personData['relationships'])) {
             if (\is_array($personData['relationships'])) {
                 foreach ($personData['relationships'] as $relationshipData) {
                     $relationship = Relationship::hydrate($relationshipData, $person, $model);

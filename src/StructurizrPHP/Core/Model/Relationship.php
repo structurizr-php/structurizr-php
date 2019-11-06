@@ -19,11 +19,6 @@ use StructurizrPHP\StructurizrPHP\Core\Model\Relationship\InteractionStyle;
 final class Relationship extends ModelItem
 {
     /**
-     * @var string
-     */
-    private $description;
-
-    /**
      * @var Element
      */
     private $source;
@@ -36,6 +31,11 @@ final class Relationship extends ModelItem
     /**
      * @var string
      */
+    private $description;
+
+    /**
+     * @var string|null
+     */
     private $technology;
 
     /**
@@ -47,19 +47,40 @@ final class Relationship extends ModelItem
         string $id,
         Element $source,
         Element $destination,
-        string $description,
-        string $technology,
-        InteractionStyle $interactionStyle
+        string $description
     ) {
         parent::__construct($id);
-        Assertion::notEmpty($description);
-        Assertion::notEmpty($technology);
 
         $this->description = $description;
         $this->source = $source;
         $this->destination = $destination;
-        $this->technology = $technology;
+        $this->interactionStyle = InteractionStyle::synchronous();
+
+        if ($this->interactionStyle === InteractionStyle::synchronous()) {
+            $this->addTags(Tags::SYNCHRONOUS);
+        } else {
+            $this->addTags(Tags::ASYNCHRONOUS);
+        }
+
+        $this->addTags(Tags::RELATIONSHIP);
+    }
+
+    /**
+     * @param InteractionStyle $interactionStyle
+     */
+    public function setInteractionStyle(InteractionStyle $interactionStyle): void
+    {
         $this->interactionStyle = $interactionStyle;
+    }
+
+    public function setTechnology(?string $technology): void
+    {
+        $this->technology = $technology;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 
     public function destination(): Element
@@ -74,16 +95,21 @@ final class Relationship extends ModelItem
 
     public function toArray(): array
     {
-        return \array_merge(
+        $data = \array_merge(
             [
                 'description' => $this->description,
                 'sourceId' => $this->source->id(),
                 'destinationId' => $this->destination->id(),
-                'technology' => $this->technology,
                 'interactionStyle' => $this->interactionStyle->style(),
             ],
             parent::toArray()
         );
+
+        if ($this->technology) {
+            $data['technology'] = $this->technology;
+        }
+
+        return $data;
     }
 
     /**
@@ -99,9 +125,13 @@ final class Relationship extends ModelItem
             $source,
             $model->getElement($relationshipData['destinationId']),
             $relationshipData['description'],
-            $relationshipData['technology'],
-            InteractionStyle::hydrate($relationshipData['interactionStyle'])
         );
+
+        $relationship->setInteractionStyle(InteractionStyle::hydrate($relationshipData['interactionStyle']));
+
+        if (isset($relationshipData['technology'])) {
+            $relationship->setTechnology($relationshipData['technology']);
+        }
 
         $model->idGenerator()->found($relationship->id());
 

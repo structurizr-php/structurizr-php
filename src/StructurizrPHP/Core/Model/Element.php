@@ -20,43 +20,43 @@ abstract class Element extends ModelItem
     private const CANONICAL_NAME_SEPARATOR = "/";
 
     /**
-     * @var string
+     * @var Model
+     */
+    private $model;
+
+    /**
+     * @var string|null
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $description;
 
     /**
-     * @var Model
+     * @var string|null
      */
-    private $model;
+    private $url;
 
     /**
      * @var Relationship[]
      */
     protected $relationships;
 
-    public function __construct(string $id, string $name, string $description, Model $model)
+    public function __construct(string $id, Model $model)
     {
-        Assertion::string($name);
-        Assertion::string($description);
-
         parent::__construct($id);
-        $this->name = $name;
-        $this->description = $description;
         $this->model = $model;
         $this->relationships = [];
     }
 
     public function getCanonicalName() : string
     {
-        return \mb_strtolower(\str_replace(self::CANONICAL_NAME_SEPARATOR, "", $this->name));
+        return \mb_strtolower(\str_replace(self::CANONICAL_NAME_SEPARATOR, "", (string) $this->name));
     }
 
-    public function description(): string
+    public function description(): ?string
     {
         return $this->description;
     }
@@ -79,6 +79,34 @@ abstract class Element extends ModelItem
         return $this->model;
     }
 
+    /**
+     * @param string|null $name
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param string|null $url
+     */
+    public function setUrl(?string $url): void
+    {
+        if ($url) {
+            Assertion::url($url);
+        }
+
+        $this->url = $url;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
     public function equals(self $element) : bool
     {
         return $this->id() === $element->id();
@@ -86,10 +114,8 @@ abstract class Element extends ModelItem
 
     public function toArray() : array
     {
-        return \array_merge(
+        $data = \array_merge(
             [
-                'name' => $this->name,
-                'description' => $this->description,
                 'relationships' => \count($this->relationships)
                     ? \array_map(function (Relationship $relationship) {
                         return $relationship->toArray();
@@ -98,5 +124,19 @@ abstract class Element extends ModelItem
             ],
             parent::toArray()
         );
+
+        if ($this->name) {
+            $data['name'] = $this->name;
+        }
+
+        if ($this->description) {
+            $data['description'] = $this->description;
+        }
+
+        if ($this->url) {
+            $data['url'] = $this->url;
+        }
+
+        return $data;
     }
 }

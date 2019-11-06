@@ -29,7 +29,7 @@ final class SystemLandscapeView extends StaticView
 
     public function __construct(Model $model, string $description, string $key, ViewSet $viewSet)
     {
-        parent::__construct(null, null, $description, $key, $viewSet);
+        parent::__construct(null, $description, $key, $viewSet);
         $this->model = $model;
     }
 
@@ -68,6 +68,10 @@ final class SystemLandscapeView extends StaticView
             $viewData['key'],
             $viewSet
         );
+
+        if (isset($viewData['title'])) {
+            $view->setTitle($viewData['title']);
+        }
 
         if ($viewData['paperSize']) {
             $view->setPaperSize(PaperSize::hydrate($viewData['paperSize']));

@@ -20,11 +20,20 @@ final class SoftwareSystem extends StaticStructureElement
      */
     private $location;
 
-    public function __construct(string $id, string $name, string $description, Location $location, Model $model)
+    public function __construct(string $id, Model $model)
     {
-        parent::__construct($id, $name, $description, $model);
-        $this->location = $location;
+        parent::__construct($id, $model);
+
+        $this->location = Location::unspecified();
         $this->setTags(new Tags(Tags::ELEMENT, Tags::SOFTWARE_SYSTEM));
+    }
+
+    /**
+     * @param Location $location
+     */
+    public function setLocation(Location $location): void
+    {
+        $this->location = $location;
     }
 
     public function toArray() : array
@@ -47,19 +56,32 @@ final class SoftwareSystem extends StaticStructureElement
     {
         $softwareSystem = new self(
             $softwareSystemData['id'],
-            $softwareSystemData['name'],
-            $softwareSystemData['description'],
-            Location::hydrate($softwareSystemData['location']),
             $model
         );
 
         $model->idGenerator()->found($softwareSystem->id());
 
-        if (\array_key_exists('tags', $softwareSystemData)) {
+        if (isset($softwareSystemData['name'])) {
+            $softwareSystem->setName($softwareSystemData['name']);
+        }
+
+        if (isset($softwareSystemData['description'])) {
+            $softwareSystem->setDescription($softwareSystemData['description']);
+        }
+
+        if (isset($softwareSystemData['location'])) {
+            $softwareSystem->setLocation(Location::hydrate($softwareSystemData['location']));
+        }
+
+        if (isset($softwareSystemData['tags'])) {
             $softwareSystem->setTags(new Tags(...\explode(', ', $softwareSystemData['tags'])));
         }
 
-        if (\array_key_exists('properties', $softwareSystemData)) {
+        if (isset($softwareSystemData['url'])) {
+            $softwareSystem->setUrl($softwareSystemData['url']);
+        }
+
+        if (isset($softwareSystemData['properties'])) {
             $properties = new Properties();
             if (\is_array($softwareSystemData['properties'])) {
                 foreach ($softwareSystemData['properties'] as $key => $value) {
@@ -70,7 +92,7 @@ final class SoftwareSystem extends StaticStructureElement
             $softwareSystem->setProperties($properties);
         }
 
-        if (\array_key_exists('relationships', $softwareSystemData)) {
+        if (isset($softwareSystemData['relationships'])) {
             if (\is_array($softwareSystemData['relationships'])) {
                 foreach ($softwareSystemData['relationships'] as $relationshipData) {
                     $relationship = Relationship::hydrate($relationshipData, $softwareSystem, $model);

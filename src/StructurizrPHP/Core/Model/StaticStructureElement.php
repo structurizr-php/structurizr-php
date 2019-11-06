@@ -19,10 +19,16 @@ abstract class StaticStructureElement extends Element
 {
     public function usesSoftwareSystem(
         SoftwareSystem $softwareSystem,
-        string $description,
-        string $technology,
+        string $description = "Uses",
+        string $technology = null,
         InteractionStyle $interactionStyle = null
     ) : void {
-        $this->model()->addRelationship($this, $softwareSystem, $description, $technology, $interactionStyle ? $interactionStyle : InteractionStyle::synchronous());
+        $this->model()->addRelationship(
+            $this,
+            $softwareSystem,
+            $description,
+            $technology,
+            $interactionStyle
+        );
     }
 }
