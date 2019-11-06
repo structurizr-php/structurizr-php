@@ -40,9 +40,9 @@ $softwareSystem = $workspace->getModel()->addSoftwareSystem(
     $description = 'My software system.',
     Location::internal()
 );
-$person->usesSoftwareSystem($softwareSystem, 'Uses', 'Http');
+$person->usesSoftwareSystem($softwareSystem);
 
-$contextView = $workspace->getViews()->createSystemContextView($softwareSystem, 'System Context', 'system01', 'An example of a System Context diagram.');
+$contextView = $workspace->getViews()->createSystemContextView($softwareSystem, 'SystemContext', 'An example of a System Context diagram.');
 $contextView->addAllElements();
 $contextView->setAutomaticLayout(true);
 

@@ -71,13 +71,11 @@ abstract class View
 
     public function __construct(
         ?SoftwareSystem $softwareSystem,
-        ?string $title,
         string $description,
         string $key,
         ViewSet $viewSet
     ) {
         $this->softwareSystem = $softwareSystem;
-        $this->title = $title;
         $this->description = $description;
         $this->key = $key;
         $this->viewSet = $viewSet;
@@ -94,6 +92,14 @@ abstract class View
     public function keyEquals(View $other) : bool
     {
         return $this->key === $other->key;
+    }
+
+    /**
+     * @param string|null $title
+     */
+    public function setTitle(?string $title): void
+    {
+        $this->title = $title;
     }
 
     /**

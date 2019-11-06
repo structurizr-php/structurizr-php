@@ -24,14 +24,14 @@ final class SoftwareSystemTest extends TestCase
 {
     public function test_hydrating_software_system()
     {
-        $softwareSystem = new SoftwareSystem('1', 'name', 'description', Location::unspecified(), $model = new Model());
+        $softwareSystem = new SoftwareSystem('1', $model = new Model());
 
         $this->assertEquals($softwareSystem, SoftwareSystem::hydrate($softwareSystem->toArray(), $model));
     }
 
     public function test_hydrating_software_system_with_properties()
     {
-        $softwareSystem = new SoftwareSystem('1', 'name', 'description', Location::unspecified(), $model = new Model());
+        $softwareSystem = new SoftwareSystem('1', $model = new Model());
         $softwareSystem->setProperties(new Properties(new Property('key', 'value')));
 
         $this->assertEquals($softwareSystem, SoftwareSystem::hydrate($softwareSystem->toArray(), $model));

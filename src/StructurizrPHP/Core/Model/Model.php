@@ -91,46 +91,58 @@ final class Model
         throw new RuntimeException(\sprintf("Element with id \"%s\" does not exists.", $id));
     }
 
-    public function addRelationship(Element $source, Element $destination, string $description, string $technology, InteractionStyle $interactionStyle) : Relationship
+    public function addRelationship(Element $source, Element $destination, string $description = "", string $technology = null, InteractionStyle $interactionStyle = null) : Relationship
     {
         $relationship = new Relationship(
             $this->idGenerator->generateId(),
             $source,
             $destination,
-            $description,
-            $technology,
-            $interactionStyle
+            $description
         );
+
+        $relationship->setTechnology($technology);
+
+        if ($interactionStyle) {
+            $relationship->setInteractionStyle($interactionStyle);
+        }
 
         $source->addRelationship($relationship);
 
         return $relationship;
     }
 
-    public function addPerson(string $name, string $description, Location $location = null) : Person
+    public function addPerson(string $name = null, string $description = null, Location $location = null) : Person
     {
         $person = new Person(
             $this->idGenerator->generateId(),
-            $name,
-            $description,
-            $location ? $location : Location::unspecified(),
             $this
         );
+
+        $person->setName($name);
+        $person->setDescription($description);
+
+        if ($location) {
+            $person->setLocation($location);
+        }
 
         $this->people[] = $person;
 
         return $person;
     }
 
-    public function addSoftwareSystem(string $name, string $description, Location $location = null) : SoftwareSystem
+    public function addSoftwareSystem(string $name = null, string $description = null, Location $location = null) : SoftwareSystem
     {
         $softwareSystem = new SoftwareSystem(
             $this->idGenerator->generateId(),
-            $name,
-            $description,
-            $location ? $location : Location::unspecified(),
             $this
         );
+
+        $softwareSystem->setName($name);
+        $softwareSystem->setDescription($description);
+
+        if ($location) {
+            $softwareSystem->setLocation($location);
+        }
 
         $this->softwareSystems[] = $softwareSystem;
 
