@@ -541,6 +541,15 @@ final class Model
 
         return $model;
     }
+
+    public function contains(Element $element): bool
+    {
+        return in_array($element, $this->elementsById, true);
+    }
+
+    public function isEmpty()
+    {
+    }
 }
 
 final class ModelDataObject

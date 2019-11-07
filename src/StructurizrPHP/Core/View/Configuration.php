@@ -26,10 +26,12 @@ final class Configuration
      * @var string|null
      */
     private $lastSavedView;
+    private $branding;
 
     public function __construct()
     {
         $this->styles = new Styles();
+        $this->branding = new Branding();
     }
 
     public function getStyles(): Styles
@@ -47,6 +49,7 @@ final class Configuration
         return [
             'lastSavedView' => $this->lastSavedView,
             'styles' => $this->styles->toArray(),
+            'branding' => $this->branding->toArray(),
         ];
     }
 
@@ -60,5 +63,15 @@ final class Configuration
         }
 
         return $configuration;
+    }
+
+    public function getBranding():Branding
+    {
+        return $this->branding;
+    }
+
+    public function setBranding(Branding $branding): void
+    {
+        $this->branding = $branding;
     }
 }
