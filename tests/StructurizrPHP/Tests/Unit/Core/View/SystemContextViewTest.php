@@ -24,7 +24,7 @@ final class SystemContextViewTest extends TestCase
     {
         $viewSet = new ViewSet(new Model());
         $softwareSystem = $viewSet->model()->addSoftwareSystem('name', 'description');
-        $view = $viewSet->createSystemContextView($softwareSystem, 'tile', 'key', 'description');
+        $view = $viewSet->createSystemContextView($softwareSystem, 'key', 'description');
 
         $this->assertEquals($view, SystemContextView::hydrate($view->toArray(), $viewSet));
     }
@@ -33,7 +33,7 @@ final class SystemContextViewTest extends TestCase
     {
         $viewSet = new ViewSet(new Model());
         $softwareSystem = $viewSet->model()->addSoftwareSystem('name', 'description');
-        $view = $viewSet->createSystemContextView($softwareSystem, 'tile', 'key', 'description');
+        $view = $viewSet->createSystemContextView($softwareSystem, 'key', 'description');
         $view->setAutomaticLayout(true);
 
         $this->assertEquals($view, SystemContextView::hydrate($view->toArray(), $viewSet));
@@ -46,7 +46,7 @@ final class SystemContextViewTest extends TestCase
         $person = $viewSet->model()->addPerson('name', 'description');
         $person->usesSoftwareSystem($softwareSystem, 'description', 'technology');
 
-        $view = $viewSet->createSystemContextView($softwareSystem, 'tile', 'key', 'description');
+        $view = $viewSet->createSystemContextView($softwareSystem, 'key', 'description');
         $view->addAllElements();
 
         $this->assertEquals($view, SystemContextView::hydrate($view->toArray(), $viewSet));

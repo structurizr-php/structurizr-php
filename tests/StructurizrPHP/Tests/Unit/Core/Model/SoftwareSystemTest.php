@@ -19,6 +19,7 @@ use StructurizrPHP\StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\StructurizrPHP\Core\Model\Properties;
 use StructurizrPHP\StructurizrPHP\Core\Model\Property;
 use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
+use StructurizrPHP\StructurizrPHP\Exception\RuntimeException;
 
 final class SoftwareSystemTest extends TestCase
 {
@@ -46,5 +47,27 @@ final class SoftwareSystemTest extends TestCase
         $person->usesSoftwareSystem($softwareSystem, 'description', 'technology');
 
         $this->assertEquals($softwareSystem, SoftwareSystem::hydrate($softwareSystem->toArray(), $model));
+    }
+
+    public function test_hydrating_software_system_with_container()
+    {
+        $model = new Model();
+        $softwareSystem = $model->addSoftwareSystem('name', 'description', Location::unspecified());
+
+        $model->addContainer($softwareSystem, 'container', 'test', 'http');
+
+        $this->assertEquals($softwareSystem, SoftwareSystem::hydrate($softwareSystem->toArray(), $model));
+    }
+
+    public function test_adding_container_twice()
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('A container named "name" already exists for this software system.');
+
+        $model = new Model();
+        $softwareSystem = $model->addSoftwareSystem('name', 'description', Location::unspecified());
+
+        $model->addContainer($softwareSystem, 'container', 'test', 'http');
+        $model->addContainer($softwareSystem, 'container', 'test', 'http');
     }
 }

@@ -83,12 +83,17 @@ final class Relationship extends ModelItem
         $this->description = $description;
     }
 
-    public function destination(): Element
+    public function getDestination(): Element
     {
         return $this->destination;
     }
 
-    public function source(): Element
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function getSource(): Element
     {
         return $this->source;
     }

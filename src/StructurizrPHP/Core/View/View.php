@@ -15,14 +15,17 @@ namespace StructurizrPHP\StructurizrPHP\Core\View;
 
 use StructurizrPHP\StructurizrPHP\Core\Model\Element;
 use StructurizrPHP\StructurizrPHP\Core\Model\Model;
+use StructurizrPHP\StructurizrPHP\Core\Model\Relationship;
 use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
+use StructurizrPHP\StructurizrPHP\Exception\InvalidArgumentException;
+use StructurizrPHP\StructurizrPHP\Exception\RuntimeException;
 
 abstract class View
 {
     /**
      * @var SoftwareSystem|null
      */
-    private $softwareSystem;
+    protected $softwareSystem;
 
     /**
      * @var string|null
@@ -52,12 +55,12 @@ abstract class View
     /**
      * @var ElementView[]
      */
-    private $elementViews;
+    protected $elementViews;
 
     /**
      * @var RelationshipView[]
      */
-    private $relationshipsViews;
+    protected $relationshipsViews;
 
     /**
      * @var AutomaticLayout|null
@@ -84,7 +87,7 @@ abstract class View
         $this->layoutMergeStrategy = new DefaultLayoutMergeStrategy();
     }
 
-    protected function model() : ?Model
+    protected function getModel() : ?Model
     {
         return $this->softwareSystem ? $this->softwareSystem->model() : null;
     }
@@ -108,6 +111,61 @@ abstract class View
     public function getElements(): array
     {
         return $this->elementViews;
+    }
+
+    /**
+     * @return RelationshipView[]
+     */
+    public function getRelationships() : array
+    {
+        return $this->relationshipsViews;
+    }
+
+    public function getRelationshipView(Relationship $relationship) : RelationshipView
+    {
+        foreach ($this->relationshipsViews as $relationshipView) {
+            $nextRelationship = $relationshipView->getRelationship();
+            if ($nextRelationship && $nextRelationship->id() === $relationship->id()) {
+                return $relationshipView;
+            }
+        }
+
+        throw new RuntimeException(\sprintf("Relationship view for relationship with id \"%s\" does not exists", $relationship->id()));
+    }
+
+    protected function addRelationshipWithDescription(Relationship $relationship, string $description, string $order) : RelationshipView
+    {
+        $relationshipView = $this->addRelationship($relationship);
+        if (!$relationshipView) {
+            throw new InvalidArgumentException("Can\'t add Relationship");
+        }
+
+        $relationshipView->setDescription($description);
+        $relationshipView->setOrder($order);
+
+        return $relationshipView;
+    }
+
+    protected function addRelationship(Relationship $relationship) : ?RelationshipView
+    {
+        if ($this->isElementInView($relationship->getSource()) && $this->isElementInView($relationship->getDestination())) {
+            $relationshipView = new RelationshipView($relationship);
+            $this->relationshipsViews[] = $relationshipView;
+
+            return $relationshipView;
+        }
+
+        return null;
+    }
+
+    protected function isElementInView(Element $element) : bool
+    {
+        return (bool) \array_filter(
+            $this->elementViews,
+            function (ElementView $ev) use ($element) {
+                return $ev->element()->equals($element);
+            }
+        );
     }
 
     public function setPaperSize(?PaperSize $paperSize) : void
@@ -146,7 +204,7 @@ abstract class View
     {
         foreach ($element->relationships() as $relationship) {
             foreach ($this->elementViews as $elementView) {
-                if ($elementView->element()->equals($relationship->destination())) {
+                if ($elementView->element()->equals($relationship->getDestination())) {
                     $this->relationshipsViews[] = new RelationshipView($relationship);
                 }
             }
@@ -154,7 +212,7 @@ abstract class View
 
         foreach ($this->elementViews as $elementView) {
             foreach ($elementView->element()->relationships() as $r) {
-                if ($r->destination()->equals($element)) {
+                if ($r->getDestination()->equals($element)) {
                     $this->relationshipsViews[] = new RelationshipView($r);
                 }
             }

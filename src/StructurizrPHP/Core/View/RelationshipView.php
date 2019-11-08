@@ -17,6 +17,34 @@ use StructurizrPHP\StructurizrPHP\Core\Model\Relationship;
 
 final class RelationshipView
 {
+    private const START_OF_LINE = 0;
+    private const END_OF_LINE = 100;
+
+    /**
+     * @var string|null
+     */
+    private $description;
+
+    /**
+     * @var int|null
+     */
+    private $position;
+
+    /**
+     * @var string|null
+     */
+    private $order;
+
+    /**
+     * @var Vertex[]
+     */
+    private $vertices;
+
+    /**
+     * @var Routing|null
+     */
+    private $routing;
+
     /**
      * @var Relationship
      */
@@ -25,16 +53,131 @@ final class RelationshipView
     public function __construct(Relationship $relationship)
     {
         $this->relationship = $relationship;
+        $this->vertices = [];
+    }
+
+    public function setPosition(?int $position) : void
+    {
+        if ($position === null) {
+            $this->position = null;
+        } elseif ($position < self::START_OF_LINE) {
+            $this->position = self::START_OF_LINE;
+        } elseif ($position > self::END_OF_LINE) {
+            $this->position = self::END_OF_LINE;
+        } else {
+            $this->position = $position;
+        }
+    }
+
+    public function getRelationship(): ?Relationship
+    {
+        return $this->relationship;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function setVertices(Vertex ...$vertices): void
+    {
+        $this->vertices = $vertices;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function getOrder(): ?string
+    {
+        return $this->order;
+    }
+
+    public function setOrder(string $order): void
+    {
+        $this->order = $order;
+    }
+
+    /**
+     * @param Routing|null $routing
+     */
+    public function setRouting(?Routing $routing): void
+    {
+        $this->routing = $routing;
+    }
+
+    public function copyLayoutInformationFrom(?RelationshipView $source) : void
+    {
+        if ($source !== null) {
+            $this->setVertices(...$source->vertices);
+            $this->setPosition($source->position);
+            $this->setRouting($source->routing);
+        }
+    }
+
+    /**
+     * @psalm-suppress MixedArgument
+     */
+    public static function hydrate(Relationship $relationship, array $viewData) : self
+    {
+        $view = new self($relationship);
+
+        if (isset($viewData['description'])) {
+            $view->setDescription($viewData['description']);
+        }
+
+        if (isset($viewData['order'])) {
+            $view->setOrder((string) $viewData['order']);
+        }
+
+        if (isset($viewData['position'])) {
+            $view->setPosition($viewData['position']);
+        }
+
+        if (isset($viewData['routing'])) {
+            $view->setRouting(Routing::hydrate($viewData['routing']));
+        }
+
+        if (isset($viewData['vertices'])) {
+            $view->setVertices(...\array_map(
+                function (array $vertexData) {
+                    return Vertex::hydrate($vertexData);
+                },
+                $viewData['vertices']
+            ));
+        }
+
+        return $view;
     }
 
     public function toArray() : array
     {
-        return [
+        $data = [
             'id' => $this->relationship->id(),
-            'description' => null,
-            'order' => null,
-            'vertices' => [],
-            'position' => null,
+            'vertices' => \array_map(
+                function (Vertex $vertex) {
+                    return $vertex->toArray();
+                },
+                $this->vertices
+            ),
         ];
+        if ($this->order) {
+            $data['order'] = $this->order;
+        }
+
+        if ($this->description) {
+            $data['description'] = $this->description;
+        }
+
+        if ($this->position !== null) {
+            $data['position'] = $this->position;
+        }
+
+        if ($this->routing) {
+            $data['routing'] = $this->routing->type();
+        }
+
+        return $data;
     }
 }
