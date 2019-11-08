@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
 use StructurizrPHP\StructurizrPHP\Assertion;
+use StructurizrPHP\StructurizrPHP\Exception\RuntimeException;
 
 abstract class Element extends ModelItem
 {
@@ -51,6 +52,11 @@ abstract class Element extends ModelItem
         $this->relationships = [];
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
     public function getCanonicalName() : string
     {
         return \mb_strtolower(\str_replace(self::CANONICAL_NAME_SEPARATOR, "", (string) $this->name));
@@ -74,22 +80,27 @@ abstract class Element extends ModelItem
         return $this->relationships;
     }
 
+    public function getEfferentRelationshipWith(Element $element) : Relationship
+    {
+        foreach ($this->relationships as $relationship) {
+            if ($relationship->getDestination()->equals($element)) {
+                return $relationship;
+            }
+        }
+
+        throw new RuntimeException(\sprintf("There is no efferent relationship between %s and %s", $this->id(), $element->id()));
+    }
+
     public function model(): Model
     {
         return $this->model;
     }
 
-    /**
-     * @param string|null $name
-     */
     public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @param string|null $url
-     */
     public function setUrl(?string $url): void
     {
         if ($url) {
@@ -99,9 +110,6 @@ abstract class Element extends ModelItem
         $this->url = $url;
     }
 
-    /**
-     * @param string|null $description
-     */
     public function setDescription(?string $description): void
     {
         $this->description = $description;
@@ -116,11 +124,9 @@ abstract class Element extends ModelItem
     {
         $data = \array_merge(
             [
-                'relationships' => \count($this->relationships)
-                    ? \array_map(function (Relationship $relationship) {
-                        return $relationship->toArray();
-                    }, $this->relationships)
-                    : null,
+                'relationships' => \array_map(function (Relationship $relationship) {
+                    return $relationship->toArray();
+                }, $this->relationships),
             ],
             parent::toArray()
         );

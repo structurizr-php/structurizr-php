@@ -63,8 +63,10 @@ final class Styles
     {
         $styles = new self();
 
-        foreach ($stylesData['elements'] as $elementData) {
-            $styles->elementsStyles[$elementData['tag']] = ElementStyle::hydrate($elementData);
+        if (isset($stylesData['elements'])) {
+            foreach ($stylesData['elements'] as $elementData) {
+                $styles->elementsStyles[$elementData['tag']] = ElementStyle::hydrate($elementData);
+            }
         }
 
         return $styles;

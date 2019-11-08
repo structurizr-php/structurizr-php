@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
+use StructurizrPHP\StructurizrPHP\Assertion;
 use StructurizrPHP\StructurizrPHP\Core\Model\Relationship\InteractionStyle;
+use StructurizrPHP\StructurizrPHP\Exception\InvalidArgumentException;
 use StructurizrPHP\StructurizrPHP\Exception\RuntimeException;
 
 final class Model
@@ -74,6 +76,48 @@ final class Model
         return $this->softwareSystems;
     }
 
+    public function hasElement(string $id) : bool
+    {
+        try {
+            $this->getElement($id);
+
+            return true;
+        } catch (RuntimeException $exception) {
+            return false;
+        }
+    }
+
+    public function getRelationship(string $id) : Relationship
+    {
+        Assertion::notEmpty($id);
+
+        foreach ($this->softwareSystems as $softwareSystem) {
+            foreach ($softwareSystem->relationships() as $relationship) {
+                if ($relationship->id() === $id) {
+                    return $relationship;
+                }
+
+                foreach ($softwareSystem->containers() as $container) {
+                    foreach ($container->relationships() as $relationship) {
+                        if ($relationship->id() === $id) {
+                            return $relationship;
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach ($this->people as $people) {
+            foreach ($people->relationships() as $relationship) {
+                if ($relationship->id() === $id) {
+                    return $relationship;
+                }
+            }
+        }
+
+        throw new InvalidArgumentException(\sprintf("Relationship with id %s does not exists", $id));
+    }
+
     public function getElement(string $id) : Element
     {
         foreach ($this->people as $person) {
@@ -85,6 +129,12 @@ final class Model
         foreach ($this->softwareSystems as $softwareSystem) {
             if ($softwareSystem->id() === $id) {
                 return $softwareSystem;
+            }
+
+            foreach ($softwareSystem->containers() as $container) {
+                if ($container->id() === $id) {
+                    return $container;
+                }
             }
         }
 
@@ -149,18 +199,35 @@ final class Model
         return $softwareSystem;
     }
 
-    public function toArray() : ?array
+    public function addContainer(SoftwareSystem $parent, string $name, string $description, string $technology) : Container
     {
-        if (!\count($this->people) && !\count($this->softwareSystems)) {
-            return null;
+        if (!$parent->findContainerWithName($name)) {
+            $container = new Container($this->idGenerator->generateId(), $parent, $this);
+
+            $container->setName($name);
+            $container->setDescription($description);
+            $container->setTechnology($technology);
+
+            $parent->add($container);
+
+            return $container;
         }
 
+        throw new RuntimeException(\sprintf("A container named \"name\" already exists for this software system.", $name));
+    }
+
+    public function toArray() : ?array
+    {
         $data = [
             'enterprise' => ($this->enterprise) ? $this->enterprise->name() : null,
             'people' => [],
             'softwareSystems' => [],
             'deploymentNodes' => [],
         ];
+
+        if (!\count($this->people) && !\count($this->softwareSystems)) {
+            return $data;
+        }
 
         if (\count($this->people)) {
             $data['people'] = \array_map(function (Person $person) {
@@ -268,6 +335,9 @@ final class ModelDataObject
         );
     }
 
+    /**
+     * @psalm-suppress MixedArgument
+     */
     private function filterPeopleByRelationship(bool $withRelationships) : array
     {
         if (!isset($this->modelData['people']) || !\is_array($this->modelData['people'])) {
@@ -277,8 +347,8 @@ final class ModelDataObject
         return \array_filter(
             $this->modelData['people'],
             function (array $personData) use ($withRelationships) {
-                if (!isset($personData['relationships'])) {
-                    return !$withRelationships;
+                if (!isset($personData['relationships']) || !\count($personData['relationships'])) {
+                    return $withRelationships ? false : true;
                 }
 
                 return ($withRelationships && isset($personData['relationships']))
@@ -288,6 +358,9 @@ final class ModelDataObject
         );
     }
 
+    /**
+     * @psalm-suppress MixedArgument
+     */
     private function filterSoftwareSystemByRelationship(bool $withRelationships) : array
     {
         if (!isset($this->modelData['softwareSystems']) || !\is_array($this->modelData['softwareSystems'])) {
@@ -297,8 +370,8 @@ final class ModelDataObject
         return \array_filter(
             $this->modelData['softwareSystems'],
             function (array $softwareSystemData) use ($withRelationships) {
-                if (!isset($softwareSystemData['relationships'])) {
-                    return !$withRelationships;
+                if (!isset($softwareSystemData['relationships']) || !\count($softwareSystemData['relationships'])) {
+                    return $withRelationships ? false : true;
                 }
 
                 return ($withRelationships)

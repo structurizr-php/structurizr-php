@@ -33,7 +33,7 @@ final class SystemLandscapeView extends StaticView
         $this->model = $model;
     }
 
-    protected function model(): ?Model
+    protected function getModel(): ?Model
     {
         return $this->model;
     }
@@ -59,6 +59,7 @@ final class SystemLandscapeView extends StaticView
      * @psalm-suppress MixedArgument
      * @psalm-suppress MixedArrayAccess
      * @psalm-suppress MixedAssignment
+     * @psalm-suppress PossiblyNullReference
      */
     public static function hydrate(array $viewData, ViewSet $viewSet) : self
     {
@@ -78,12 +79,23 @@ final class SystemLandscapeView extends StaticView
         }
 
         foreach ($viewData['elements'] as $elementData) {
-            $elementView = $view->addElement($viewSet->model()->getElement($elementData['id']), true);
+            $elementView = $view->addElement($viewSet->model()->getElement($elementData['id']), false);
 
             if (isset($elementData['x']) && isset($elementData['y'])) {
                 $elementView
                     ->setX((int) $elementData['x'])
                     ->setY((int) $elementData['y']);
+            }
+        }
+
+        if (isset($viewData['relationships'])) {
+            foreach ($viewData['relationships'] as $relationshipData) {
+                $relationshipView = RelationshipView::hydrate(
+                    $view->getModel()->getRelationship($relationshipData['id']),
+                    $relationshipData
+                );
+
+                $view->relationshipsViews[] = $relationshipView;
             }
         }
 

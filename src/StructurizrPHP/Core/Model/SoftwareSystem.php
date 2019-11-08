@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
+/**
+ * Represents a "software system" in the C4 model.
+ */
 final class SoftwareSystem extends StaticStructureElement
 {
     /**
@@ -20,12 +23,47 @@ final class SoftwareSystem extends StaticStructureElement
      */
     private $location;
 
+    /**
+     * @var Container[]
+     */
+    private $containers;
+
     public function __construct(string $id, Model $model)
     {
         parent::__construct($id, $model);
 
         $this->location = Location::unspecified();
+        $this->containers = [];
         $this->setTags(new Tags(Tags::ELEMENT, Tags::SOFTWARE_SYSTEM));
+    }
+
+    public function add(Container $container) : void
+    {
+        $this->containers[] = $container;
+    }
+
+    /**
+     * @return Container[]
+     */
+    public function containers(): array
+    {
+        return $this->containers;
+    }
+
+    public function addContainer(string $name, string $description, string $technology) : Container
+    {
+        return $this->model()->addContainer($this, $name, $description, $technology);
+    }
+
+    public function findContainerWithName(string $containerName): ?Container
+    {
+        foreach ($this->containers as $container) {
+            if ($container->getName() === $containerName) {
+                return $container;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -41,6 +79,12 @@ final class SoftwareSystem extends StaticStructureElement
         return \array_merge(
             [
                 'location' => $this->location->type(),
+                'containers' => \array_map(
+                    function (Container $container) {
+                        return $container->toArray();
+                    },
+                    $this->containers
+                ),
             ],
             parent::toArray()
         );
@@ -90,6 +134,14 @@ final class SoftwareSystem extends StaticStructureElement
             }
 
             $softwareSystem->setProperties($properties);
+        }
+
+        if (isset($softwareSystemData['containers'])) {
+            if (\is_array($softwareSystemData['containers'])) {
+                foreach ($softwareSystemData['containers'] as $containerData) {
+                    $softwareSystem->add(Container::hydrate($containerData, $softwareSystem, $model));
+                }
+            }
         }
 
         if (isset($softwareSystemData['relationships'])) {

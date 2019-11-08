@@ -17,7 +17,7 @@ abstract class StaticView extends View
 {
     public function addAllSoftwareSystems(bool $addRelationships = true) : void
     {
-        $model = $this->model();
+        $model = $this->getModel();
 
         if (null === $model) {
             return ;
@@ -30,7 +30,7 @@ abstract class StaticView extends View
 
     public function addAllPeople(bool $addRelationships = true) : void
     {
-        $model = $this->model();
+        $model = $this->getModel();
 
         if (null === $model) {
             return ;

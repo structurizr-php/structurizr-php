@@ -49,6 +49,7 @@ final class SystemContextView extends StaticView
      * @psalm-suppress MixedArrayAccess
      * @psalm-suppress MixedAssignment
      * @psalm-suppress ArgumentTypeCoercion
+     * @psalm-suppress PossiblyNullReference
      */
     public static function hydrate(array $viewData, ViewSet $viewSet) : self
     {
@@ -68,7 +69,7 @@ final class SystemContextView extends StaticView
         }
 
         foreach ($viewData['elements'] as $elementData) {
-            $elementView = $view->addElement($viewSet->model()->getElement($elementData['id']), true);
+            $elementView = $view->addElement($viewSet->model()->getElement($elementData['id']), false);
 
             if (isset($elementData['x']) && isset($elementData['y'])) {
                 $elementView
@@ -77,7 +78,18 @@ final class SystemContextView extends StaticView
             }
         }
 
-        if ($viewData['automaticLayout']) {
+        if (isset($viewData['relationships'])) {
+            foreach ($viewData['relationships'] as $relationshipData) {
+                $relationshipView = RelationshipView::hydrate(
+                    $view->getModel()->getRelationship($relationshipData['id']),
+                    $relationshipData
+                );
+
+                $view->relationshipsViews[] = $relationshipView;
+            }
+        }
+
+        if (isset($viewData['automaticLayout'])) {
             $view->automaticLayout = AutomaticLayout::hydrate($viewData['automaticLayout']);
         }
 

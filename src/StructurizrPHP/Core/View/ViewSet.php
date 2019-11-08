@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace StructurizrPHP\StructurizrPHP\Core\View;
 
 use StructurizrPHP\StructurizrPHP\Assertion;
+use StructurizrPHP\StructurizrPHP\Core\Model\Container;
 use StructurizrPHP\StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
 
@@ -30,6 +31,11 @@ final class ViewSet
     private $systemLandscapeViews;
 
     /**
+     * @var DynamicView[]
+     */
+    private $dynamicViews;
+
+    /**
      * @var Configuration
      */
     private $configuration;
@@ -43,6 +49,7 @@ final class ViewSet
     {
         $this->systemContextViews = [];
         $this->systemLandscapeViews = [];
+        $this->dynamicViews = [];
         $this->configuration = new Configuration();
         $this->model = $model;
     }
@@ -83,6 +90,45 @@ final class ViewSet
         return $view;
     }
 
+    /**
+     * Creates a dynamic view, where the scope is the specified software system. The following
+     * elements can be added to the resulting view:
+     *
+     * <ul>
+     * <li>People</li>
+     * <li>Software systems</li>
+     * <li>Containers that reside inside the specified software system</li>
+     * </ul>
+     */
+    public function createDynamicView(SoftwareSystem $softwareSystem, string $key, string $description): DynamicView
+    {
+        $view = DynamicView::softwareSystem($softwareSystem, $key, $description, $this);
+
+        $this->dynamicViews[] = $view;
+
+        return $view;
+    }
+
+    /**
+     * Creates a dynamic view, where the scope is the specified container. The following
+     * elements can be added to the resulting view:
+     *
+     * <ul>
+     * <li>People</li>
+     * <li>Software systems</li>
+     * <li>Containers with the same parent software system as the specified container</li>
+     * <li>Components within the specified container</li>
+     * </ul>
+     */
+    public function createContainerDynamicView(Container $container, string $key, string $description): DynamicView
+    {
+        $view = DynamicView::container($container, $key, $description, $this);
+
+        $this->dynamicViews[] = $view;
+
+        return $view;
+    }
+
     public function getConfiguration(): Configuration
     {
         return $this->configuration;
@@ -115,11 +161,24 @@ final class ViewSet
                 $landscapeView->copyLayoutInformationFrom($sourceLandscapeView);
             }
         }
+
+        foreach ($this->dynamicViews as $dynamicView) {
+            $sourceDynamicView = \current(\array_filter(
+                $source->dynamicViews,
+                function (DynamicView $nextDynamicView) use ($dynamicView) {
+                    return $nextDynamicView->keyEquals($dynamicView);
+                }
+            ));
+
+            if ($sourceDynamicView) {
+                $dynamicView->copyLayoutInformationFrom($sourceDynamicView);
+            }
+        }
     }
 
     public function toArray() : ?array
     {
-        if (!\count($this->systemContextViews) && !\count($this->systemLandscapeViews)) {
+        if (!\count($this->systemContextViews) && !\count($this->systemLandscapeViews) && !\count($this->dynamicViews)) {
             return null;
         }
 
@@ -136,6 +195,20 @@ final class ViewSet
                             return $systemContextView->toArray();
                         },
                         $this->systemContextViews
+                    ),
+                ]
+            );
+        }
+
+        if (\count($this->dynamicViews)) {
+            $data = \array_merge(
+                $data,
+                [
+                    'dynamicViews' => \array_map(
+                        function (DynamicView $dynamicView) {
+                            return $dynamicView->toArray();
+                        },
+                        $this->dynamicViews
                     ),
                 ]
             );
@@ -189,6 +262,15 @@ final class ViewSet
             );
         }
 
+
+        if ($viewSetDataModel->hasViews('dynamicViews')) {
+            $viewSet->dynamicViews = $viewSetDataModel->mapDynamicViews(
+                function (array $viewData) use ($viewSet) {
+                    return DynamicView::hydrate($viewData, $viewSet);
+                }
+            );
+        }
+
         $viewSet->configuration = Configuration::hydrate($viewSetData['configuration']);
 
         return $viewSet;
@@ -225,10 +307,18 @@ final class ViewSetDataModel
         return \array_map($callback, $this->viewSetData['systemContextViews']);
     }
 
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument
+     */
+    public function mapDynamicViews(callable $callback) : array
+    {
+        return \array_map($callback, $this->viewSetData['dynamicViews']);
+    }
 
     public function hasViews(string $name) : bool
     {
-        Assertion::inArray($name, ['systemLandscapeViews', 'systemContextViews']);
+        Assertion::inArray($name, ['systemLandscapeViews', 'systemContextViews', 'dynamicViews']);
 
         return \array_key_exists($name, $this->viewSetData) && \is_array($this->viewSetData[$name]);
     }

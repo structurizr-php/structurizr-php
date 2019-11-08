@@ -87,6 +87,8 @@ final class Client
 
             $workspaceDefinition = \json_encode($workspace->toArray(self::AGENT_NAME), JSON_THROW_ON_ERROR);
 
+//            dump($workspaceDefinition);
+//            die();
             $url = $this->urlMap->workspaceUrl($workspace->id());
 
             $response = $this->httpClient->sendRequest(
