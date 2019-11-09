@@ -23,7 +23,7 @@ final class SystemContextViewTest extends TestCase
     public function test_hydrating_system_landscape_view()
     {
         $viewSet = new ViewSet(new Model());
-        $softwareSystem = $viewSet->model()->addSoftwareSystem('name', 'description');
+        $softwareSystem = $viewSet->getModel()->addSoftwareSystem('name', 'description');
         $view = $viewSet->createSystemContextView($softwareSystem, 'key', 'description');
 
         $this->assertEquals($view, SystemContextView::hydrate($view->toArray(), $viewSet));
@@ -32,7 +32,7 @@ final class SystemContextViewTest extends TestCase
     public function test_hydrating_system_landscape_view_with_automatic_layout()
     {
         $viewSet = new ViewSet(new Model());
-        $softwareSystem = $viewSet->model()->addSoftwareSystem('name', 'description');
+        $softwareSystem = $viewSet->getModel()->addSoftwareSystem('name', 'description');
         $view = $viewSet->createSystemContextView($softwareSystem, 'key', 'description');
         $view->setAutomaticLayout(true);
 
@@ -42,8 +42,8 @@ final class SystemContextViewTest extends TestCase
     public function test_hydrating_system_landscape_view_with_added_people()
     {
         $viewSet = new ViewSet(new Model());
-        $softwareSystem = $viewSet->model()->addSoftwareSystem('name', 'description');
-        $person = $viewSet->model()->addPerson('name', 'description');
+        $softwareSystem = $viewSet->getModel()->addSoftwareSystem('name', 'description');
+        $person = $viewSet->getModel()->addPerson('name', 'description');
         $person->usesSoftwareSystem($softwareSystem, 'description', 'technology');
 
         $view = $viewSet->createSystemContextView($softwareSystem, 'key', 'description');

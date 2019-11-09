@@ -23,7 +23,7 @@ final class DynamicViewTest extends TestCase
     public function test_hydrating_dynamic_view()
     {
         $viewSet = new ViewSet(new Model());
-        $system = $viewSet->model()->addSoftwareSystem('system');
+        $system = $viewSet->getModel()->addSoftwareSystem('system');
 
         $view = $viewSet->createDynamicView($system, 'key', 'description');
 
@@ -33,9 +33,9 @@ final class DynamicViewTest extends TestCase
     public function test_hydrating_dynamic_view_with_relationships()
     {
         $viewSet = new ViewSet(new Model());
-        $system = $viewSet->model()->addSoftwareSystem('system');
-        $container = $viewSet->model()->addContainer($system, 'container', 'test', 'php');
-        $person = $viewSet->model()->addPerson('person');
+        $system = $viewSet->getModel()->addSoftwareSystem('system');
+        $container = $viewSet->getModel()->addContainer($system, 'container', 'test', 'php');
+        $person = $viewSet->getModel()->addPerson('person');
 
         $person->usesContainer($container);
 

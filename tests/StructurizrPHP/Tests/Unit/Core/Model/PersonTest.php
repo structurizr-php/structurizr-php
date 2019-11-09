@@ -45,6 +45,9 @@ final class PersonTest extends TestCase
 
         $person->usesSoftwareSystem($softwareSystem, 'description', 'technology');
 
-        $this->assertEquals($person, Person::hydrate($person->toArray(), $model));
+        $newPerson = Person::hydrate($person->toArray(), $model);
+        Person::hydrateRelationships($newPerson, $person->toArray());
+
+        $this->assertEquals($person, $newPerson);
     }
 }

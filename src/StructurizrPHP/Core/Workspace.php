@@ -87,10 +87,6 @@ final class Workspace
         ];
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument
-     */
     public static function hydrate(array $workspaceData) : self
     {
         $workspace = new self(

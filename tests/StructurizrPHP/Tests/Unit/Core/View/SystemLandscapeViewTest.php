@@ -40,8 +40,8 @@ final class SystemLandscapeViewTest extends TestCase
     public function test_hydrating_system_landscape_view_with_added_people()
     {
         $viewSet = new ViewSet(new Model());
-        $softwareSystem = $viewSet->model()->addSoftwareSystem('name', 'description');
-        $person = $viewSet->model()->addPerson('name', 'description');
+        $softwareSystem = $viewSet->getModel()->addSoftwareSystem('name', 'description');
+        $person = $viewSet->getModel()->addPerson('name', 'description');
         $person->usesSoftwareSystem($softwareSystem, 'description', 'technology');
 
         $view = $viewSet->createSystemLandscapeView('key', 'description');

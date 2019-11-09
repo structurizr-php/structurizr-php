@@ -23,7 +23,6 @@
         "symfony/http-client": "^4.3",
         "nyholm/psr7": "^1.2",
         "friendsofphp/php-cs-fixer": "^2.15",
-        "vimeo/psalm": "^3.6",
         "phpunit/phpunit": "^8.4",
         "symfony/var-dumper": "^4.3"
     },
@@ -40,7 +39,6 @@
     ],
     "scripts": {
         "test" : [
-            "psalm",
             "php-cs-fixer fix --dry-run",
             "phpunit"
         ],

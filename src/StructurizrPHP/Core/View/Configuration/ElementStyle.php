@@ -220,12 +220,6 @@ final class ElementStyle
         return $data;
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedArrayOffset
-     * @psalm-suppress MixedAssignment
-     */
     public static function hydrate(array $elementData) : self
     {
         $element = new self($elementData['tag']);

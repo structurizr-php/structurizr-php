@@ -65,10 +65,6 @@ final class AutomaticLayout
         ];
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument
-     */
     public static function hydrate(array $automaticLayoutData) : self
     {
         return new self(

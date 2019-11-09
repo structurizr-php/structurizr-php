@@ -68,26 +68,15 @@ final class Container extends StaticStructureElement
         return $data;
     }
 
-    /**
-     * @psalm-suppress MixedArgument
-     */
     public static function hydrate(array $containerData, SoftwareSystem $parent, Model $model) : self
     {
         $container = new self($containerData['id'], $parent, $model);
-
-        $model->idGenerator()->found((string) $containerData['id']);
-
-        if (isset($containerData['name'])) {
-            $container->setName($containerData['name']);
-        }
 
         if (isset($containerData['technology'])) {
             $container->setTechnology($containerData['technology']);
         }
 
-        if (isset($containerData['description'])) {
-            $container->setDescription($containerData['description']);
-        }
+        parent::hydrateElement($container, $containerData);
 
         return $container;
     }

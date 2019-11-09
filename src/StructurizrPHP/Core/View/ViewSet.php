@@ -36,6 +36,11 @@ final class ViewSet
     private $dynamicViews;
 
     /**
+     * @var DeploymentView[]
+     */
+    private $deploymentViews;
+
+    /**
      * @var Configuration
      */
     private $configuration;
@@ -50,11 +55,12 @@ final class ViewSet
         $this->systemContextViews = [];
         $this->systemLandscapeViews = [];
         $this->dynamicViews = [];
+        $this->deploymentViews = [];
         $this->configuration = new Configuration();
         $this->model = $model;
     }
 
-    public function model(): Model
+    public function getModel(): Model
     {
         return $this->model;
     }
@@ -129,6 +135,14 @@ final class ViewSet
         return $view;
     }
 
+    public function createDeploymentView(SoftwareSystem $softwareSystem, string $key, string $description) : DeploymentView
+    {
+        $view = new DeploymentView($softwareSystem, $description, $key, $this);
+        $this->deploymentViews[] = $view;
+
+        return $view;
+    }
+
     public function getConfiguration(): Configuration
     {
         return $this->configuration;
@@ -174,11 +188,24 @@ final class ViewSet
                 $dynamicView->copyLayoutInformationFrom($sourceDynamicView);
             }
         }
+
+        foreach ($this->deploymentViews as $deploymentView) {
+            $sourceDeploymentView = \current(\array_filter(
+                $source->deploymentViews,
+                function (DeploymentView $nextDeploymentView) use ($deploymentView) {
+                    return $nextDeploymentView->keyEquals($deploymentView);
+                }
+            ));
+
+            if ($sourceDeploymentView) {
+                $deploymentView->copyLayoutInformationFrom($sourceDeploymentView);
+            }
+        }
     }
 
     public function toArray() : ?array
     {
-        if (!\count($this->systemContextViews) && !\count($this->systemLandscapeViews) && !\count($this->dynamicViews)) {
+        if (!\count($this->systemContextViews) && !\count($this->systemLandscapeViews) && !\count($this->dynamicViews) && !\count($this->deploymentViews)) {
             return null;
         }
 
@@ -187,55 +214,44 @@ final class ViewSet
         ];
 
         if (\count($this->systemContextViews)) {
-            $data = \array_merge(
-                $data,
-                [
-                    'systemContextViews' => \array_map(
-                        function (SystemContextView $systemContextView) {
-                            return $systemContextView->toArray();
-                        },
-                        $this->systemContextViews
-                    ),
-                ]
+            $data['systemContextViews'] = \array_map(
+                function (SystemContextView $systemContextView) {
+                    return $systemContextView->toArray();
+                },
+                $this->systemContextViews
             );
         }
 
         if (\count($this->dynamicViews)) {
-            $data = \array_merge(
-                $data,
-                [
-                    'dynamicViews' => \array_map(
-                        function (DynamicView $dynamicView) {
-                            return $dynamicView->toArray();
-                        },
-                        $this->dynamicViews
-                    ),
-                ]
+            $data['dynamicViews'] = \array_map(
+                function (DynamicView $dynamicView) {
+                    return $dynamicView->toArray();
+                },
+                $this->dynamicViews
             );
         }
 
         if (\count($this->systemLandscapeViews)) {
-            $data = \array_merge(
-                $data,
-                [
-                    'systemLandscapeViews' => \array_map(
-                        function (SystemLandscapeView $systemLandscapeView) {
-                            return $systemLandscapeView->toArray();
-                        },
-                        $this->systemLandscapeViews
-                    ),
-                ]
+            $data['systemLandscapeViews'] = \array_map(
+                function (SystemLandscapeView $systemLandscapeView) {
+                    return $systemLandscapeView->toArray();
+                },
+                $this->systemLandscapeViews
+            );
+        }
+
+        if (\count($this->deploymentViews)) {
+            $data['deploymentViews'] = \array_map(
+                function (DeploymentView $deploymentView) {
+                    return $deploymentView->toArray();
+                },
+                $this->deploymentViews
             );
         }
 
         return $data;
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedPropertyTypeCoercion
-     */
     public static function hydrate(?array $viewSetData, Model $model) : self
     {
         $viewSet = new self($model);
@@ -247,7 +263,8 @@ final class ViewSet
         $viewSetDataModel = new ViewSetDataModel($viewSetData);
 
         if ($viewSetDataModel->hasViews('systemLandscapeViews')) {
-            $viewSet->systemLandscapeViews = $viewSetDataModel->mapLandscapeViews(
+            $viewSet->systemLandscapeViews = $viewSetDataModel->map(
+                'systemLandscapeViews',
                 function (array $viewData) use ($viewSet) {
                     return SystemLandscapeView::hydrate($viewData, $viewSet);
                 }
@@ -255,7 +272,8 @@ final class ViewSet
         }
 
         if ($viewSetDataModel->hasViews('systemContextViews')) {
-            $viewSet->systemContextViews = $viewSetDataModel->mapSystemContextViews(
+            $viewSet->systemContextViews = $viewSetDataModel->map(
+                'systemContextViews',
                 function (array $viewData) use ($viewSet) {
                     return SystemContextView::hydrate($viewData, $viewSet);
                 }
@@ -264,9 +282,19 @@ final class ViewSet
 
 
         if ($viewSetDataModel->hasViews('dynamicViews')) {
-            $viewSet->dynamicViews = $viewSetDataModel->mapDynamicViews(
+            $viewSet->dynamicViews = $viewSetDataModel->map(
+                'dynamicViews',
                 function (array $viewData) use ($viewSet) {
                     return DynamicView::hydrate($viewData, $viewSet);
+                }
+            );
+        }
+
+        if ($viewSetDataModel->hasViews('deploymentViews')) {
+            $viewSet->deploymentViews = $viewSetDataModel->map(
+                'deploymentViews',
+                function (array $viewData) use ($viewSet) {
+                    return DeploymentView::hydrate($viewData, $viewSet);
                 }
             );
         }
@@ -289,36 +317,14 @@ final class ViewSetDataModel
         $this->viewSetData = $viewSetData;
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument
-     */
-    public function mapLandscapeViews(callable $callback) : array
+    public function map(string $type, callable $callback) : array
     {
-        return \array_map($callback, $this->viewSetData['systemLandscapeViews']);
-    }
-
-    /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument
-     */
-    public function mapSystemContextViews(callable $callback) : array
-    {
-        return \array_map($callback, $this->viewSetData['systemContextViews']);
-    }
-
-    /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument
-     */
-    public function mapDynamicViews(callable $callback) : array
-    {
-        return \array_map($callback, $this->viewSetData['dynamicViews']);
+        return \array_map($callback, $this->viewSetData[$type]);
     }
 
     public function hasViews(string $name) : bool
     {
-        Assertion::inArray($name, ['systemLandscapeViews', 'systemContextViews', 'dynamicViews']);
+        Assertion::inArray($name, ['systemLandscapeViews', 'systemContextViews', 'dynamicViews', 'deploymentViews']);
 
         return \array_key_exists($name, $this->viewSetData) && \is_array($this->viewSetData[$name]);
     }

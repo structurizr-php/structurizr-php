@@ -53,12 +53,6 @@ final class Styles
         ];
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedArrayOffset
-     * @psalm-suppress MixedAssignment
-     */
     public static function hydrate(array $stylesData) : self
     {
         $styles = new self();

@@ -89,7 +89,7 @@ abstract class View
 
     protected function getModel() : ?Model
     {
-        return $this->softwareSystem ? $this->softwareSystem->model() : null;
+        return $this->softwareSystem ? $this->softwareSystem->getModel() : null;
     }
 
     public function keyEquals(View $other) : bool
@@ -202,7 +202,7 @@ abstract class View
 
     private function addRelationships(Element $element) : void
     {
-        foreach ($element->relationships() as $relationship) {
+        foreach ($element->getRelationships() as $relationship) {
             foreach ($this->elementViews as $elementView) {
                 if ($elementView->element()->equals($relationship->getDestination())) {
                     $this->relationshipsViews[] = new RelationshipView($relationship);
@@ -211,7 +211,7 @@ abstract class View
         }
 
         foreach ($this->elementViews as $elementView) {
-            foreach ($elementView->element()->relationships() as $r) {
+            foreach ($elementView->element()->getRelationships() as $r) {
                 if ($r->getDestination()->equals($element)) {
                     $this->relationshipsViews[] = new RelationshipView($r);
                 }
@@ -249,14 +249,49 @@ abstract class View
         ];
 
         if ($this->softwareSystem) {
-            $data = \array_merge(
-                $data,
-                [
-                    'softwareSystemId' => $this->softwareSystem->id(),
-                ]
-            );
+            $data['softwareSystemId'] = $this->softwareSystem->id();
         }
 
         return $data;
+    }
+
+    public static function hydrateView(View $view, array $viewData) : void
+    {
+        if (isset($viewData['key'])) {
+            $view->key = $viewData['key'];
+        }
+
+        if (isset($viewData['title'])) {
+            $view->title = $viewData['title'];
+        }
+
+        if (isset($viewData['paperSize'])) {
+            $view->paperSize = PaperSize::hydrate($viewData['paperSize']);
+        }
+
+        if (isset($viewData['description'])) {
+            $view->description = $viewData['description'];
+        }
+
+        if (isset($viewData['elements'])) {
+            foreach ($viewData['elements'] as $elementData) {
+                $view->elementViews[] = ElementView::hydrate($elementData, $view->viewSet->getModel()->getElement($elementData['id']));
+            }
+        }
+
+        if (isset($viewData['automaticLayout'])) {
+            $view->automaticLayout = AutomaticLayout::hydrate($viewData['automaticLayout']);
+        }
+
+        if (isset($viewData['relationships'])) {
+            foreach ($viewData['relationships'] as $relationshipData) {
+                $relationshipView = RelationshipView::hydrate(
+                    $view->viewSet->getModel()->getRelationship($relationshipData['id']),
+                    $relationshipData
+                );
+
+                $view->relationshipsViews[] = $relationshipView;
+            }
+        }
     }
 }

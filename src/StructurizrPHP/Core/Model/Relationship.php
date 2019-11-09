@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
-use StructurizrPHP\StructurizrPHP\Assertion;
 use StructurizrPHP\StructurizrPHP\Core\Model\Relationship\InteractionStyle;
 
 final class Relationship extends ModelItem
@@ -42,6 +41,11 @@ final class Relationship extends ModelItem
      * @var InteractionStyle
      */
     private $interactionStyle;
+
+    /**
+     * @var string|null
+     */
+    private $linkedRelationshipId;
 
     public function __construct(
         string $id,
@@ -73,6 +77,16 @@ final class Relationship extends ModelItem
         $this->interactionStyle = $interactionStyle;
     }
 
+    public function getInteractionStyle(): InteractionStyle
+    {
+        return $this->interactionStyle;
+    }
+
+    public function getTechnology(): ?string
+    {
+        return $this->technology;
+    }
+
     public function setTechnology(?string $technology): void
     {
         $this->technology = $technology;
@@ -93,6 +107,11 @@ final class Relationship extends ModelItem
         return $this->description;
     }
 
+    public function setLinkedRelationshipId(?string $linkedRelationshipId): void
+    {
+        $this->linkedRelationshipId = $linkedRelationshipId;
+    }
+
     public function getSource(): Element
     {
         return $this->source;
@@ -110,19 +129,17 @@ final class Relationship extends ModelItem
             parent::toArray()
         );
 
-        if ($this->technology) {
+        if (isset($this->linkedRelationshipId)) {
+            $data['linkedRelationshipId'] = $this->linkedRelationshipId;
+        }
+
+        if (isset($this->technology)) {
             $data['technology'] = $this->technology;
         }
 
         return $data;
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedAssignment
-     * @psalm-suppress MixedArgumentTypeCoercion
-     */
     public static function hydrate(array $relationshipData, Element $source, Model $model) : self
     {
         $relationship = new Relationship(
@@ -138,7 +155,13 @@ final class Relationship extends ModelItem
             $relationship->setTechnology($relationshipData['technology']);
         }
 
-        $model->idGenerator()->found($relationship->id());
+        if (isset($relationshipData['linkedRelationshipId'])) {
+            $relationship->linkedRelationshipId = $relationshipData['linkedRelationshipId'];
+        }
+
+        parent::hydrateModelItem($relationship, $relationshipData, $model);
+
+        $model->addRelationshipToInternalStructures($relationship);
 
         return $relationship;
     }

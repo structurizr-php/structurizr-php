@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
+use StructurizrPHP\StructurizrPHP\Exception\InvalidArgumentException;
+
 /**
  * Represents a "software system" in the C4 model.
  */
@@ -45,14 +47,25 @@ final class SoftwareSystem extends StaticStructureElement
     /**
      * @return Container[]
      */
-    public function containers(): array
+    public function getContainers(): array
     {
         return $this->containers;
     }
 
+    public function getContainer(string $id) : Container
+    {
+        foreach ($this->containers as $container) {
+            if ($container->id() === $id) {
+                return $container;
+            }
+        }
+
+        throw new InvalidArgumentException(\sprintf("Continer with id %s does not exists", $id));
+    }
+
     public function addContainer(string $name, string $description, string $technology) : Container
     {
-        return $this->model()->addContainer($this, $name, $description, $technology);
+        return $this->getModel()->addContainer($this, $name, $description, $technology);
     }
 
     public function findContainerWithName(string $containerName): ?Container
@@ -90,12 +103,6 @@ final class SoftwareSystem extends StaticStructureElement
         );
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedAssignment
-     * @psalm-suppress MixedArgumentTypeCoercion
-     */
     public static function hydrate(array $softwareSystemData, Model $model) : self
     {
         $softwareSystem = new self(
@@ -103,63 +110,26 @@ final class SoftwareSystem extends StaticStructureElement
             $model
         );
 
-        $model->idGenerator()->found($softwareSystem->id());
-
-        if (isset($softwareSystemData['name'])) {
-            $softwareSystem->setName($softwareSystemData['name']);
-        }
-
-        if (isset($softwareSystemData['description'])) {
-            $softwareSystem->setDescription($softwareSystemData['description']);
-        }
+        parent::hydrateElement($softwareSystem, $softwareSystemData);
 
         if (isset($softwareSystemData['location'])) {
             $softwareSystem->setLocation(Location::hydrate($softwareSystemData['location']));
         }
 
-        if (isset($softwareSystemData['tags'])) {
-            $softwareSystem->setTags(new Tags(...\explode(', ', $softwareSystemData['tags'])));
-        }
-
-        if (isset($softwareSystemData['url'])) {
-            $softwareSystem->setUrl($softwareSystemData['url']);
-        }
-
-        if (isset($softwareSystemData['properties'])) {
-            $properties = new Properties();
-            if (\is_array($softwareSystemData['properties'])) {
-                foreach ($softwareSystemData['properties'] as $key => $value) {
-                    $properties->addProperty(new Property($key, $value));
-                }
-            }
-
-            $softwareSystem->setProperties($properties);
-        }
-
         if (isset($softwareSystemData['containers'])) {
             if (\is_array($softwareSystemData['containers'])) {
+                // hydrate containers without relationships
                 foreach ($softwareSystemData['containers'] as $containerData) {
-                    $softwareSystem->add(Container::hydrate($containerData, $softwareSystem, $model));
+                    $container = Container::hydrate($containerData, $softwareSystem, $model);
+                    $softwareSystem->add($container);
+                }
+
+                // hydrate containers missing relationships
+                foreach ($softwareSystemData['containers'] as $containerData) {
+                    Container::hydrateRelationships($softwareSystem->getContainer($containerData['id']), $containerData);
                 }
             }
         }
-
-        if (isset($softwareSystemData['relationships'])) {
-            if (\is_array($softwareSystemData['relationships'])) {
-                foreach ($softwareSystemData['relationships'] as $relationshipData) {
-                    $relationship = Relationship::hydrate($relationshipData, $softwareSystem, $model);
-                    $softwareSystem->addRelationship($relationship);
-                }
-            }
-        }
-
-        // sort relationships by ID
-        \usort(
-            $softwareSystem->relationships,
-            function (Relationship $relationshipA, Relationship $relationshipB) {
-                return (int) $relationshipA->id() > (int)$relationshipB->id() ? 1 : 0;
-            }
-        );
 
         return $softwareSystem;
     }

@@ -24,7 +24,6 @@ final class ContainerTest extends TestCase
         $model = new Model();
         $software = $model->addSoftwareSystem('software');
         $container = new Container("1", $software, $model);
-
         $container->setParent($software);
 
         $this->assertEquals($container, Container::hydrate($container->toArray(), $software, $model));

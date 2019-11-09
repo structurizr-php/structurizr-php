@@ -50,11 +50,6 @@ final class Configuration
         ];
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedAssignment
-     */
     public static function hydrate(array $configurationData) : self
     {
         $configuration = new self();

@@ -37,10 +37,6 @@ final class DynamicView extends View
      */
     private $sequenceNumber;
 
-    /**
-     * @psalm-suppress ArgumentTypeCoercion
-     * @psalm-suppress PropertyTypeCoercion
-     */
     public function __construct(Model $model, string $key, string $description, ViewSet $viewSet, ?Element $element = null)
     {
         parent::__construct($element, $key, $description, $viewSet);
@@ -56,8 +52,8 @@ final class DynamicView extends View
 
     public static function softwareSystem(SoftwareSystem $softwareSystem, string $key, string $description, ViewSet $viewSet) : self
     {
-        $view = new self($softwareSystem->model(), $description, $key, $viewSet, $softwareSystem);
-        $view->model = $softwareSystem->model();
+        $view = new self($softwareSystem->getModel(), $description, $key, $viewSet, $softwareSystem);
+        $view->model = $softwareSystem->getModel();
         $view->element = $softwareSystem;
 
         return $view;
@@ -65,7 +61,7 @@ final class DynamicView extends View
 
     public static function container(Container $container, string $key, string $description, ViewSet $viewSet) : self
     {
-        $view = new self($container->model(), $key, $description, $viewSet, $container);
+        $view = new self($container->getModel(), $key, $description, $viewSet, $container);
         $view->softwareSystem = $container->getParent();
         $view->element = $container->getParent();
 
@@ -84,13 +80,6 @@ final class DynamicView extends View
         return $this->addRelationshipWithDescription($relationship, $description, $this->sequenceNumber->getNext());
     }
 
-    /**
-     * @psalm-suppress PossiblyNullArgument
-     * @psalm-suppress PossiblyNullReference
-     * @psalm-suppress PossiblyNullOperand
-     * @psalm-suppress PossiblyUndefinedMethod
-     * @psalm-suppress MixedArgument
-     */
     private function checkElement(Element $elementToBeAdded) : void
     {
         if (!($elementToBeAdded instanceof Person) && !($elementToBeAdded instanceof SoftwareSystem) && !($elementToBeAdded instanceof Container) /*&& !(elementToBeAdded instanceof Component)*/) {
@@ -144,9 +133,6 @@ final class DynamicView extends View
         }
     }
 
-    /**
-     * @psalm-suppress PossiblyNullReference
-     */
     public function toArray() : array
     {
         return \array_merge(
@@ -157,22 +143,14 @@ final class DynamicView extends View
         );
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedArrayAccess
-     * @psalm-suppress MixedAssignment
-     * @psalm-suppress ArgumentTypeCoercion
-     * @psalm-suppress PossiblyNullReference
-     */
     public static function hydrate(array $viewData, ViewSet $viewSet) : self
     {
         $view = new self(
-            $viewSet->model(),
+            $viewSet->getModel(),
             $viewData['description'],
             $viewData['key'],
             $viewSet,
-            isset($viewData['softwareSystemId']) ? $viewSet->model()->getElement($viewData['softwareSystemId']) : null
+            isset($viewData['softwareSystemId']) ? $viewSet->getModel()->getElement($viewData['softwareSystemId']) : null
         );
 
         if (isset($viewData['paperSize'])) {
@@ -181,7 +159,7 @@ final class DynamicView extends View
 
         if (isset($viewData['elements'])) {
             foreach ($viewData['elements'] as $elementData) {
-                $elementView = $view->addElement($viewSet->model()->getElement($elementData['id']), false);
+                $elementView = $view->addElement($viewSet->getModel()->getElement($elementData['id']), false);
 
                 if (isset($elementData['x']) && isset($elementData['y'])) {
                     $elementView
