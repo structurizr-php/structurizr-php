@@ -23,6 +23,7 @@ final class Tags
     public const CONTAINER = "Container";
     public const COMPONENT = "Component";
     public const RELATIONSHIP = "Relationship";
+    public const CONTAINER_INSTANCE = "Container Instance";
 
     /**
      * @var string[]

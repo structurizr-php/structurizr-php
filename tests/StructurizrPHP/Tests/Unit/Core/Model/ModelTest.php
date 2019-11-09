@@ -66,4 +66,17 @@ final class ModelTest extends TestCase
 
         $this->assertEquals($model, Model::hydrate($model->toArray()));
     }
+
+    public function test_hydrating_model_with_software_system_and_deployment_node()
+    {
+        $model = new Model();
+
+        $model->addPerson('test01', 'test01');
+        $model->addSoftwareSystem('test03', 'test03');
+        $model->addDeploymentNode('vm01', 'prod');
+
+        $model->addSoftwareSystem('test04', 'test04');
+
+        $this->assertEquals($model, Model::hydrate($model->toArray()));
+    }
 }

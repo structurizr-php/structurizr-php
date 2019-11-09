@@ -71,4 +71,26 @@ abstract class ModelItem
             'properties' => $this->properties->toArray(),
         ];
     }
+
+    public static function hydrateModelItem(ModelItem $modelItem, array $modelItemData, Model $model) : void
+    {
+        $model->idGenerator()->found($modelItemData['id']);
+
+        $modelItem->id = $modelItemData['id'];
+
+        if (isset($modelItemData['tags'])) {
+            $modelItem->tags = new Tags(...\explode(', ', $modelItemData['tags']));
+        }
+
+        if (isset($modelItemData['properties'])) {
+            $properties = new Properties();
+            if (\is_array($modelItemData['properties'])) {
+                foreach ($modelItemData['properties'] as $key => $value) {
+                    $properties->addProperty(new Property($key, $value));
+                }
+            }
+
+            $modelItem->properties = $properties;
+        }
+    }
 }

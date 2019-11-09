@@ -27,10 +27,6 @@ use StructurizrPHP\StructurizrPHP\Core\Model\Relationship;
  */
 final class DefaultLayoutMergeStrategy implements LayoutMergeStrategy
 {
-    /**
-     * @psalm-suppress PossiblyNullArgument
-     * @psalm-suppress PossiblyNullReference
-     */
     public function copyLayoutInformation(View $sourceView, View $destinationView): void
     {
         if (!$destinationView->getPaperSize() && $sourceView->getPaperSize()) {
@@ -61,10 +57,6 @@ final class DefaultLayoutMergeStrategy implements LayoutMergeStrategy
         }
     }
 
-    /**
-     * @psalm-suppress PossiblyNullArgument
-     * @psalm-suppress PossiblyNullReference
-     */
     protected function findRelationshipViewByRelationship(View $view, Relationship $relationship) : ?RelationshipView
     {
         foreach ($view->getRelationships() as $rv) {
@@ -80,10 +72,6 @@ final class DefaultLayoutMergeStrategy implements LayoutMergeStrategy
         return null;
     }
 
-    /**
-     * @psalm-suppress PossiblyNullArgument
-     * @psalm-suppress PossiblyNullReference
-     */
     protected function findRelationshipViewByRelationshipView(View $view, RelationshipView $relationshipView) : ?RelationshipView
     {
         foreach ($view->getRelationships() as $rv) {

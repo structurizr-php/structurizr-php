@@ -116,9 +116,6 @@ final class RelationshipView
         }
     }
 
-    /**
-     * @psalm-suppress MixedArgument
-     */
     public static function hydrate(Relationship $relationship, array $viewData) : self
     {
         $view = new self($relationship);

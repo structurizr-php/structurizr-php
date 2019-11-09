@@ -22,8 +22,8 @@ abstract class StaticStructureElement extends Element
         string $description = "Uses",
         string $technology = null,
         InteractionStyle $interactionStyle = null
-    ) : void {
-        $this->model()->addRelationship(
+    ) : Relationship {
+        return $this->getModel()->addRelationship(
             $this,
             $softwareSystem,
             $description,
@@ -37,8 +37,8 @@ abstract class StaticStructureElement extends Element
         string $description = "Uses",
         string $technology = null,
         InteractionStyle $interactionStyle = null
-    ) : void {
-        $this->model()->addRelationship(
+    ) : Relationship {
+        return $this->getModel()->addRelationship(
             $this,
             $container,
             $description,

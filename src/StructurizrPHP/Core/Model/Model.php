@@ -26,6 +26,16 @@ final class Model
     private $idGenerator;
 
     /**
+     * @var Element[]
+     */
+    private $elementsById;
+
+    /**
+     * @var Relationship[]
+     */
+    private $relationshipsById;
+
+    /**
      * @var Enterprise|null
      */
     private $enterprise;
@@ -40,11 +50,19 @@ final class Model
      */
     private $softwareSystems;
 
+    /**
+     * @var DeploymentNode[]
+     */
+    private $deploymentNodes;
+
     public function __construct()
     {
         $this->idGenerator = new SequentialIntegerIdGeneratorStrategy();
+        $this->elementsById = [];
+        $this->relationshipsById = [];
         $this->people = [];
         $this->softwareSystems = [];
+        $this->deploymentNodes = [];
     }
 
     public function idGenerator(): IdGenerator
@@ -76,29 +94,42 @@ final class Model
         return $this->softwareSystems;
     }
 
+    /**
+     * @return DeploymentNode[]
+     */
+    public function getDeploymentNodes(): array
+    {
+        return $this->deploymentNodes;
+    }
+
     public function hasElement(string $id) : bool
     {
-        try {
-            $this->getElement($id);
+        return \array_key_exists($id, $this->elementsById);
+    }
 
-            return true;
-        } catch (RuntimeException $exception) {
-            return false;
-        }
+    public function hasRelationship(string $id) : bool
+    {
+        return \array_key_exists($id, $this->relationshipsById);
     }
 
     public function getRelationship(string $id) : Relationship
     {
+        if (\array_key_exists($id, $this->relationshipsById)) {
+            return $this->relationshipsById[$id];
+        }
+
+        throw new InvalidArgumentException(\sprintf("Relationship with id %s does not exists", $id));
+        /*
         Assertion::notEmpty($id);
 
         foreach ($this->softwareSystems as $softwareSystem) {
-            foreach ($softwareSystem->relationships() as $relationship) {
+            foreach ($softwareSystem->getRelationships() as $relationship) {
                 if ($relationship->id() === $id) {
                     return $relationship;
                 }
 
                 foreach ($softwareSystem->containers() as $container) {
-                    foreach ($container->relationships() as $relationship) {
+                    foreach ($container->getRelationships() as $relationship) {
                         if ($relationship->id() === $id) {
                             return $relationship;
                         }
@@ -108,18 +139,23 @@ final class Model
         }
 
         foreach ($this->people as $people) {
-            foreach ($people->relationships() as $relationship) {
+            foreach ($people->getRelationships() as $relationship) {
                 if ($relationship->id() === $id) {
                     return $relationship;
                 }
             }
         }
-
-        throw new InvalidArgumentException(\sprintf("Relationship with id %s does not exists", $id));
+        */
     }
 
     public function getElement(string $id) : Element
     {
+        if (\array_key_exists($id, $this->elementsById)) {
+            return $this->elementsById[$id];
+        }
+
+        throw new RuntimeException(\sprintf("Element with id \"%s\" does not exists.", $id));
+        /*
         foreach ($this->people as $person) {
             if ($person->id() === $id) {
                 return $person;
@@ -138,7 +174,38 @@ final class Model
             }
         }
 
+        $findInDeploymentNode = function(DeploymentNode $deploymentNode, string $id) use (&$findInDeploymentNode) :?Element {
+            if ($deploymentNode->id() === $id) {
+                return $deploymentNode;
+            }
+
+            foreach ($deploymentNode->getContainerInstances() as $containerInstance) {
+                if ($containerInstance->id() === $id) {
+                    return $containerInstance;
+                }
+            }
+
+            foreach ($deploymentNode->getChildren() as $child) {
+                $result = $findInDeploymentNode($child, $id);
+
+                if ($result) {
+                    return $result;
+                }
+            }
+
+            return null;
+        };
+
+        foreach ($this->deploymentNodes as $deploymentNode) {
+            $result = $findInDeploymentNode($deploymentNode, $id);
+
+            if ($result) {
+                return $result;
+            }
+        }
+
         throw new RuntimeException(\sprintf("Element with id \"%s\" does not exists.", $id));
+        */
     }
 
     public function addRelationship(Element $source, Element $destination, string $description = "", string $technology = null, InteractionStyle $interactionStyle = null) : Relationship
@@ -157,6 +224,8 @@ final class Model
         }
 
         $source->addRelationship($relationship);
+
+        $this->addRelationshipToInternalStructures($relationship);
 
         return $relationship;
     }
@@ -177,6 +246,8 @@ final class Model
 
         $this->people[] = $person;
 
+        $this->addElementToInternalStructures($person);
+
         return $person;
     }
 
@@ -196,6 +267,8 @@ final class Model
 
         $this->softwareSystems[] = $softwareSystem;
 
+        $this->addElementToInternalStructures($softwareSystem);
+
         return $softwareSystem;
     }
 
@@ -210,10 +283,166 @@ final class Model
 
             $parent->add($container);
 
+            $this->addElementToInternalStructures($container);
+
             return $container;
         }
 
-        throw new RuntimeException(\sprintf("A container named \"name\" already exists for this software system.", $name));
+        throw new RuntimeException(\sprintf("A container named \"%s\" already exists for this software system.", $name));
+    }
+
+    /**
+     * Adds a top-level deployment node to this model.
+     */
+    public function addDeploymentNode(string $name, ?string $environment = null, ?string $description = null, ?string $technology = null, ?int $instances = null, ?Properties $properties = null) : DeploymentNode
+    {
+        Assertion::notEmpty($name);
+
+        if ($this->findDeploymentNodeWithName($name, $environment)) {
+            throw new InvalidArgumentException(\sprintf("Deployment node \"%s\" already exists for \"%s\" environment", $name, $environment ? $environment : DeploymentNode::DEFAULT_DEPLOYMENT_ENVIRONMENT));
+        }
+
+        $deploymentNode = new DeploymentNode($this->idGenerator->generateId(), $this);
+        $deploymentNode->setName($name);
+        $deploymentNode->setEnvironment($environment ? $environment : DeploymentNode::DEFAULT_DEPLOYMENT_ENVIRONMENT);
+        $deploymentNode->setInstances($instances ? $instances : 1);
+        $deploymentNode->setTechnology($technology);
+        $deploymentNode->setDescription($description);
+        if ($properties !== null) {
+            $deploymentNode->setProperties($properties);
+        }
+
+        $this->deploymentNodes[] = $deploymentNode;
+
+        $this->addElementToInternalStructures($deploymentNode);
+
+        return $deploymentNode;
+    }
+
+    public function addContainerInstance(DeploymentElement $deploymentElement, Container $container, bool $replicateContainerRelationships = true) : ContainerInstance
+    {
+        $instanceNumber =  \count(\array_unique(\array_map(
+            function (DeploymentNode $deploymentNode) {
+                foreach ($deploymentNode->getContainerInstances() as $instance) {
+                    return 1;
+                }
+
+                return null;
+            },
+            $this->deploymentNodes,
+        )));
+
+        $containerInstance = new ContainerInstance($container, $instanceNumber, $deploymentElement->getEnvironment(), $this->idGenerator->generateId(), $this);
+
+        if ($replicateContainerRelationships) {
+            // get all ContainerInstance objects
+            /** @return ContainerInstance[] */
+            $getContainerInstances = function (DeploymentNode $deploymentNode) use (&$getContainerInstances) : ? array {
+                $containerInstances = [];
+                $containerInstances = \array_merge($containerInstances, $deploymentNode->getContainerInstances());
+
+                foreach ($deploymentNode->getChildren() as $child) {
+                    $containerInstances = \array_merge($containerInstances, $getContainerInstances($child));
+                }
+
+                return $containerInstances;
+            };
+
+            // find all ContainerInstance objects in the same deployment environment
+            /** @var ContainerInstance[] $containerInstances */
+            $containerInstances = \array_filter(
+                \array_merge(...\array_map(
+                    function (DeploymentNode $deploymentNode) use (&$getContainerInstances) {
+                        return $getContainerInstances($deploymentNode);
+                    },
+                    $this->deploymentNodes
+                )),
+                function (ContainerInstance $containerInstance) use ($deploymentElement) {
+                    return $containerInstance->getEnvironment() === $deploymentElement->getEnvironment();
+                }
+            );
+
+            // and replicate the container-container relationships within the same deployment environment
+            foreach ($containerInstances as $ci) {
+                $c = $ci->getContainer();
+
+                foreach ($c->getRelationships() as $relationship) {
+                    if ($relationship->getDestination()->equals($c)) {
+                        $newRelationship = $this->addRelationship($containerInstance, $ci, $relationship->getDescription(), $relationship->getTechnology(), $relationship->getInteractionStyle());
+
+                        $newRelationship->setTags(new Tags());
+                        $newRelationship->setLinkedRelationshipId($relationship->id());
+                    }
+                }
+
+                foreach ($c->getRelationships() as $relationship) {
+                    if ($relationship->getDestination()->equals($c)) {
+                        $newRelationship = $this->addRelationship($ci, $containerInstance, $relationship->getDescription(), $relationship->getTechnology(), $relationship->getInteractionStyle());
+                        $newRelationship->setTags(new Tags());
+                        $newRelationship->setLinkedRelationshipId($relationship->id());
+                    }
+                }
+            }
+        }
+
+        $this->addElementToInternalStructures($containerInstance);
+
+        return $containerInstance;
+    }
+
+    public function addDeploymentNodeWithParent(DeploymentNode $parent, string $name, ?string $environment = null, ?string $description = null, ?string $technology = null, ?int $instances = null, ?Properties $properties = null) : DeploymentNode
+    {
+        Assertion::notEmpty($name);
+
+        if ($this->findDeploymentNodeWithName($name, $environment)) {
+            throw new InvalidArgumentException(\sprintf("Deployment node \"%s\" already exists for \"%s\" environment", $name, $environment ? $environment : DeploymentNode::DEFAULT_DEPLOYMENT_ENVIRONMENT));
+        }
+
+        $deploymentNode = new DeploymentNode($this->idGenerator->generateId(), $this);
+        $deploymentNode->setName($name);
+        $deploymentNode->setEnvironment($environment ? $environment : DeploymentNode::DEFAULT_DEPLOYMENT_ENVIRONMENT);
+        $deploymentNode->setInstances($instances ? $instances : 1);
+        $deploymentNode->setTechnology($technology);
+        $deploymentNode->setDescription($description);
+        $deploymentNode->setParent($parent);
+        if ($properties !== null) {
+            $deploymentNode->setProperties($properties);
+        }
+
+        return $deploymentNode;
+    }
+
+    public function addElementToInternalStructures(Element $element) : void
+    {
+        if (\array_key_exists($element->id(), $this->elementsById) || \array_key_exists($element->id(), $this->relationshipsById)) {
+            return ;
+        }
+
+        $this->elementsById[$element->id()] = $element;
+        $this->idGenerator->found($element->id());
+    }
+
+    public function addRelationshipToInternalStructures(Relationship $relationship) : void
+    {
+        if (\array_key_exists($relationship->id(), $this->elementsById) || \array_key_exists($relationship->id(), $this->relationshipsById)) {
+            return ;
+        }
+
+        $this->relationshipsById[$relationship->id()] = $relationship;
+        $this->idGenerator->found($relationship->id());
+    }
+
+    public function findDeploymentNodeWithName(string $name, ?string $environment) : ?DeploymentNode
+    {
+        $environment = $environment ? $environment : DeploymentNode::DEFAULT_DEPLOYMENT_ENVIRONMENT;
+
+        foreach ($this->deploymentNodes as $deploymentNode) {
+            if ($deploymentNode->getName() === $name && $deploymentNode->getEnvironment() === $environment) {
+                return $deploymentNode;
+            }
+        }
+
+        return null;
     }
 
     public function toArray() : ?array
@@ -241,6 +470,12 @@ final class Model
             }, $this->softwareSystems);
         }
 
+        if (\count($this->deploymentNodes)) {
+            $data['deploymentNodes'] = \array_map(function (DeploymentNode $deploymentNode) {
+                return $deploymentNode->toArray();
+            }, $this->deploymentNodes);
+        }
+
         return $data;
     }
 
@@ -254,25 +489,33 @@ final class Model
 
         $modelDataObject = new ModelDataObject($modelData);
 
-        $model->people = $modelDataObject->hydratePeopleByRelationships($withRelationships = false, $model);
-        $model->softwareSystems = $modelDataObject->hydrateSoftwareSystemByRelationships($withRelationships = false, $model);
+        $model->people = $modelDataObject->hydratePeople($model);
+        $model->softwareSystems = $modelDataObject->hydrateSoftwareSystems($model);
+        $model->deploymentNodes = $modelDataObject->hydrateDeploymentNodes($model);
 
-        // People with relationships
-        $model->people = \array_merge(
-            $modelDataObject->hydratePeopleByRelationships($withRelationships = true, $model),
-            $model->people
-        );
+        if (\count($model->people)) {
+            foreach ($modelData['people'] as $personData) {
+                Person::hydrateRelationships($model->getElement($personData['id']), $personData);
+            }
+        }
 
-        // Software Systems with relationships
-        $model->softwareSystems = \array_merge(
-            $modelDataObject->hydrateSoftwareSystemByRelationships($withRelationships = true, $model),
-            $model->softwareSystems
-        );
+        if (\count($model->softwareSystems)) {
+            foreach ($modelData['softwareSystems'] as $softwareSystemData) {
+                SoftwareSystem::hydrateRelationships($model->getElement($softwareSystemData['id']), $softwareSystemData);
+            }
+        }
+
+        if (\count($model->deploymentNodes)) {
+            foreach ($modelData['deploymentNodes'] as $deploymentNodeData) {
+                DeploymentNode::hydrateRelationships($model->getElement($deploymentNodeData['id']), $deploymentNodeData);
+                DeploymentNode::hydrateChildrenRelationships($model->getElement($deploymentNodeData['id']), $deploymentNodeData);
+            }
+        }
 
         \usort(
             $model->people,
             function (Person $personA, Person $personB) {
-                return (int) $personA->id() > (int)$personB->id()
+                return (int) $personA->id() > (int) $personB->id()
                     ? 1
                     : 0;
             }
@@ -287,6 +530,14 @@ final class Model
             }
         );
 
+        \usort(
+            $model->deploymentNodes,
+            function (DeploymentNode $deploymentNodeA, DeploymentNode $deploymentNodeB) {
+                return (int) $deploymentNodeA->id() > (int) $deploymentNodeB->id()
+                    ? 1
+                    : 0;
+            }
+        );
 
         return $model;
     }
@@ -310,74 +561,41 @@ final class ModelDataObject
     /**
      * @return SoftwareSystem[]
      */
-    public function hydrateSoftwareSystemByRelationships(bool $withRelationships, Model $model) : array
+    public function hydrateSoftwareSystems(Model $model) : array
     {
         return \array_map(
             function (array $softwareSystemData) use ($model) {
-                /** @psalm-suppress MixedArgumentTypeCoercion */
                 return SoftwareSystem::hydrate($softwareSystemData, $model);
             },
-            $this->filterSoftwareSystemByRelationship($withRelationships)
+            isset($this->modelData['softwareSystems']) ? $this->modelData['softwareSystems'] : []
         );
     }
 
     /**
      * @return Person[]
      */
-    public function hydratePeopleByRelationships(bool $withRelationships, Model $model) : array
+    public function hydratePeople(Model $model) : array
     {
         return \array_map(
             function (array $personData) use ($model) {
-                /** @psalm-suppress MixedArgumentTypeCoercion */
-                return Person::hydrate($personData, $model);
+                $person = Person::hydrate($personData, $model);
+
+                return $person;
             },
-            $this->filterPeopleByRelationship($withRelationships)
+            isset($this->modelData['people']) ? $this->modelData['people'] : []
         );
     }
 
     /**
-     * @psalm-suppress MixedArgument
+     * @return Person[]
      */
-    private function filterPeopleByRelationship(bool $withRelationships) : array
+    public function hydrateDeploymentNodes(Model $model) : array
     {
-        if (!isset($this->modelData['people']) || !\is_array($this->modelData['people'])) {
-            return [];
-        }
-
-        return \array_filter(
-            $this->modelData['people'],
-            function (array $personData) use ($withRelationships) {
-                if (!isset($personData['relationships']) || !\count($personData['relationships'])) {
-                    return $withRelationships ? false : true;
-                }
-
-                return ($withRelationships && isset($personData['relationships']))
-                    ? \is_array($personData['relationships'])
-                    : !\is_array($personData['relationships']);
-            }
-        );
-    }
-
-    /**
-     * @psalm-suppress MixedArgument
-     */
-    private function filterSoftwareSystemByRelationship(bool $withRelationships) : array
-    {
-        if (!isset($this->modelData['softwareSystems']) || !\is_array($this->modelData['softwareSystems'])) {
-            return [];
-        }
-
-        return \array_filter(
-            $this->modelData['softwareSystems'],
-            function (array $softwareSystemData) use ($withRelationships) {
-                if (!isset($softwareSystemData['relationships']) || !\count($softwareSystemData['relationships'])) {
-                    return $withRelationships ? false : true;
-                }
-
-                return ($withRelationships)
-                    ? \is_array($softwareSystemData['relationships'])
-                    : !\is_array($softwareSystemData['relationships']);
-            }
+        return \array_map(
+            function (array $deploymentNodeData) use ($model) {
+                return DeploymentNode::hydrate($deploymentNodeData, $model);
+            },
+            isset($this->modelData['deploymentNodes']) ? $this->modelData['deploymentNodes'] : []
         );
     }
 }

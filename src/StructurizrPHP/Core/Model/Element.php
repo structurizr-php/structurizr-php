@@ -18,7 +18,7 @@ use StructurizrPHP\StructurizrPHP\Exception\RuntimeException;
 
 abstract class Element extends ModelItem
 {
-    private const CANONICAL_NAME_SEPARATOR = "/";
+    protected const CANONICAL_NAME_SEPARATOR = "/";
 
     /**
      * @var Model
@@ -59,7 +59,12 @@ abstract class Element extends ModelItem
 
     public function getCanonicalName() : string
     {
-        return \mb_strtolower(\str_replace(self::CANONICAL_NAME_SEPARATOR, "", (string) $this->name));
+        return $this->formatForCanonicalName($this->name);
+    }
+
+    protected function formatForCanonicalName(string $name) : string
+    {
+        return \mb_strtolower(\str_replace(self::CANONICAL_NAME_SEPARATOR, "", $name));
     }
 
     public function description(): ?string
@@ -75,7 +80,7 @@ abstract class Element extends ModelItem
     /**
      * @return Relationship[]
      */
-    public function relationships(): array
+    public function getRelationships(): array
     {
         return $this->relationships;
     }
@@ -91,7 +96,7 @@ abstract class Element extends ModelItem
         throw new RuntimeException(\sprintf("There is no efferent relationship between %s and %s", $this->id(), $element->id()));
     }
 
-    public function model(): Model
+    public function getModel(): Model
     {
         return $this->model;
     }
@@ -144,5 +149,46 @@ abstract class Element extends ModelItem
         }
 
         return $data;
+    }
+
+    public static function hydrateElement(Element $element, array $elementData) : void
+    {
+        $element->model->addElementToInternalStructures($element);
+
+        if (isset($elementData['url'])) {
+            $element->url = $elementData['url'];
+        }
+
+        if (isset($elementData['name'])) {
+            $element->name = $elementData['name'];
+        }
+
+        if (isset($elementData['description'])) {
+            $element->description = $elementData['description'];
+        }
+
+        parent::hydrateModelItem($element, $elementData, $element->model);
+    }
+
+    public static function hydrateRelationships(Element $element, array $elementData) : void
+    {
+        if (isset($elementData['relationships'])) {
+            if (\is_array($elementData['relationships'])) {
+                foreach ($elementData['relationships'] as $relationshipData) {
+                    $relationship = Relationship::hydrate($relationshipData, $element, $element->getModel());
+                    $element->relationships[] = $relationship;
+                }
+            }
+        }
+
+        // sort relationships by ID
+        if (isset($elementData['relationships'])) {
+            \usort(
+                $elementData['relationships'],
+                function (array $relationshipA, array $relationshipB) {
+                    return (int)$relationshipA['id'] > (int)$relationshipB['id'] ? 1 : 0;
+                }
+            );
+        }
     }
 }

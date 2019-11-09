@@ -85,4 +85,17 @@ final class ElementView
             'y' => $this->y,
         ];
     }
+
+    public static function hydrate(array $elementViewData, Element $element) : self
+    {
+        $elementView = new self($element);
+
+        if (\array_key_exists('x', $elementViewData) && \array_key_exists('y', $elementViewData)) {
+            $elementView
+                ->setX((int)$elementViewData['x'])
+                ->setY((int)$elementViewData['y']);
+        }
+
+        return $elementView;
+    }
 }

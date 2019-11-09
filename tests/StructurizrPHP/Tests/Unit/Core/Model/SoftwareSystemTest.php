@@ -62,7 +62,7 @@ final class SoftwareSystemTest extends TestCase
     public function test_adding_container_twice()
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('A container named "name" already exists for this software system.');
+        $this->expectExceptionMessage('A container named "container" already exists for this software system.');
 
         $model = new Model();
         $softwareSystem = $model->addSoftwareSystem('name', 'description', Location::unspecified());
