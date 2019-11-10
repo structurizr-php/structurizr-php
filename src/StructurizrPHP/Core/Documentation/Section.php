@@ -163,12 +163,23 @@ class Section
         return [
 
             "elementId" => $this->element->id(),
-            "type" => $this->title,
+            "title" => $this->title,
             "order" => $this->order,
             "format" => $this->format->name(),
             "content" => $this->content,
 //            "group" => '1',
 //            "number" => 1
         ];
+    }
+
+    public static function hydrate(array $sectionData, Element $element, Format $format):self
+    {
+        return new self(
+            $element,
+            $sectionData['title'],
+            $sectionData['order'],
+            $format,
+            $sectionData['content'],
+        );
     }
 }

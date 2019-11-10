@@ -22,6 +22,16 @@ class Branding
      */
     private $font;
 
+    public static function hydrate(array $brandingData):self
+    {
+        $branding = new self();
+        if (isset($brandingData['logo'])) {
+            $branding->setLogo($brandingData['logo']);
+        }
+
+        return $branding;
+    }
+
     public function setLogo(string $url)
     {
         Assertion::startsWith($url, 'data:image/');

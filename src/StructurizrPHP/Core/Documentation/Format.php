@@ -20,6 +20,11 @@ class Format
         $this->name = $name;
     }
 
+    public static function hydrate(string $name): self
+    {
+        return new self($name);
+    }
+
     public function name(): string
     {
         return $this->name;

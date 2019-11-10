@@ -38,6 +38,19 @@ final class Documentation
         $this->model = $model;
     }
 
+    public static function hydrate(?array $documentationData, Model $model):Documentation
+    {
+        $documentation = new self($model);
+
+        $documentationDataModel = new DocumentationDataModel($documentationData);
+        $documentation->sections = $documentationDataModel->hydrateSection($model);
+        if ($documentationDataModel->templateExist()) {
+            $documentation->template = $documentationDataModel->hydrateTemplate();
+        }
+
+        return $documentation;
+    }
+
     public function addSection(Element $element = null, string $title = null, Format $format = null, string $content = null)
     {
         if ($element !== null && !$this->model->contains($element)) {
@@ -112,6 +125,9 @@ final class Documentation
         $data = [
             'sections' => [],
         ];
+        if (isset($this->template)) {
+            $data['template'] = $this->template->toArray();
+        }
         if (!\count($this->sections)) {
             return $data;
         }
@@ -122,5 +138,41 @@ final class Documentation
         }
 
         return $data;
+    }
+}
+final class DocumentationDataModel
+{
+    /**
+     * @var array
+     */
+    private $documentationSetData;
+
+    public function __construct(array $documentationSetData)
+    {
+        $this->documentationSetData = $documentationSetData;
+    }
+
+    public function hydrateSection(Model $model) : array
+    {
+        return \array_map(
+            function (array $sectionData) use ($model) {
+                return Section::hydrate(
+                    $sectionData,
+                    $model->getElement($sectionData['elementId']),
+                    Format::hydrate($sectionData['format'])
+                );
+            },
+            $this->documentationSetData['sections']??[]
+        );
+    }
+
+    public function hydrateTemplate():TemplateMetadata
+    {
+        return TemplateMetadata::hydrate($this->documentationSetData['template']);
+    }
+
+    public function templateExist()
+    {
+        return isset($this->documentationSetData['template']);
     }
 }

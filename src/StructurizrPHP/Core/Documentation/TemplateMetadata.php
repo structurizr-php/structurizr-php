@@ -33,6 +33,15 @@ class TemplateMetadata
         $this->url = $url;
     }
 
+    public static function hydrate(array $templateData): self
+    {
+        return new self(
+            $templateData['name'],
+            $templateData['author'],
+            $templateData['url'],
+        );
+    }
+
     /**
      * @return string
      */
@@ -79,5 +88,14 @@ class TemplateMetadata
     public function setUrl(string $url): void
     {
         $this->url = $url;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'author' => $this->author,
+            'url' => $this->url,
+        ];
     }
 }
