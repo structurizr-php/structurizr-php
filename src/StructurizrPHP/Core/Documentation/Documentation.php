@@ -1,8 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
+/*
+ * This file is part of the Structurizr for PHP.
+ *
+ * (c) Norbert Orzechowicz <norbert@orzechowicz.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
+namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
 
 use StructurizrPHP\StructurizrPHP\Assertion;
 use StructurizrPHP\StructurizrPHP\Core\Model\Element;
@@ -32,7 +40,7 @@ final class Documentation
 
     public function addSection(Element $element = null, string $title = null, Format $format = null, string $content = null)
     {
-        if ($element != null && !$this->model->contains($element)) {
+        if ($element !== null && !$this->model->contains($element)) {
             throw new InvalidArgumentException(
                 sprintf("The element named %s does not exist in the model associated with this documentation.", $element->getName())
             );
@@ -50,6 +58,7 @@ final class Documentation
             $content
         );
         $this->sections[] = $section;
+
         return $section;
     }
 
@@ -69,9 +78,9 @@ final class Documentation
 
     private function checkSectionIsUnique(Element $element = null, string $title = null)
     {
-        if ($element == null) {
+        if ($element === null) {
             foreach ($this->sections as $section) {
-                if ($section->getElement() == null && $title === $section->getTitle()) {
+                if ($section->getElement() === null && $title === $section->getTitle()) {
                     throw new InvalidArgumentException(
                         sprintf("A section with a title of %s already exists for this workspace.", $title)
                     );
@@ -114,5 +123,4 @@ final class Documentation
 
         return $data;
     }
-
 }

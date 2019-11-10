@@ -110,5 +110,4 @@ final class Workspace
     {
         return  $this->documentation;
     }
-
 }

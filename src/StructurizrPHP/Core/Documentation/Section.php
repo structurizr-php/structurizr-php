@@ -1,8 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Structurizr for PHP.
+ *
+ * (c) Norbert Orzechowicz <norbert@orzechowicz.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
-
 
 use StructurizrPHP\StructurizrPHP\Core\Model\Element;
 
@@ -93,11 +100,11 @@ class Section
 
     public function getElementId(): string
     {
-        if ($this->element != null) {
+        if ($this->element !== null) {
             return $this->element->getId();
         }
-        return $this->elementId;
 
+        return $this->elementId;
     }
 
 
@@ -119,7 +126,7 @@ class Section
             return true;
         }
 
-        if ($this->getElementId() != null) {
+        if ($this->getElementId() !== null) {
             return $this->getElementId() === $object->getElementId() && $this->getTitle() === $object->getTitle();
         } else {
             return $this->getTitle() === $object->getTitle();
@@ -128,8 +135,9 @@ class Section
 
     public function hashCode(): int
     {
-        $result = $this->getElementId() != null ? $this->str_hashcode($this->getElementId()) : 0;
+        $result = $this->getElementId() !== null ? $this->str_hashcode($this->getElementId()) : 0;
         $result = 31 * $result + $this->str_hashcode($this->getTitle());
+
         return $result;
     }
 
@@ -137,14 +145,16 @@ class Section
     {
         $hash = 0;
         $len = mb_strlen($s, 'UTF-8');
-        if ($len == 0)
+        if ($len === 0) {
             return $hash;
+        }
         for ($i = 0; $i < $len; $i++) {
             $c = mb_substr($s, $i, 1, 'UTF-8');
             $cc = unpack('V', iconv('UTF-8', 'UCS-4LE', $c))[1];
             $hash = (($hash << 5) - $hash) + $cc;
             $hash &= $hash; // 16bit > 32bit
         }
+
         return $hash;
     }
 

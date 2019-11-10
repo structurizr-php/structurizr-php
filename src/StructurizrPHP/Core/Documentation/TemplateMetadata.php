@@ -1,8 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Structurizr for PHP.
+ *
+ * (c) Norbert Orzechowicz <norbert@orzechowicz.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
-
 
 class TemplateMetadata
 {
@@ -20,11 +27,11 @@ class TemplateMetadata
     private $url;
 
     public function __construct(string $name, string $author, string $url)
-{
-    $this->name = $name;
-    $this->author = $author;
-    $this->url = $url;
-}
+    {
+        $this->name = $name;
+        $this->author = $author;
+        $this->url = $url;
+    }
 
     /**
      * @return string
@@ -73,5 +80,4 @@ class TemplateMetadata
     {
         $this->url = $url;
     }
-
 }
