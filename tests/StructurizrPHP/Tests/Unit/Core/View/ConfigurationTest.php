@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\View;
 
 use PHPUnit\Framework\TestCase;
+use StructurizrPHP\StructurizrPHP\Core\View\Branding;
 use StructurizrPHP\StructurizrPHP\Core\View\Configuration;
 
 final class ConfigurationTest extends TestCase
@@ -22,6 +23,13 @@ final class ConfigurationTest extends TestCase
     {
         $configuration = new Configuration();
 
+        $this->assertEquals($configuration, Configuration::hydrate($configuration->toArray()));
+    }
+
+    public function test_hydrating_configuration_with_branding()
+    {
+        $configuration = new Configuration();
+        $configuration->setBranding(new Branding());
         $this->assertEquals($configuration, Configuration::hydrate($configuration->toArray()));
     }
 }

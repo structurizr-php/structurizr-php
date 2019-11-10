@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace StructurizrPHP\StructurizrPHP\Core;
 
 use StructurizrPHP\StructurizrPHP\Assertion;
+use StructurizrPHP\StructurizrPHP\Core\Documentation\Documentation;
 use StructurizrPHP\StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\StructurizrPHP\Core\View\ViewSet;
 
@@ -43,6 +44,10 @@ final class Workspace
      * @var ViewSet
      */
     private $viewSet;
+    /**
+     * @var Documentation
+     */
+    private $documentation;
 
     public function __construct(string $id, string $name, string $description)
     {
@@ -55,6 +60,7 @@ final class Workspace
         $this->description = $description;
         $this->model = new Model();
         $this->viewSet = new ViewSet($this->model);
+        $this->documentation = new Documentation($this->model);
     }
 
     public function id(): string
@@ -82,8 +88,7 @@ final class Workspace
             'lastModifiedAgent' => $agentName,
             'model' => $this->model->toArray(),
             'views' => $this->viewSet->toArray(),
-            'documentation' => null,
-            'configuration' => null,
+            'documentation' => $this->documentation->toArray(),
         ];
     }
 
@@ -97,7 +102,13 @@ final class Workspace
 
         $workspace->model = Model::hydrate((array) $workspaceData['model']);
         $workspace->viewSet = ViewSet::hydrate((array) $workspaceData['views'], $workspace->model);
+        $workspace->documentation = Documentation::hydrate((array) $workspaceData['documentation'], $workspace->model);
 
         return $workspace;
+    }
+
+    public function getDocumentation():Documentation
+    {
+        return  $this->documentation;
     }
 }
