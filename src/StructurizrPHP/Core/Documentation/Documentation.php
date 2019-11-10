@@ -23,10 +23,12 @@ final class Documentation
      * @var Section[]
      */
     private $sections = [];
+
     /**
      * @var Model
      */
     private $model;
+
     /**
      * @var TemplateMetadata
      */

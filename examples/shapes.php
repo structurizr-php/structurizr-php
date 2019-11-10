@@ -17,7 +17,6 @@ use StructurizrPHP\StructurizrPHP\Infrastructure\Http\SymfonyRequestFactory;
 use StructurizrPHP\StructurizrPHP\SDK\Client;
 use StructurizrPHP\StructurizrPHP\SDK\Credentials;
 use StructurizrPHP\StructurizrPHP\SDK\UrlMap;
-use StructurizrPHP\StructurizrPHP\SDK\WorkspaceHydrator;
 use Symfony\Component\HttpClient\Psr18Client;
 
 require __DIR__ . '/../vendor/autoload.php';

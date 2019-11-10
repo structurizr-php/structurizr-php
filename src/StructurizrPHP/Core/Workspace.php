@@ -44,6 +44,7 @@ final class Workspace
      * @var ViewSet
      */
     private $viewSet;
+
     /**
      * @var Documentation
      */

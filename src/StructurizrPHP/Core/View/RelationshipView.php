@@ -18,6 +18,7 @@ use StructurizrPHP\StructurizrPHP\Core\Model\Relationship;
 final class RelationshipView
 {
     private const START_OF_LINE = 0;
+
     private const END_OF_LINE = 100;
 
     /**

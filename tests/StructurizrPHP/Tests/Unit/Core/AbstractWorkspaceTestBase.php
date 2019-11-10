@@ -20,10 +20,12 @@ class AbstractWorkspaceTestBase extends TestCase
      * @var Workspace
      */
     protected $workspace;
+
     /**
      * @var string
      */
     protected $model;
+
     /**
      * @var string
      */

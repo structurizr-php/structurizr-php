@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\View;
 
-use StructurizrPHP\StructurizrPHP\Assertion;
-
 /**
  * These represent paper sizes in pixels at 300dpi.
  */

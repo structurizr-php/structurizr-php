@@ -11,37 +11,16 @@
 
 namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\Documentation;
 
-use PHPUnit\Framework\TestCase;
 use StructurizrPHP\StructurizrPHP\Core\Documentation\Documentation;
 use StructurizrPHP\StructurizrPHP\Core\Documentation\Format;
 use StructurizrPHP\StructurizrPHP\Core\Documentation\StructurizrDocumentationTemplate;
-use StructurizrPHP\StructurizrPHP\Core\Model\Model;
-use StructurizrPHP\StructurizrPHP\Core\Model\Person;
 use StructurizrPHP\StructurizrPHP\Core\Workspace;
 use StructurizrPHP\StructurizrPHP\Exception\AssertionException;
 use StructurizrPHP\StructurizrPHP\Exception\InvalidArgumentException;
 use StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\AbstractWorkspaceTestBase;
-use TypeError;
 
 final class DocumentationTest extends AbstractWorkspaceTestBase
 {
-    public function test_null_element_added()
-    {
-        $this->expectException(TypeError::class);
-        $testcase = new Documentation();
-        $testcase->addSection(null, 'test', Format::markdown(), 'test content');
-    }
-
-    public function test_null_format_added()
-    {
-        $softwareSystem = $this->model->addSoftwareSystem('Software System', 'Description');
-        $testcase = new Documentation($this->model);
-
-        $this->expectException(TypeError::class);
-
-        $testcase->addSection($softwareSystem, 'test', null, 'test content');
-    }
-
     public function test_empty_title_added()
     {
         $softwareSystem = $this->model->addSoftwareSystem('Software System', 'Description');
@@ -62,8 +41,7 @@ final class DocumentationTest extends AbstractWorkspaceTestBase
         $testcase->addSection($softwareSystem, 'test', Format::markdown(), '');
     }
 
-    /**/
-    public function test_addSection_ThrowsAnException_WhenTheRelatedElementIsNotPresentInTheAssociatedModel() : void
+    public function test_addSection_ThrowsAnException_WhenTheRelatedElementIsNotPresentInTheAssociatedModel()
     {
         try {
             $softwareSystem = $this->model->addSoftwareSystem('Software System', 'Description');
@@ -77,6 +55,7 @@ final class DocumentationTest extends AbstractWorkspaceTestBase
             );
         }
     }
+
     public function test_hydrating_empty_documentation()
     {
         $documentation = new Documentation($this->model);

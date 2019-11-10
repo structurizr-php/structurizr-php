@@ -19,6 +19,7 @@ namespace StructurizrPHP\StructurizrPHP\Core\Model;
 final class ContainerInstance extends DeploymentElement
 {
     private const DEFAULT_HEALTH_CHECK_INTERVAL_IN_SECONDS = 60;
+
     private const DEFAULT_HEALTH_CHECK_TIMEOUT_IN_MILLISECONDS = 0;
 
     /**

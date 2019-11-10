@@ -47,10 +47,8 @@ class UserTest extends TestCase
     {
         $user = new User('test', Role::readOnly());
 
-        $expectedString = 'User {' .
-            'username=\'test\'' .
-            ', role=' . (Role::readOnly())->toString() .
-            '}';
+        $expectedString = 'User {username=\'test\', role=' . (Role::readOnly())->toString() . '}';
+
         $this->assertEquals($expectedString, $user->toString());
     }
 }

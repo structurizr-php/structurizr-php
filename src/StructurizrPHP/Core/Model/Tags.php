@@ -16,13 +16,21 @@ namespace StructurizrPHP\StructurizrPHP\Core\Model;
 final class Tags
 {
     public const ELEMENT = "Element";
+
     public const PERSON = "Person";
+
     public const SOFTWARE_SYSTEM = "Software System";
+
     public const SYNCHRONOUS = "Synchronous";
+
     public const ASYNCHRONOUS = "Asynchronous";
+
     public const CONTAINER = "Container";
+
     public const COMPONENT = "Component";
+
     public const RELATIONSHIP = "Relationship";
+
     public const CONTAINER_INSTANCE = "Container Instance";
 
     /**

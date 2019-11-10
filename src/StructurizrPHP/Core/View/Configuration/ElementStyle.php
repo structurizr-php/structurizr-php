@@ -18,6 +18,7 @@ use StructurizrPHP\StructurizrPHP\Assertion;
 final class ElementStyle
 {
     public const DEFAULT_WIDTH = 450;
+
     public const DEFAULT_HEIGHT = 300;
 
     /**

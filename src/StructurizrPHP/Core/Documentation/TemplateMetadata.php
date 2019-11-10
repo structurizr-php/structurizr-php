@@ -17,10 +17,12 @@ class TemplateMetadata
      * @var string
      */
     private $name;
+
     /**
      * @var string
      */
     private $author;
+
     /**
      * @var string
      */
