@@ -26,7 +26,9 @@
         "friendsofphp/php-cs-fixer": "^2.15",
         "phpunit/phpunit": "^8.4",
         "symfony/var-dumper": "^4.3",
-        "phpstan/phpstan": "^0.11.19"
+        "phpstan/phpstan": "^0.11.19",
+        "phpstan/phpstan-phpunit": "^0.11.2",
+        "thecodingmachine/phpstan-strict-rules": "^0.11.2"
     },
     "suggest": {
         "symfony/http-client": "Psr18Client http factory works out of the box with StructurizrPHP\\StructurizrPHP\\SDK\\Client",
@@ -42,6 +44,9 @@
     "scripts": {
         "phpstan": [
             "phpstan analyse -c phpstan.neon"
+        ],
+        "phpunit": [
+            "phpunit"
         ],
         "test" : [
             "php-cs-fixer fix --dry-run",

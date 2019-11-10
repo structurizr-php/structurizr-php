@@ -18,7 +18,7 @@ use StructurizrPHP\StructurizrPHP\Core\Model\Model;
 
 final class ModelTest extends TestCase
 {
-    public function test_hydrating_empty_model()
+    public function test_hydrating_empty_model() : void
     {
         $model = new Model();
 
@@ -26,7 +26,7 @@ final class ModelTest extends TestCase
         $this->assertTrue($model->isEmpty());
     }
 
-    public function test_hydrating_model_with_people()
+    public function test_hydrating_model_with_people() : void
     {
         $model = new Model();
 
@@ -35,7 +35,7 @@ final class ModelTest extends TestCase
         $this->assertEquals($model, Model::hydrate($model->toArray()));
     }
 
-    public function test_hydrating_model_with_software_system()
+    public function test_hydrating_model_with_software_system() : void
     {
         $model = new Model();
 
@@ -44,7 +44,7 @@ final class ModelTest extends TestCase
         $this->assertEquals($model, Model::hydrate($model->toArray()));
     }
 
-    public function test_hydrating_model_with_software_system_and_person()
+    public function test_hydrating_model_with_software_system_and_person() : void
     {
         $model = new Model();
 
@@ -54,7 +54,7 @@ final class ModelTest extends TestCase
         $this->assertEquals($model, Model::hydrate($model->toArray()));
     }
 
-    public function test_hydrating_model_with_software_system_and_person_relationship()
+    public function test_hydrating_model_with_software_system_and_person_relationship() : void
     {
         $model = new Model();
 
@@ -68,7 +68,7 @@ final class ModelTest extends TestCase
         $this->assertEquals($model, Model::hydrate($model->toArray()));
     }
 
-    public function test_hydrating_model_with_software_system_and_deployment_node()
+    public function test_hydrating_model_with_software_system_and_deployment_node() : void
     {
         $model = new Model();
 

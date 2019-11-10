@@ -51,6 +51,9 @@ abstract class ModelItem
         $this->tags = $tags;
     }
 
+    /**
+     * @param string ...$tags
+     */
     public function addTags(string ...$tags) : void
     {
         foreach ($tags as $tag) {

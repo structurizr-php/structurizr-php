@@ -20,7 +20,7 @@ use StructurizrPHP\StructurizrPHP\Core\View\ViewSet;
 
 final class DynamicViewTest extends TestCase
 {
-    public function test_hydrating_dynamic_view()
+    public function test_hydrating_dynamic_view() : void
     {
         $viewSet = new ViewSet(new Model());
         $system = $viewSet->getModel()->addSoftwareSystem('system');
@@ -30,7 +30,7 @@ final class DynamicViewTest extends TestCase
         $this->assertEquals($view, DynamicView::hydrate($view->toArray(), $viewSet));
     }
 
-    public function test_hydrating_dynamic_view_with_relationships()
+    public function test_hydrating_dynamic_view_with_relationships() : void
     {
         $viewSet = new ViewSet(new Model());
         $system = $viewSet->getModel()->addSoftwareSystem('system');

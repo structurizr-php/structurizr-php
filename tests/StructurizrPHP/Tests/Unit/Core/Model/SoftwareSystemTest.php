@@ -23,14 +23,14 @@ use StructurizrPHP\StructurizrPHP\Exception\RuntimeException;
 
 final class SoftwareSystemTest extends TestCase
 {
-    public function test_hydrating_software_system()
+    public function test_hydrating_software_system() : void
     {
         $softwareSystem = new SoftwareSystem('1', $model = new Model());
 
         $this->assertEquals($softwareSystem, SoftwareSystem::hydrate($softwareSystem->toArray(), $model));
     }
 
-    public function test_hydrating_software_system_with_properties()
+    public function test_hydrating_software_system_with_properties() : void
     {
         $softwareSystem = new SoftwareSystem('1', $model = new Model());
         $softwareSystem->setProperties(new Properties(new Property('key', 'value')));
@@ -38,7 +38,7 @@ final class SoftwareSystemTest extends TestCase
         $this->assertEquals($softwareSystem, SoftwareSystem::hydrate($softwareSystem->toArray(), $model));
     }
 
-    public function test_hydrating_software_system_with_relationship()
+    public function test_hydrating_software_system_with_relationship() : void
     {
         $model = new Model();
         $person = $model->addPerson('name', 'description', Location::unspecified());
@@ -49,7 +49,7 @@ final class SoftwareSystemTest extends TestCase
         $this->assertEquals($softwareSystem, SoftwareSystem::hydrate($softwareSystem->toArray(), $model));
     }
 
-    public function test_hydrating_software_system_with_container()
+    public function test_hydrating_software_system_with_container() : void
     {
         $model = new Model();
         $softwareSystem = $model->addSoftwareSystem('name', 'description', Location::unspecified());
@@ -59,7 +59,7 @@ final class SoftwareSystemTest extends TestCase
         $this->assertEquals($softwareSystem, SoftwareSystem::hydrate($softwareSystem->toArray(), $model));
     }
 
-    public function test_adding_container_twice()
+    public function test_adding_container_twice() : void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('A container named "container" already exists for this software system.');

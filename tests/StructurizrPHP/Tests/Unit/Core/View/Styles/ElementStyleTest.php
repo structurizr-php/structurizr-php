@@ -20,14 +20,14 @@ use StructurizrPHP\StructurizrPHP\Core\View\Configuration\Shape;
 
 final class ElementStyleTest extends TestCase
 {
-    public function test_hydrating_element_style()
+    public function test_hydrating_element_style() : void
     {
         $elementStyle = new ElementStyle('tag');
 
         $this->assertEquals($elementStyle, ElementStyle::hydrate($elementStyle->toArray()));
     }
 
-    public function test_hydrating_element_style_with_all_properties()
+    public function test_hydrating_element_style_with_all_properties() : void
     {
         $elementStyle = new ElementStyle('tag');
 

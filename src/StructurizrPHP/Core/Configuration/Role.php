@@ -20,41 +20,26 @@ final class Role
      */
     private $name;
 
-    /**
-     * @param string $name
-     */
     private function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function name() : string
     {
         return $this->name;
     }
 
-    /**
-     * @return static
-     */
     public static function readWrite() : self
     {
         return new self('ReadWrite');
     }
 
-    /**
-     * @return static
-     */
     public static function readOnly() : self
     {
         return new self('ReadOnly');
     }
 
-    /**
-     * @return string
-     */
     public function toString() : string
     {
         return $this->name;

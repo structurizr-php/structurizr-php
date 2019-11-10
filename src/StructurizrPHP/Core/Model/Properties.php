@@ -15,8 +15,14 @@ namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
 final class Properties
 {
+    /**
+     * @var Property[]
+     */
     private $properties;
 
+    /**
+     * @param Property ...$properties
+     */
     public function __construct(Property ...$properties)
     {
         $this->properties = $properties;

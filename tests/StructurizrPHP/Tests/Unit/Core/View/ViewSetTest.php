@@ -19,14 +19,14 @@ use StructurizrPHP\StructurizrPHP\Core\View\ViewSet;
 
 final class ViewSetTest extends TestCase
 {
-    public function test_hydrating_view_set()
+    public function test_hydrating_view_set() : void
     {
         $viewSet = new ViewSet($model = new Model());
 
         $this->assertEquals($viewSet, ViewSet::hydrate($viewSet->toArray(), $model));
     }
 
-    public function test_hydrating_view_set_with_views()
+    public function test_hydrating_view_set_with_views() : void
     {
         $viewSet = new ViewSet($model = new Model());
         $softwareSystem = $model->addSoftwareSystem('software');

@@ -23,7 +23,7 @@ use StructurizrPHP\StructurizrPHP\Core\Workspace;
 
 final class WorkspaceTest extends TestCase
 {
-    public function test_hydraing_workspace()
+    public function test_hydraing_workspace() : void
     {
         $workspace = new Workspace(
             "1",
@@ -34,7 +34,7 @@ final class WorkspaceTest extends TestCase
         $this->assertEquals($workspace, Workspace::hydrate($workspace->toArray("test")));
     }
 
-    public function test_hydraing_with_relationships_and_views()
+    public function test_hydraing_with_relationships_and_views() : void
     {
         $workspace = new Workspace(
             "1",

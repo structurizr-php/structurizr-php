@@ -1,6 +1,24 @@
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+    - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
+
 parameters:
     level: 6
     paths:
         - src
         - tests
         - examples
+    ignoreErrors:
+        -
+            message: '#In method \"(.*)::(toArray|map)\", return type is "array".(.*)#'
+            path: *
+        -
+            message: '#In method \"(.*)::hydrate(.*)\", parameter (.*) type is "array".(.*)#'
+            path: *
+        -
+            message: '#In method \"(.*)DataObject::__construct(.*)\", parameter (.*) type is "array".(.*)#'
+            path: *
+        -
+            message: '#(.*)#'
+            path: src/StructurizrPHP/Http/RequestFactory.php

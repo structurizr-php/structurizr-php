@@ -34,7 +34,7 @@ class Branding
         $this->font = $font;
     }
 
-    public function setLogo(string $url)
+    public function setLogo(string $url) : void
     {
         Assertion::startsWith($url, 'data:image/');
         $this->logo = $url;

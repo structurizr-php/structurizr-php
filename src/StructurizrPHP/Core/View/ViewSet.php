@@ -260,7 +260,7 @@ final class ViewSet
             return $viewSet;
         }
 
-        $viewSetDataModel = new ViewSetDataModel($viewSetData);
+        $viewSetDataModel = new ViewSetDataObject($viewSetData);
 
         if ($viewSetDataModel->hasViews('systemLandscapeViews')) {
             $viewSet->systemLandscapeViews = $viewSetDataModel->map(
@@ -305,7 +305,7 @@ final class ViewSet
     }
 }
 
-final class ViewSetDataModel
+final class ViewSetDataObject
 {
     /**
      * @var array

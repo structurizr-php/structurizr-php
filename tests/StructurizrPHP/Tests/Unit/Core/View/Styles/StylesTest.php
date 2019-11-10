@@ -19,14 +19,14 @@ use StructurizrPHP\StructurizrPHP\Core\View\Configuration\Styles;
 
 final class StylesTest extends TestCase
 {
-    public function test_hydrating_styles()
+    public function test_hydrating_styles() : void
     {
         $styles = new Styles();
 
         $this->assertEquals($styles, Styles::hydrate($styles->toArray()));
     }
 
-    public function test_hydrating_styles_with_element_styles()
+    public function test_hydrating_styles_with_element_styles() : void
     {
         $styles = new Styles();
 

@@ -15,7 +15,7 @@ use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
 
 class StructurizrDocumentationTemplate extends DocumentationTemplate
 {
-    public function addContextSection(SoftwareSystem $softwareSystem, Format $format, string $content)
+    public function addContextSection(SoftwareSystem $softwareSystem, Format $format, string $content) : void
     {
         $this->addSection($softwareSystem, "Context", $format, $content);
     }
