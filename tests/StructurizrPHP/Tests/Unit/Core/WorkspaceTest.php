@@ -47,10 +47,10 @@ final class WorkspaceTest extends TestCase
 
         $person->usesSoftwareSystem($system, 'uses', 'browser');
 
-        $contextView = $workspace->getViews()->createSystemContextView($system, 'systemcontext', 'contextview');
+        $contextView = $workspace->getViews()->createSystemContextView($system, 'systemcontext', 'contextview', 'test');
         $contextView->addAllElements();
 
-        $landscapeView = $workspace->getViews()->createSystemContextView($system, 'landscale', 'landscapeview');
+        $landscapeView = $workspace->getViews()->createSystemContextView($system, 'landscale', 'landscapeview', 'test');
         $landscapeView->addElement($person, true)->setY(100)->setX(200);
 
 
