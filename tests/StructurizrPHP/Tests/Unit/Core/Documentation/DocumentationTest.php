@@ -14,6 +14,7 @@ namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\Documentation;
 use PHPUnit\Framework\TestCase;
 use StructurizrPHP\StructurizrPHP\Core\Documentation\Documentation;
 use StructurizrPHP\StructurizrPHP\Core\Documentation\Format;
+use StructurizrPHP\StructurizrPHP\Core\Documentation\StructurizrDocumentationTemplate;
 use StructurizrPHP\StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\StructurizrPHP\Core\Model\Person;
 use StructurizrPHP\StructurizrPHP\Core\Workspace;
@@ -22,7 +23,7 @@ use StructurizrPHP\StructurizrPHP\Exception\InvalidArgumentException;
 use StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\AbstractWorkspaceTestBase;
 use TypeError;
 
-class DocumentationTest extends AbstractWorkspaceTestBase
+final class DocumentationTest extends AbstractWorkspaceTestBase
 {
     public function test_null_element_added()
     {
@@ -75,5 +76,29 @@ class DocumentationTest extends AbstractWorkspaceTestBase
                 $iae->getMessage()
             );
         }
+    }
+    public function test_hydrating_empty_documentation()
+    {
+        $documentation = new Documentation($this->model);
+
+        $this->assertEquals($documentation, Documentation::hydrate($documentation->toArray(), $this->model));
+    }
+
+    public function test_hydrating_with_section()
+    {
+        $softwareSystem = $this->model->addSoftwareSystem('Software System', 'Description');
+        $documentation = new Documentation($this->model);
+        $documentation->addSection($softwareSystem, 'test', Format::markdown(), 'teest');
+        $this->assertEquals($documentation, Documentation::hydrate($documentation->toArray(), $this->model));
+    }
+
+    public function test_hydrating_with_template()
+    {
+        $softwareSystem = $this->model->addSoftwareSystem('Software System', 'Description');
+        $documentation = new Documentation($this->model);
+        $template = new StructurizrDocumentationTemplate($this->workspace);
+        $template->addContextSection($softwareSystem, Format::markdown(), 'Here is some context about the software system...\n\n![](embed:SystemContext)');
+
+        $this->assertEquals($documentation, Documentation::hydrate($documentation->toArray(), $this->model));
     }
 }
