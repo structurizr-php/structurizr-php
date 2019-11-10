@@ -80,6 +80,9 @@ final class RelationshipView
         $this->description = $description;
     }
 
+    /**
+     * @param Vertex ...$vertices
+     */
     public function setVertices(Vertex ...$vertices) : void
     {
         $this->vertices = $vertices;

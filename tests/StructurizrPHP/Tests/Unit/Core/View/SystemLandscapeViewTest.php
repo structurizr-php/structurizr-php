@@ -20,7 +20,7 @@ use StructurizrPHP\StructurizrPHP\Core\View\ViewSet;
 
 final class SystemLandscapeViewTest extends TestCase
 {
-    public function test_hydrating_system_landscape_view()
+    public function test_hydrating_system_landscape_view() : void
     {
         $viewSet = new ViewSet(new Model());
         $view = $viewSet->createSystemLandscapeView('key', 'description');
@@ -28,7 +28,7 @@ final class SystemLandscapeViewTest extends TestCase
         $this->assertEquals($view, SystemLandscapeView::hydrate($view->toArray(), $viewSet));
     }
 
-    public function test_hydrating_system_landscape_view_with_automatic_layout()
+    public function test_hydrating_system_landscape_view_with_automatic_layout() : void
     {
         $viewSet = new ViewSet(new Model());
         $view = $viewSet->createSystemLandscapeView('key', 'description');
@@ -37,7 +37,7 @@ final class SystemLandscapeViewTest extends TestCase
         $this->assertEquals($view, SystemLandscapeView::hydrate($view->toArray(), $viewSet));
     }
 
-    public function test_hydrating_system_landscape_view_with_added_people()
+    public function test_hydrating_system_landscape_view_with_added_people() : void
     {
         $viewSet = new ViewSet(new Model());
         $softwareSystem = $viewSet->getModel()->addSoftwareSystem('name', 'description');

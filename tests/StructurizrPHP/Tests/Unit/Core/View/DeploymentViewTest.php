@@ -20,7 +20,7 @@ use StructurizrPHP\StructurizrPHP\Core\View\ViewSet;
 
 final class DeploymentViewTest extends TestCase
 {
-    public function test_hydrating_deployment_view()
+    public function test_hydrating_deployment_view() : void
     {
         $model = new Model();
         $viewSet = new ViewSet($model);

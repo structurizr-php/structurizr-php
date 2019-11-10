@@ -19,14 +19,14 @@ use StructurizrPHP\StructurizrPHP\Core\View\Configuration;
 
 final class ConfigurationTest extends TestCase
 {
-    public function test_hydrating_configuration()
+    public function test_hydrating_configuration() : void
     {
         $configuration = new Configuration();
 
         $this->assertEquals($configuration, Configuration::hydrate($configuration->toArray()));
     }
 
-    public function test_hydrating_configuration_with_branding()
+    public function test_hydrating_configuration_with_branding() : void
     {
         $configuration = new Configuration();
         $configuration->setBranding(new Branding());

@@ -17,14 +17,14 @@ use StructurizrPHP\StructurizrPHP\Core\View\Branding;
 
 final class BrandingTest extends TestCase
 {
-    public function test_hydrating_empty_branding()
+    public function test_hydrating_empty_branding() : void
     {
         $branding = new Branding();
 
         $this->assertEquals($branding, Branding::hydrate($branding->toArray()));
     }
 
-    public function test_hydrating_branding_with_logo()
+    public function test_hydrating_branding_with_logo() : void
     {
         $branding = new Branding();
         $branding->setLogo(ImageUtils::getImageAsDataUri(__DIR__ . '/assets/black-pixel.png'));

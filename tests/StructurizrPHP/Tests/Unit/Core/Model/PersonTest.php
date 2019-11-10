@@ -22,14 +22,14 @@ use StructurizrPHP\StructurizrPHP\Core\Model\Property;
 
 final class PersonTest extends TestCase
 {
-    public function test_hydrating_person()
+    public function test_hydrating_person() : void
     {
         $person = new Person('1', $model = new Model());
 
         $this->assertEquals($person, Person::hydrate($person->toArray(), $model));
     }
 
-    public function test_hydrating_person_with_properties()
+    public function test_hydrating_person_with_properties() : void
     {
         $person = new Person('1', $model = new Model());
         $person->setProperties(new Properties(new Property('key', 'value')));
@@ -37,7 +37,7 @@ final class PersonTest extends TestCase
         $this->assertEquals($person, Person::hydrate($person->toArray(), $model));
     }
 
-    public function test_hydrating_person_with_relationship()
+    public function test_hydrating_person_with_relationship() : void
     {
         $model = new Model();
         $person = $model->addPerson('name', 'description', Location::unspecified());

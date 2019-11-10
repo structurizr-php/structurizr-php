@@ -21,7 +21,7 @@ use StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\AbstractWorkspaceTestBas
 
 final class DocumentationTest extends AbstractWorkspaceTestBase
 {
-    public function test_empty_title_added()
+    public function test_empty_title_added() : void
     {
         $softwareSystem = $this->model->addSoftwareSystem('Software System', 'Description');
         $testcase = new Documentation($this->model);
@@ -31,7 +31,7 @@ final class DocumentationTest extends AbstractWorkspaceTestBase
         $testcase->addSection($softwareSystem, '', Format::markdown(), 'test content');
     }
 
-    public function test_empty_content_added()
+    public function test_empty_content_added() : void
     {
         $softwareSystem = $this->model->addSoftwareSystem('Software System', 'Description');
         $testcase = new Documentation($this->model);
@@ -41,7 +41,7 @@ final class DocumentationTest extends AbstractWorkspaceTestBase
         $testcase->addSection($softwareSystem, 'test', Format::markdown(), '');
     }
 
-    public function test_addSection_ThrowsAnException_WhenTheRelatedElementIsNotPresentInTheAssociatedModel()
+    public function test_addSection_ThrowsAnException_WhenTheRelatedElementIsNotPresentInTheAssociatedModel() : void
     {
         try {
             $softwareSystem = $this->model->addSoftwareSystem('Software System', 'Description');
@@ -56,14 +56,14 @@ final class DocumentationTest extends AbstractWorkspaceTestBase
         }
     }
 
-    public function test_hydrating_empty_documentation()
+    public function test_hydrating_empty_documentation() : void
     {
         $documentation = new Documentation($this->model);
 
         $this->assertEquals($documentation, Documentation::hydrate($documentation->toArray(), $this->model));
     }
 
-    public function test_hydrating_with_section()
+    public function test_hydrating_with_section() : void
     {
         $softwareSystem = $this->model->addSoftwareSystem('Software System', 'Description');
         $documentation = new Documentation($this->model);
@@ -71,7 +71,7 @@ final class DocumentationTest extends AbstractWorkspaceTestBase
         $this->assertEquals($documentation, Documentation::hydrate($documentation->toArray(), $this->model));
     }
 
-    public function test_hydrating_with_template()
+    public function test_hydrating_with_template() : void
     {
         $softwareSystem = $this->model->addSoftwareSystem('Software System', 'Description');
         $documentation = new Documentation($this->model);

@@ -64,7 +64,7 @@ final class Person extends StaticStructureElement
         return $person;
     }
 
-    public function uses(SoftwareSystem $softwareSystem, string $description)
+    public function uses(SoftwareSystem $softwareSystem, string $description) : void
     {
         $this->getModel()->addRelationship($this, $softwareSystem, $description);
     }

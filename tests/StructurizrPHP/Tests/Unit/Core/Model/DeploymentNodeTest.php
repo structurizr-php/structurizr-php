@@ -22,7 +22,7 @@ use StructurizrPHP\StructurizrPHP\Core\Model\Tags;
 
 final class DeploymentNodeTest extends TestCase
 {
-    public function test_hydrating_deployment_node()
+    public function test_hydrating_deployment_node() : void
     {
         $node = new DeploymentNode('1', $model = new Model());
         $node->setEnvironment('prod');
@@ -35,7 +35,7 @@ final class DeploymentNodeTest extends TestCase
         $this->assertEquals($node, DeploymentNode::hydrate($node->toArray(), $model));
     }
 
-    public function test_hydrating_deployment_node_with_child()
+    public function test_hydrating_deployment_node_with_child() : void
     {
         $model = new Model();
         $node = $model->addDeploymentNode('vnet01', 'prod');
@@ -48,7 +48,7 @@ final class DeploymentNodeTest extends TestCase
         $this->assertEquals($node, DeploymentNode::hydrate($node->toArray(), $model));
     }
 
-    public function test_hydrating_deployment_node_with_child_with_relationships()
+    public function test_hydrating_deployment_node_with_child_with_relationships() : void
     {
         $model = new Model();
         $deploymentNode = $model->addDeploymentNode('node_01');

@@ -123,7 +123,7 @@ final class Section
         return $result;
     }
 
-    private function str_hashcode($s) : int
+    private function str_hashcode(string $s) : int
     {
         $hash = 0;
         $len = mb_strlen($s, 'UTF-8');

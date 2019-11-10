@@ -39,7 +39,7 @@ final class Documentation
         $this->model = $model;
     }
 
-    public function addSection(Element $element, string $title, Format $format, string $content)
+    public function addSection(Element $element, string $title, Format $format, string $content) : Section
     {
         Assertion::notEmpty($title);
         Assertion::notEmpty($content);
@@ -90,7 +90,7 @@ final class Documentation
         return count($this->sections) + 1;
     }
 
-    public function setTemplate(TemplateMetadata $template)
+    public function setTemplate(TemplateMetadata $template) : void
     {
         $this->template = $template;
     }
@@ -114,7 +114,7 @@ final class Documentation
     {
         $documentation = new self($model);
 
-        $documentationDataModel = new DocumentationDataModel($documentationData);
+        $documentationDataModel = new DocumentationDataObject($documentationData);
         $documentation->sections = $documentationDataModel->hydrateSection($model);
         if ($documentationDataModel->templateExist()) {
             $documentation->template = $documentationDataModel->hydrateTemplate();
@@ -124,7 +124,7 @@ final class Documentation
     }
 }
 
-final class DocumentationDataModel
+final class DocumentationDataObject
 {
     /**
      * @var array
@@ -136,6 +136,10 @@ final class DocumentationDataModel
         $this->documentationSetData = $documentationSetData;
     }
 
+    /**
+     * @param Model $model
+     * @return Section[]
+     */
     public function hydrateSection(Model $model) : array
     {
         return \array_map(

@@ -19,7 +19,7 @@ use StructurizrPHP\StructurizrPHP\Core\Model\Model;
 
 final class ContainerTest extends TestCase
 {
-    public function test_hydrating_container()
+    public function test_hydrating_container() : void
     {
         $model = new Model();
         $software = $model->addSoftwareSystem('software');

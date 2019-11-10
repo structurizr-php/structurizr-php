@@ -38,6 +38,9 @@ final class Tags
      */
     private $tags;
 
+    /**
+     * @param string ...$tags
+     */
     public function __construct(string ...$tags)
     {
         $this->tags = $tags;
