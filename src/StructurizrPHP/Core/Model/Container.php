@@ -37,12 +37,12 @@ final class Container extends StaticStructureElement
     /**
      * @param SoftwareSystem $parent
      */
-    public function setParent(SoftwareSystem $parent): void
+    public function setParent(SoftwareSystem $parent) : void
     {
         $this->parent = $parent;
     }
 
-    public function getParent(): SoftwareSystem
+    public function getParent() : SoftwareSystem
     {
         return $this->parent;
     }
@@ -50,12 +50,12 @@ final class Container extends StaticStructureElement
     /**
      * @param string|null $technology
      */
-    public function setTechnology(?string $technology): void
+    public function setTechnology(?string $technology) : void
     {
         $this->technology = $technology;
     }
 
-    public function toArray(): array
+    public function toArray() : array
     {
         $data = \array_merge(
             [

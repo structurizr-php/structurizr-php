@@ -41,7 +41,7 @@ final class Person extends StaticStructureElement
     /**
      * @param Location $location
      */
-    public function setLocation(Location $location): void
+    public function setLocation(Location $location) : void
     {
         $this->location = $location;
     }

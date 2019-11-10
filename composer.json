@@ -5,6 +5,7 @@
     "require": {
         "php": "^7.3",
         "ext-json": "*",
+        "ext-iconv": "*",
         "beberlei/assert": "^3.2",
         "psr/http-client": "^1.0",
         "doctrine/instantiator": "^1.2"

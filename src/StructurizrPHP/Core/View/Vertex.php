@@ -31,7 +31,7 @@ final class Vertex
         $this->y = $y;
     }
 
-    public function x(): int
+    public function x() : int
     {
         return $this->x;
     }
@@ -39,12 +39,12 @@ final class Vertex
     /**
      * @param int $x
      */
-    public function setX(int $x): void
+    public function setX(int $x) : void
     {
         $this->x = $x;
     }
 
-    public function y(): int
+    public function y() : int
     {
         return $this->y;
     }
@@ -52,7 +52,7 @@ final class Vertex
     /**
      * @param int $y
      */
-    public function setY(int $y): void
+    public function setY(int $y) : void
     {
         $this->y = $y;
     }

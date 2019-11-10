@@ -25,12 +25,12 @@ class Font
         $this->setUrl($url);
     }
 
-    public function getName(): string
+    public function getName() : string
     {
         return $this->name;
     }
 
-    public function getUrl(): string
+    public function getUrl() : string
     {
         return $this->url;
     }
@@ -38,14 +38,27 @@ class Font
     /**
      * @param string $name
      */
-    public function setName(string $name): void
+    public function setName(string $name) : void
     {
         $this->name = $name;
     }
 
-    public function setUrl(string $url): void
+    public function setUrl(string $url) : void
     {
         Assertion::url($url);
         $this->url = \rtrim($url, '/');
+    }
+
+    public function toArray() : array
+    {
+        return [
+            'name' => $this->name,
+            'url' => $this->url,
+        ];
+    }
+
+    public static function hydrate(array $fontData) : self
+    {
+        return new self($fontData['name'], $fontData['url']);
     }
 }

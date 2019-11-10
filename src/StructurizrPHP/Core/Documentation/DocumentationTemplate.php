@@ -18,9 +18,8 @@ use StructurizrPHP\StructurizrPHP\Core\Workspace;
 abstract class DocumentationTemplate
 {
     /**
-     * @var Workspace
+     * @var Documentation
      */
-    private $workspace;
     private $documentation;
 
     public function __construct(Workspace $workspace)
@@ -29,16 +28,15 @@ abstract class DocumentationTemplate
         $this->documentation->setTemplate($this->getMetadata());
     }
 
-    public function addSection(SoftwareSystem $softwareSystem, string $title, Format $format, string $content): Section
+    public function addSection(SoftwareSystem $softwareSystem, string $title, Format $format, string $content) : Section
     {
         return $this->add($softwareSystem, $title, $format, $content);
     }
 
-    private function add(Element $element, string $title, Format $format, string $content): Section
+    private function add(Element $element, string $title, Format $format, string $content) : Section
     {
         return $this->documentation->addSection($element, $title, $format, $content);
     }
 
-
-    abstract protected function getMetadata(): TemplateMetadata;
+    abstract protected function getMetadata() : TemplateMetadata;
 }

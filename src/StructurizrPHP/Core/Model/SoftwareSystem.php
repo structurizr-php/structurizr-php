@@ -47,7 +47,7 @@ final class SoftwareSystem extends StaticStructureElement
     /**
      * @return Container[]
      */
-    public function getContainers(): array
+    public function getContainers() : array
     {
         return $this->containers;
     }
@@ -68,7 +68,7 @@ final class SoftwareSystem extends StaticStructureElement
         return $this->getModel()->addContainer($this, $name, $description, $technology);
     }
 
-    public function findContainerWithName(string $containerName): ?Container
+    public function findContainerWithName(string $containerName) : ?Container
     {
         foreach ($this->containers as $container) {
             if ($container->getName() === $containerName) {
@@ -82,7 +82,7 @@ final class SoftwareSystem extends StaticStructureElement
     /**
      * @param Location $location
      */
-    public function setLocation(Location $location): void
+    public function setLocation(Location $location) : void
     {
         $this->location = $location;
     }

@@ -45,7 +45,7 @@ final class DynamicView extends View
         $this->element = $element;
     }
 
-    protected function getModel(): ?Model
+    protected function getModel() : ?Model
     {
         return $this->model;
     }

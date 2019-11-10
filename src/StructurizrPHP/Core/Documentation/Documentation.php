@@ -15,7 +15,6 @@ namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
 use StructurizrPHP\StructurizrPHP\Assertion;
 use StructurizrPHP\StructurizrPHP\Core\Model\Element;
 use StructurizrPHP\StructurizrPHP\Core\Model\Model;
-use StructurizrPHP\StructurizrPHP\Core\Model\Person;
 use StructurizrPHP\StructurizrPHP\Exception\InvalidArgumentException;
 
 final class Documentation
@@ -24,10 +23,12 @@ final class Documentation
      * @var Section[]
      */
     private $sections = [];
+
     /**
      * @var Model
      */
     private $model;
+
     /**
      * @var TemplateMetadata
      */
@@ -38,30 +39,18 @@ final class Documentation
         $this->model = $model;
     }
 
-    public static function hydrate(?array $documentationData, Model $model):Documentation
+    public function addSection(Element $element, string $title, Format $format, string $content)
     {
-        $documentation = new self($model);
+        Assertion::notEmpty($title);
+        Assertion::notEmpty($content);
 
-        $documentationDataModel = new DocumentationDataModel($documentationData);
-        $documentation->sections = $documentationDataModel->hydrateSection($model);
-        if ($documentationDataModel->templateExist()) {
-            $documentation->template = $documentationDataModel->hydrateTemplate();
-        }
-
-        return $documentation;
-    }
-
-    public function addSection(Element $element = null, string $title = null, Format $format = null, string $content = null)
-    {
-        if ($element !== null && !$this->model->contains($element)) {
+        if (!$this->model->contains($element)) {
             throw new InvalidArgumentException(
                 sprintf("The element named %s does not exist in the model associated with this documentation.", $element->getName())
             );
         }
-        $this->checkTitleIsSpecified($title);
-        $this->checkContentIsSpecified($content);
+
         $this->checkSectionIsUnique($element, $title);
-        $this->checkFormatIsSpecified($format);
 
         $section = new Section(
             $element,
@@ -75,21 +64,7 @@ final class Documentation
         return $section;
     }
 
-    private function checkTitleIsSpecified(string $title)
-    {
-        Assertion::minLength($title, 1);
-    }
-
-    private function checkContentIsSpecified(string $content)
-    {
-        Assertion::minLength($content, 1);
-    }
-
-    private function checkFormatIsSpecified(Format $format)
-    {
-    }
-
-    private function checkSectionIsUnique(Element $element = null, string $title = null)
+    private function checkSectionIsUnique(Element $element = null, string $title = null) : void
     {
         if ($element === null) {
             foreach ($this->sections as $section) {
@@ -110,7 +85,7 @@ final class Documentation
         }
     }
 
-    private function calculateOrder(): int
+    private function calculateOrder() : int
     {
         return count($this->sections) + 1;
     }
@@ -120,26 +95,35 @@ final class Documentation
         $this->template = $template;
     }
 
-    public function toArray(): array
+    public function toArray() : array
     {
         $data = [
-            'sections' => [],
+            'sections' => \array_map(function (Section $section) {
+                return $section->toArray();
+            }, $this->sections),
         ];
+
         if (isset($this->template)) {
             $data['template'] = $this->template->toArray();
-        }
-        if (!\count($this->sections)) {
-            return $data;
-        }
-        if (\count($this->sections)) {
-            $data['sections'] = \array_map(function (Section $section) {
-                return $section->toArray();
-            }, $this->sections);
         }
 
         return $data;
     }
+
+    public static function hydrate(?array $documentationData, Model $model) : Documentation
+    {
+        $documentation = new self($model);
+
+        $documentationDataModel = new DocumentationDataModel($documentationData);
+        $documentation->sections = $documentationDataModel->hydrateSection($model);
+        if ($documentationDataModel->templateExist()) {
+            $documentation->template = $documentationDataModel->hydrateTemplate();
+        }
+
+        return $documentation;
+    }
 }
+
 final class DocumentationDataModel
 {
     /**
@@ -166,12 +150,12 @@ final class DocumentationDataModel
         );
     }
 
-    public function hydrateTemplate():TemplateMetadata
+    public function hydrateTemplate() : TemplateMetadata
     {
         return TemplateMetadata::hydrate($this->documentationSetData['template']);
     }
 
-    public function templateExist()
+    public function templateExist() : bool
     {
         return isset($this->documentationSetData['template']);
     }

@@ -33,12 +33,12 @@ final class SystemLandscapeView extends StaticView
         $this->model = $model;
     }
 
-    protected function getModel(): ?Model
+    protected function getModel() : ?Model
     {
         return $this->model;
     }
 
-    public function addAllElements(): void
+    public function addAllElements() : void
     {
         $this->addAllSoftwareSystems();
         $this->addAllPeople();

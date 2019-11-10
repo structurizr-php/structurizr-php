@@ -20,14 +20,14 @@ final class SequentialIntegerIdGeneratorStrategy implements IdGenerator
      */
     private $id = 0;
 
-    public function generateId(): string
+    public function generateId() : string
     {
         $this->id += 1;
 
         return (string) $this->id;
     }
 
-    public function found(string $id): void
+    public function found(string $id) : void
     {
         if ((int) $id > $this->id) {
             $this->id = (int) $id;

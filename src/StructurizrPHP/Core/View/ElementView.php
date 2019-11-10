@@ -38,7 +38,7 @@ final class ElementView
         $this->element = $element;
     }
 
-    public function element(): Element
+    public function element() : Element
     {
         return $this->element;
     }
@@ -61,12 +61,12 @@ final class ElementView
         return $this;
     }
 
-    public function getX(): ?int
+    public function getX() : ?int
     {
         return $this->x;
     }
 
-    public function getY(): ?int
+    public function getY() : ?int
     {
         return $this->y;
     }

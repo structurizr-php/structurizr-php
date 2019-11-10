@@ -31,7 +31,7 @@ final class Role
     /**
      * @return string
      */
-    public function name(): string
+    public function name() : string
     {
         return $this->name;
     }
@@ -39,7 +39,7 @@ final class Role
     /**
      * @return static
      */
-    public static function readWrite(): self
+    public static function readWrite() : self
     {
         return new self('ReadWrite');
     }
@@ -47,7 +47,7 @@ final class Role
     /**
      * @return static
      */
-    public static function readOnly(): self
+    public static function readOnly() : self
     {
         return new self('ReadOnly');
     }
@@ -55,7 +55,7 @@ final class Role
     /**
      * @return string
      */
-    public function toString(): string
+    public function toString() : string
     {
         return $this->name;
     }

@@ -24,7 +24,7 @@ final class InteractionStyle
         $this->style = $type;
     }
 
-    public function style(): string
+    public function style() : string
     {
         return $this->style;
     }

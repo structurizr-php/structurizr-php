@@ -22,12 +22,12 @@ abstract class DeploymentElement extends Element
      */
     private $environment = self::DEFAULT_DEPLOYMENT_ENVIRONMENT;
 
-    public function getEnvironment(): string
+    public function getEnvironment() : string
     {
         return $this->environment;
     }
 
-    public function setEnvironment(string $environment): void
+    public function setEnvironment(string $environment) : void
     {
         $this->environment = $environment;
     }
@@ -39,7 +39,7 @@ abstract class DeploymentElement extends Element
         parent::hydrateElement($element, $elementData);
     }
 
-    public function toArray(): array
+    public function toArray() : array
     {
         return \array_merge(
             ['environment' => $this->environment],

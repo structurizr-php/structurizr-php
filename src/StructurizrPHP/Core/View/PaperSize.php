@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\View;
 
-use StructurizrPHP\StructurizrPHP\Assertion;
-
 /**
  * These represent paper sizes in pixels at 300dpi.
  */
@@ -27,7 +25,7 @@ final class PaperSize
         $this->size = $size;
     }
 
-    public function size(): string
+    public function size() : string
     {
         return $this->size;
     }

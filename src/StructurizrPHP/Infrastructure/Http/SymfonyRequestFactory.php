@@ -19,7 +19,7 @@ use StructurizrPHP\StructurizrPHP\Http\RequestFactory;
 
 final class SymfonyRequestFactory implements RequestFactory
 {
-    public function create(string $uri, string $method, array $headers, ?string $body): RequestInterface
+    public function create(string $uri, string $method, array $headers, ?string $body) : RequestInterface
     {
         return new Request(
             $method,

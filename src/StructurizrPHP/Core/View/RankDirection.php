@@ -22,7 +22,7 @@ final class RankDirection
         $this->direction = $direction;
     }
 
-    public function direction(): string
+    public function direction() : string
     {
         return $this->direction;
     }

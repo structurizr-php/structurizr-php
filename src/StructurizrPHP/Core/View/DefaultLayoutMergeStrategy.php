@@ -27,7 +27,7 @@ use StructurizrPHP\StructurizrPHP\Core\Model\Relationship;
  */
 final class DefaultLayoutMergeStrategy implements LayoutMergeStrategy
 {
-    public function copyLayoutInformation(View $sourceView, View $destinationView): void
+    public function copyLayoutInformation(View $sourceView, View $destinationView) : void
     {
         if (!$destinationView->getPaperSize() && $sourceView->getPaperSize()) {
             $destinationView->setPaperSize($sourceView->getPaperSize());

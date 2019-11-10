@@ -36,7 +36,7 @@ final class Credentials
         $this->apiSecret = $apiSecret;
     }
 
-    public function apiKey(): string
+    public function apiKey() : string
     {
         return $this->apiKey;
     }

@@ -15,7 +15,7 @@ namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
 interface IdGenerator
 {
-    public function generateId(): string;
+    public function generateId() : string;
 
-    public function found(string $id): void;
+    public function found(string $id) : void;
 }

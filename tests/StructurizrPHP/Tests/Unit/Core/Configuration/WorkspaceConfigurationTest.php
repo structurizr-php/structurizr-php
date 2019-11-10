@@ -20,14 +20,14 @@ use StructurizrPHP\StructurizrPHP\Exception\AssertionException;
 
 class WorkspaceConfigurationTest extends TestCase
 {
-    public function test_addUser(): void
+    public function test_addUser() : void
     {
         $workspaceConfiguration = new WorkspaceConfiguration();
         $workspaceConfiguration->addUser('test', Role::readOnly());
         $this->assertCount(1, $workspaceConfiguration->users());
     }
 
-    public function test_addUser_empty_username(): void
+    public function test_addUser_empty_username() : void
     {
         $workspaceConfiguration = new WorkspaceConfiguration();
         $this->expectException(AssertionException::class);
