@@ -60,7 +60,7 @@ final class ViewSet
         $this->model = $model;
     }
 
-    public function getModel(): Model
+    public function getModel() : Model
     {
         return $this->model;
     }
@@ -106,7 +106,7 @@ final class ViewSet
      * <li>Containers that reside inside the specified software system</li>
      * </ul>
      */
-    public function createDynamicView(SoftwareSystem $softwareSystem, string $key, string $description): DynamicView
+    public function createDynamicView(SoftwareSystem $softwareSystem, string $key, string $description) : DynamicView
     {
         $view = DynamicView::softwareSystem($softwareSystem, $key, $description, $this);
 
@@ -126,7 +126,7 @@ final class ViewSet
      * <li>Components within the specified container</li>
      * </ul>
      */
-    public function createContainerDynamicView(Container $container, string $key, string $description): DynamicView
+    public function createContainerDynamicView(Container $container, string $key, string $description) : DynamicView
     {
         $view = DynamicView::container($container, $key, $description, $this);
 
@@ -143,7 +143,7 @@ final class ViewSet
         return $view;
     }
 
-    public function getConfiguration(): Configuration
+    public function getConfiguration() : Configuration
     {
         return $this->configuration;
     }

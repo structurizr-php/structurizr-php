@@ -20,7 +20,7 @@ class StructurizrDocumentationTemplate extends DocumentationTemplate
         $this->addSection($softwareSystem, "Context", $format, $content);
     }
 
-    protected function getMetadata(): TemplateMetadata
+    protected function getMetadata() : TemplateMetadata
     {
         return new TemplateMetadata("Software Guidebook", "Simon Brown", "https://leanpub.com/visualising-software-architecture");
     }

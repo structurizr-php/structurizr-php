@@ -46,7 +46,7 @@ final class ContainerInstance extends DeploymentElement
         $this->addTags(Tags::CONTAINER_INSTANCE);
     }
 
-    public function getContainer(): Container
+    public function getContainer() : Container
     {
         return $this->container;
     }
@@ -56,7 +56,7 @@ final class ContainerInstance extends DeploymentElement
         return $this->container->getCanonicalName() . "[" . $this->instanceId . "]";
     }
 
-    public function toArray(): array
+    public function toArray() : array
     {
         $data = \array_merge(
             [

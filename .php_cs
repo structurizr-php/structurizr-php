@@ -28,5 +28,6 @@ return PhpCsFixer\Config::create()
         'blank_line_before_statement' => true,
         'trailing_comma_in_multiline_array' => true,
         'strict_comparison' => true,
+        'return_type_declaration' => ['space_before' => 'one']
     ])
     ->setFinder($finder);

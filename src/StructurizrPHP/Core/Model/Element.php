@@ -52,7 +52,7 @@ abstract class Element extends ModelItem
         $this->relationships = [];
     }
 
-    public function getName(): ?string
+    public function getName() : ?string
     {
         return $this->name;
     }
@@ -67,7 +67,7 @@ abstract class Element extends ModelItem
         return \mb_strtolower(\str_replace(self::CANONICAL_NAME_SEPARATOR, "", $name));
     }
 
-    public function description(): ?string
+    public function description() : ?string
     {
         return $this->description;
     }
@@ -80,7 +80,7 @@ abstract class Element extends ModelItem
     /**
      * @return Relationship[]
      */
-    public function getRelationships(): array
+    public function getRelationships() : array
     {
         return $this->relationships;
     }
@@ -96,17 +96,17 @@ abstract class Element extends ModelItem
         throw new RuntimeException(\sprintf("There is no efferent relationship between %s and %s", $this->id(), $element->id()));
     }
 
-    public function getModel(): Model
+    public function getModel() : Model
     {
         return $this->model;
     }
 
-    public function setName(?string $name): void
+    public function setName(?string $name) : void
     {
         $this->name = $name;
     }
 
-    public function setUrl(?string $url): void
+    public function setUrl(?string $url) : void
     {
         if ($url) {
             Assertion::url($url);
@@ -115,7 +115,7 @@ abstract class Element extends ModelItem
         $this->url = $url;
     }
 
-    public function setDescription(?string $description): void
+    public function setDescription(?string $description) : void
     {
         $this->description = $description;
     }

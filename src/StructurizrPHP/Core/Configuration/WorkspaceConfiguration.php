@@ -31,7 +31,7 @@ final class WorkspaceConfiguration
     /**
      * @return User[]
      */
-    public function users(): array
+    public function users() : array
     {
         return $this->users;
     }
@@ -42,7 +42,7 @@ final class WorkspaceConfiguration
      *
      * @throws AssertionFailedException
      */
-    public function addUser(string $username, Role $role): void
+    public function addUser(string $username, Role $role) : void
     {
         Assertion::notEmpty($username, 'A username must be specified.');
         $this->users[] = new User($username, $role);

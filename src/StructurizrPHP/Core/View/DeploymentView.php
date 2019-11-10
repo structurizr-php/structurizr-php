@@ -37,7 +37,7 @@ final class DeploymentView extends View
         $this->model = $softwareSystem->getModel();
     }
 
-    public function setEnvironment(?string $environment): void
+    public function setEnvironment(?string $environment) : void
     {
         $this->environment = $environment;
     }
@@ -61,7 +61,7 @@ final class DeploymentView extends View
         }
     }
 
-    public function addRelationship(Relationship $relationship): ?RelationshipView
+    public function addRelationship(Relationship $relationship) : ?RelationshipView
     {
         return parent::addRelationship($relationship);
     }

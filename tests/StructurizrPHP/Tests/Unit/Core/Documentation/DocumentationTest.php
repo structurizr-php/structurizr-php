@@ -63,7 +63,7 @@ final class DocumentationTest extends AbstractWorkspaceTestBase
     }
 
     /**/
-    public function test_addSection_ThrowsAnException_WhenTheRelatedElementIsNotPresentInTheAssociatedModel(): void
+    public function test_addSection_ThrowsAnException_WhenTheRelatedElementIsNotPresentInTheAssociatedModel() : void
     {
         try {
             $softwareSystem = $this->model->addSoftwareSystem('Software System', 'Description');

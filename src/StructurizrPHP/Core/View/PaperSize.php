@@ -27,7 +27,7 @@ final class PaperSize
         $this->size = $size;
     }
 
-    public function size(): string
+    public function size() : string
     {
         return $this->size;
     }

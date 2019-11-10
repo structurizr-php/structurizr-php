@@ -38,7 +38,7 @@ final class User
     /**
      * @return string
      */
-    public function username(): string
+    public function username() : string
     {
         return $this->username;
     }
@@ -46,7 +46,7 @@ final class User
     /**
      * @return Role
      */
-    public function role(): Role
+    public function role() : Role
     {
         return $this->role;
     }
@@ -55,7 +55,7 @@ final class User
      * @param User $user
      * @return bool
      */
-    public function equals(self $user): bool
+    public function equals(self $user) : bool
     {
         return $this->username === $user->username() &&
             $this->role()->toString() === $user->role()->toString();
@@ -64,7 +64,7 @@ final class User
     /**
      * @return string
      */
-    public function toString(): string
+    public function toString() : string
     {
         return 'User {' .
             'username=\'' . $this->username . '\'' .

@@ -63,17 +63,17 @@ final class Workspace
         $this->documentation = new Documentation($this->model);
     }
 
-    public function id(): string
+    public function id() : string
     {
         return $this->id;
     }
 
-    public function getModel(): Model
+    public function getModel() : Model
     {
         return $this->model;
     }
 
-    public function getViews(): ViewSet
+    public function getViews() : ViewSet
     {
         return $this->viewSet;
     }
@@ -107,7 +107,7 @@ final class Workspace
         return $workspace;
     }
 
-    public function getDocumentation():Documentation
+    public function getDocumentation() : Documentation
     {
         return  $this->documentation;
     }

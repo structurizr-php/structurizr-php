@@ -69,32 +69,32 @@ final class RelationshipView
         }
     }
 
-    public function getRelationship(): ?Relationship
+    public function getRelationship() : ?Relationship
     {
         return $this->relationship;
     }
 
-    public function setDescription(?string $description): void
+    public function setDescription(?string $description) : void
     {
         $this->description = $description;
     }
 
-    public function setVertices(Vertex ...$vertices): void
+    public function setVertices(Vertex ...$vertices) : void
     {
         $this->vertices = $vertices;
     }
 
-    public function getDescription(): ?string
+    public function getDescription() : ?string
     {
         return $this->description;
     }
 
-    public function getOrder(): ?string
+    public function getOrder() : ?string
     {
         return $this->order;
     }
 
-    public function setOrder(string $order): void
+    public function setOrder(string $order) : void
     {
         $this->order = $order;
     }
@@ -102,7 +102,7 @@ final class RelationshipView
     /**
      * @param Routing|null $routing
      */
-    public function setRouting(?Routing $routing): void
+    public function setRouting(?Routing $routing) : void
     {
         $this->routing = $routing;
     }

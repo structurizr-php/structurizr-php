@@ -11,25 +11,27 @@
 
 namespace StructurizrPHP\StructurizrPHP\Core\View;
 
-use Assert\Assert;
 use StructurizrPHP\StructurizrPHP\Assertion;
 
 class Branding
 {
-    private $logo;
     /**
-     * @var Font
+     * @var string|null
+     */
+    private $logo;
+
+    /**
+     * @var Font|null
      */
     private $font;
 
-    public static function hydrate(array $brandingData):self
+    public function __construct(?string $logo = null, ?Font $font = null)
     {
-        $branding = new self();
-        if (isset($brandingData['logo'])) {
-            $branding->setLogo($brandingData['logo']);
+        if ($this->logo) {
+            $this->setLogo($logo);
         }
 
-        return $branding;
+        $this->font = $font;
     }
 
     public function setLogo(string $url)
@@ -38,10 +40,33 @@ class Branding
         $this->logo = $url;
     }
 
-    public function toArray(): array
+    public function toArray() : array
     {
-        return [
-            'logo' => $this->logo,
-        ];
+        $data = [];
+
+        if ($this->logo) {
+            $data['logo'] = $this->logo;
+        }
+
+        if ($this->font) {
+            $data['font'] = $this->font->toArray();
+        }
+
+        return $data;
+    }
+
+    public static function hydrate(array $brandingData) : self
+    {
+        $branding = new self();
+
+        if (isset($brandingData['logo'])) {
+            $branding->setLogo($brandingData['logo']);
+        }
+
+        if (isset($brandingData['font'])) {
+            $branding->font = Font::hydrate($brandingData['font']);
+        }
+
+        return $branding;
     }
 }

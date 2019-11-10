@@ -19,7 +19,7 @@ use StructurizrPHP\StructurizrPHP\Core\Configuration\User;
 
 class UserTest extends TestCase
 {
-    public function test_equals_the_same_users(): void
+    public function test_equals_the_same_users() : void
     {
         $user = new User('test', Role::readOnly());
         $anotherUser = new User('test', Role::readOnly());
@@ -27,7 +27,7 @@ class UserTest extends TestCase
         $this->assertTrue($user->equals($anotherUser));
     }
 
-    public function test_equals_different_role(): void
+    public function test_equals_different_role() : void
     {
         $user = new User('test', Role::readOnly());
         $anotherUser = new User('test', Role::readWrite());
@@ -35,7 +35,7 @@ class UserTest extends TestCase
         $this->assertFalse($user->equals($anotherUser));
     }
 
-    public function test_equals_different_username(): void
+    public function test_equals_different_username() : void
     {
         $user = new User('test', Role::readOnly());
         $anotherUser = new User('testTest', Role::readOnly());
@@ -43,7 +43,7 @@ class UserTest extends TestCase
         $this->assertFalse($user->equals($anotherUser));
     }
 
-    public function test_toString(): void
+    public function test_toString() : void
     {
         $user = new User('test', Role::readOnly());
 

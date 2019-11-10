@@ -65,7 +65,7 @@ final class Model
         $this->deploymentNodes = [];
     }
 
-    public function idGenerator(): IdGenerator
+    public function idGenerator() : IdGenerator
     {
         return $this->idGenerator;
     }
@@ -81,7 +81,7 @@ final class Model
     /**
      * @return Person[]
      */
-    public function people(): array
+    public function people() : array
     {
         return $this->people;
     }
@@ -89,7 +89,7 @@ final class Model
     /**
      * @return SoftwareSystem[]
      */
-    public function softwareSystems(): array
+    public function softwareSystems() : array
     {
         return $this->softwareSystems;
     }
@@ -97,7 +97,7 @@ final class Model
     /**
      * @return DeploymentNode[]
      */
-    public function getDeploymentNodes(): array
+    public function getDeploymentNodes() : array
     {
         return $this->deploymentNodes;
     }
@@ -112,6 +112,16 @@ final class Model
         return \array_key_exists($id, $this->relationshipsById);
     }
 
+    public function contains(Element $element) : bool
+    {
+        return in_array($element, $this->elementsById, true);
+    }
+
+    public function isEmpty() : bool
+    {
+        return !\count($this->people) && !\count($this->softwareSystems) && !\count($this->deploymentNodes);
+    }
+
     public function getRelationship(string $id) : Relationship
     {
         if (\array_key_exists($id, $this->relationshipsById)) {
@@ -119,33 +129,6 @@ final class Model
         }
 
         throw new InvalidArgumentException(\sprintf("Relationship with id %s does not exists", $id));
-        /*
-        Assertion::notEmpty($id);
-
-        foreach ($this->softwareSystems as $softwareSystem) {
-            foreach ($softwareSystem->getRelationships() as $relationship) {
-                if ($relationship->id() === $id) {
-                    return $relationship;
-                }
-
-                foreach ($softwareSystem->containers() as $container) {
-                    foreach ($container->getRelationships() as $relationship) {
-                        if ($relationship->id() === $id) {
-                            return $relationship;
-                        }
-                    }
-                }
-            }
-        }
-
-        foreach ($this->people as $people) {
-            foreach ($people->getRelationships() as $relationship) {
-                if ($relationship->id() === $id) {
-                    return $relationship;
-                }
-            }
-        }
-        */
     }
 
     public function getElement(string $id) : Element
@@ -155,57 +138,6 @@ final class Model
         }
 
         throw new RuntimeException(\sprintf("Element with id \"%s\" does not exists.", $id));
-        /*
-        foreach ($this->people as $person) {
-            if ($person->id() === $id) {
-                return $person;
-            }
-        }
-
-        foreach ($this->softwareSystems as $softwareSystem) {
-            if ($softwareSystem->id() === $id) {
-                return $softwareSystem;
-            }
-
-            foreach ($softwareSystem->containers() as $container) {
-                if ($container->id() === $id) {
-                    return $container;
-                }
-            }
-        }
-
-        $findInDeploymentNode = function(DeploymentNode $deploymentNode, string $id) use (&$findInDeploymentNode) :?Element {
-            if ($deploymentNode->id() === $id) {
-                return $deploymentNode;
-            }
-
-            foreach ($deploymentNode->getContainerInstances() as $containerInstance) {
-                if ($containerInstance->id() === $id) {
-                    return $containerInstance;
-                }
-            }
-
-            foreach ($deploymentNode->getChildren() as $child) {
-                $result = $findInDeploymentNode($child, $id);
-
-                if ($result) {
-                    return $result;
-                }
-            }
-
-            return null;
-        };
-
-        foreach ($this->deploymentNodes as $deploymentNode) {
-            $result = $findInDeploymentNode($deploymentNode, $id);
-
-            if ($result) {
-                return $result;
-            }
-        }
-
-        throw new RuntimeException(\sprintf("Element with id \"%s\" does not exists.", $id));
-        */
     }
 
     public function addRelationship(Element $source, Element $destination, string $description = "", string $technology = null, InteractionStyle $interactionStyle = null) : Relationship
@@ -540,15 +472,6 @@ final class Model
         );
 
         return $model;
-    }
-
-    public function contains(Element $element): bool
-    {
-        return in_array($element, $this->elementsById, true);
-    }
-
-    public function isEmpty()
-    {
     }
 }
 

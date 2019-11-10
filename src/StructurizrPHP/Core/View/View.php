@@ -100,7 +100,7 @@ abstract class View
     /**
      * @param string|null $title
      */
-    public function setTitle(?string $title): void
+    public function setTitle(?string $title) : void
     {
         $this->title = $title;
     }
@@ -108,7 +108,7 @@ abstract class View
     /**
      * @return ElementView[]
      */
-    public function getElements(): array
+    public function getElements() : array
     {
         return $this->elementViews;
     }
@@ -173,7 +173,7 @@ abstract class View
         $this->paperSize = $paperSize;
     }
 
-    public function getPaperSize(): ?PaperSize
+    public function getPaperSize() : ?PaperSize
     {
         return $this->paperSize;
     }

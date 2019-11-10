@@ -36,17 +36,17 @@ class SequenceCounter
         $this->sequence++;
     }
 
-    public function getParent(): ?SequenceCounter
+    public function getParent() : ?SequenceCounter
     {
         return $this->parent;
     }
 
-    public function getSequence(): int
+    public function getSequence() : int
     {
         return $this->sequence;
     }
 
-    public function setSequence(int $sequence): void
+    public function setSequence(int $sequence) : void
     {
         $this->sequence = $sequence;
     }

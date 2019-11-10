@@ -27,7 +27,7 @@ final class SystemContextView extends StaticView
         parent::__construct($softwareSystem, $description, $key, $viewSet);
     }
 
-    public function addAllElements(): void
+    public function addAllElements() : void
     {
         $this->addAllSoftwareSystems();
         $this->addAllPeople();

@@ -23,6 +23,7 @@ final class ModelTest extends TestCase
         $model = new Model();
 
         $this->assertEquals($model, Model::hydrate($model->toArray()));
+        $this->assertTrue($model->isEmpty());
     }
 
     public function test_hydrating_model_with_people()

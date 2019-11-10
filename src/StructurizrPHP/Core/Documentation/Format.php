@@ -20,23 +20,23 @@ class Format
         $this->name = $name;
     }
 
-    public static function hydrate(string $name): self
-    {
-        return new self($name);
-    }
-
-    public function name(): string
+    public function name() : string
     {
         return $this->name;
     }
 
-    public static function markdown(): self
+    public static function markdown() : self
     {
         return new self('Markdown');
     }
 
-    public static function asciiDoc(): self
+    public static function asciiDoc() : self
     {
         return new self('AsciiDoc');
+    }
+
+    public static function hydrate(string $name) : self
+    {
+        return new self($name);
     }
 }

@@ -13,27 +13,30 @@ namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
 
 use StructurizrPHP\StructurizrPHP\Core\Model\Element;
 
-class Section
+final class Section
 {
     private $elementId;
-    private $type;
 
     /**
      * @var Element
      */
     private $element;
+
     /**
      * @var string
      */
     private $title;
+
     /**
      * @var int
      */
     private $order;
+
     /**
      * @var Format
      */
     private $format;
+
     /**
      * @var string
      */
@@ -48,79 +51,62 @@ class Section
         $this->content = $content;
     }
 
-    public function getElement(): Element
+    public function getElement() : Element
     {
         return $this->element;
     }
 
-    public function getTitle(): string
+    public function getTitle() : string
     {
         return $this->title;
     }
 
-    public function getOrder(): int
+    public function getOrder() : int
     {
         return $this->order;
     }
 
-    public function getFormat(): Format
+    public function getFormat() : Format
     {
         return $this->format;
     }
 
-    public function getContent(): string
+    public function getContent() : string
     {
         return $this->content;
     }
 
-    public function setOrder(int $order): void
+    public function setOrder(int $order) : void
     {
         $this->order = $order;
     }
 
-    public function setFormat(Format $format): void
+    public function setFormat(Format $format) : void
     {
         $this->format = $format;
     }
 
-    public function setContent(string $content): void
+    public function setContent(string $content) : void
     {
         $this->content = $content;
     }
 
-    public function setElement(Element $element): void
+    public function setElement(Element $element) : void
     {
         $this->element = $element;
     }
 
-    public function setTitle(string $title): void
+    public function setTitle(string $title) : void
     {
         $this->title = $title;
     }
 
-    public function getElementId(): string
+    public function getElementId() : string
     {
-        if ($this->element !== null) {
-            return $this->element->getId();
-        }
-
-        return $this->elementId;
+        return $this->element->id();
     }
 
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): void
-    {
-        $this->type = $type;
-        $this->setTitle($type); // backwards compatibility for older clients
-    }
-
-
-    public function equals(Section $object): bool
+    public function equals(Section $object) : bool
     {
         if ($this === $object) {
             return true;
@@ -133,7 +119,7 @@ class Section
         }
     }
 
-    public function hashCode(): int
+    public function hashCode() : int
     {
         $result = $this->getElementId() !== null ? $this->str_hashcode($this->getElementId()) : 0;
         $result = 31 * $result + $this->str_hashcode($this->getTitle());
@@ -141,7 +127,7 @@ class Section
         return $result;
     }
 
-    private function str_hashcode($s): int
+    private function str_hashcode($s) : int
     {
         $hash = 0;
         $len = mb_strlen($s, 'UTF-8');
@@ -158,21 +144,18 @@ class Section
         return $hash;
     }
 
-    public function toArray(): array
+    public function toArray() : array
     {
         return [
-
             "elementId" => $this->element->id(),
             "title" => $this->title,
             "order" => $this->order,
             "format" => $this->format->name(),
             "content" => $this->content,
-//            "group" => '1',
-//            "number" => 1
         ];
     }
 
-    public static function hydrate(array $sectionData, Element $element, Format $format):self
+    public static function hydrate(array $sectionData, Element $element, Format $format) : self
     {
         return new self(
             $element,

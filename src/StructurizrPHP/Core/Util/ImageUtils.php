@@ -15,7 +15,7 @@ use StructurizrPHP\StructurizrPHP\Assertion;
 
 class ImageUtils
 {
-    public static function getImageAsDataUri(string $imagePath): string
+    public static function getImageAsDataUri(string $imagePath) : string
     {
         Assertion::file($imagePath);
         $type = pathinfo($imagePath, PATHINFO_EXTENSION);

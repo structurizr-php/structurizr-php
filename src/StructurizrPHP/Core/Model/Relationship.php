@@ -72,52 +72,52 @@ final class Relationship extends ModelItem
     /**
      * @param InteractionStyle $interactionStyle
      */
-    public function setInteractionStyle(InteractionStyle $interactionStyle): void
+    public function setInteractionStyle(InteractionStyle $interactionStyle) : void
     {
         $this->interactionStyle = $interactionStyle;
     }
 
-    public function getInteractionStyle(): InteractionStyle
+    public function getInteractionStyle() : InteractionStyle
     {
         return $this->interactionStyle;
     }
 
-    public function getTechnology(): ?string
+    public function getTechnology() : ?string
     {
         return $this->technology;
     }
 
-    public function setTechnology(?string $technology): void
+    public function setTechnology(?string $technology) : void
     {
         $this->technology = $technology;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description) : void
     {
         $this->description = $description;
     }
 
-    public function getDestination(): Element
+    public function getDestination() : Element
     {
         return $this->destination;
     }
 
-    public function getDescription(): string
+    public function getDescription() : string
     {
         return $this->description;
     }
 
-    public function setLinkedRelationshipId(?string $linkedRelationshipId): void
+    public function setLinkedRelationshipId(?string $linkedRelationshipId) : void
     {
         $this->linkedRelationshipId = $linkedRelationshipId;
     }
 
-    public function getSource(): Element
+    public function getSource() : Element
     {
         return $this->source;
     }
 
-    public function toArray(): array
+    public function toArray() : array
     {
         $data = \array_merge(
             [

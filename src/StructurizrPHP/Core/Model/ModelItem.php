@@ -41,12 +41,12 @@ abstract class ModelItem
         $this->properties = new Properties();
     }
 
-    public function id(): string
+    public function id() : string
     {
         return $this->id;
     }
 
-    public function setTags(Tags $tags): void
+    public function setTags(Tags $tags) : void
     {
         $this->tags = $tags;
     }
@@ -58,7 +58,7 @@ abstract class ModelItem
         }
     }
 
-    public function setProperties(Properties $properties): void
+    public function setProperties(Properties $properties) : void
     {
         $this->properties = $properties;
     }

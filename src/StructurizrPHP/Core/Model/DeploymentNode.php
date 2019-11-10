@@ -65,22 +65,22 @@ final class DeploymentNode extends DeploymentElement
         $this->containerInstances = [];
     }
 
-    public function setInstances(int $instances): void
+    public function setInstances(int $instances) : void
     {
         $this->instances = $instances;
     }
 
-    public function setTechnology(?string $technology): void
+    public function setTechnology(?string $technology) : void
     {
         $this->technology = $technology;
     }
 
-    public function setParent(DeploymentNode $parent): void
+    public function setParent(DeploymentNode $parent) : void
     {
         $this->parent = $parent;
     }
 
-    public function getParent(): ?DeploymentNode
+    public function getParent() : ?DeploymentNode
     {
         return $this->parent;
     }
@@ -88,7 +88,7 @@ final class DeploymentNode extends DeploymentElement
     /**
      * @return ContainerInstance[]
      */
-    public function getContainerInstances(): array
+    public function getContainerInstances() : array
     {
         return $this->containerInstances;
     }
@@ -96,7 +96,7 @@ final class DeploymentNode extends DeploymentElement
     /**
      * @return self[]
      */
-    public function getChildren(): array
+    public function getChildren() : array
     {
         return $this->children;
     }
@@ -162,7 +162,7 @@ final class DeploymentNode extends DeploymentElement
         return $data;
     }
 
-    public function tags(): Tags
+    public function tags() : Tags
     {
         // deployment nodes don't have any tags
         return new Tags();

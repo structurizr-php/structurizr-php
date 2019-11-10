@@ -29,7 +29,7 @@ class AbstractWorkspaceTestBase extends TestCase
      */
     protected $views;
 
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->workspace = new Workspace(1, "Name", "Description");
         $this->model = $this->workspace->getModel();
