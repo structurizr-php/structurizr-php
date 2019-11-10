@@ -112,16 +112,12 @@ final class Section
             return true;
         }
 
-        if ($this->getElementId() !== null) {
-            return $this->getElementId() === $object->getElementId() && $this->getTitle() === $object->getTitle();
-        } else {
-            return $this->getTitle() === $object->getTitle();
-        }
+        return $this->getElementId() === $object->getElementId() && $this->getTitle() === $object->getTitle();
     }
 
     public function hashCode() : int
     {
-        $result = $this->getElementId() !== null ? $this->str_hashcode($this->getElementId()) : 0;
+        $result = $this->str_hashcode($this->getElementId());
         $result = 31 * $result + $this->str_hashcode($this->getTitle());
 
         return $result;
@@ -136,7 +132,7 @@ final class Section
         }
         for ($i = 0; $i < $len; $i++) {
             $c = mb_substr($s, $i, 1, 'UTF-8');
-            $cc = unpack('V', iconv('UTF-8', 'UCS-4LE', $c))[1];
+            $cc = unpack('V', (string) iconv('UTF-8', 'UCS-4LE', $c))[1];
             $hash = (($hash << 5) - $hash) + $cc;
             $hash &= $hash; // 16bit > 32bit
         }

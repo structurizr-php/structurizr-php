@@ -12,6 +12,8 @@
 namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core;
 
 use PHPUnit\Framework\TestCase;
+use StructurizrPHP\StructurizrPHP\Core\Model\Model;
+use StructurizrPHP\StructurizrPHP\Core\View\ViewSet;
 use StructurizrPHP\StructurizrPHP\Core\Workspace;
 
 class AbstractWorkspaceTestBase extends TestCase
@@ -22,18 +24,18 @@ class AbstractWorkspaceTestBase extends TestCase
     protected $workspace;
 
     /**
-     * @var string
+     * @var Model
      */
     protected $model;
 
     /**
-     * @var string
+     * @var ViewSet
      */
     protected $views;
 
     protected function setUp() : void
     {
-        $this->workspace = new Workspace(1, "Name", "Description");
+        $this->workspace = new Workspace("1", "Name", "Description");
         $this->model = $this->workspace->getModel();
         $this->views = $this->workspace->getViews();
     }

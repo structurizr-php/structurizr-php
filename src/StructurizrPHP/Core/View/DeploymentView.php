@@ -102,7 +102,7 @@ final class DeploymentView extends View
     public static function hydrate(array $viewData, ViewSet $viewSet) : self
     {
         $view = new self(
-            $viewSet->getModel()->getElement($viewData['softwareSystemId']),
+            $viewSet->getModel()->getSoftwareSystem($viewData['softwareSystemId']),
             $viewData['description'],
             $viewData['key'],
             $viewSet

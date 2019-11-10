@@ -68,7 +68,7 @@ final class Documentation
     {
         if ($element === null) {
             foreach ($this->sections as $section) {
-                if ($section->getElement() === null && $title === $section->getTitle()) {
+                if ($title === $section->getTitle()) {
                     throw new InvalidArgumentException(
                         sprintf("A section with a title of %s already exists for this workspace.", $title)
                     );
@@ -76,7 +76,7 @@ final class Documentation
             }
         } else {
             foreach ($this->sections as $section) {
-                if ($element->getId() === $section->getElementId() && $title === $section->getTitle()) {
+                if ($title === $section->getTitle()) {
                     throw new InvalidArgumentException(
                         sprintf("A section with a title of %s already exists for the element named %s.", $title, $element->getName())
                     );
