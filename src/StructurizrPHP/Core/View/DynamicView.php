@@ -39,10 +39,23 @@ final class DynamicView extends View
 
     public function __construct(Model $model, string $key, string $description, ViewSet $viewSet, ?Element $element = null)
     {
-        parent::__construct($element, $key, $description, $viewSet);
+        if ($element instanceof Container) {
+            parent::__construct($element->getParent(), $key, $description, $viewSet);
+        }
+
+        if ($element instanceof SoftwareSystem) {
+            parent::__construct($element, $key, $description, $viewSet);
+        }
+
         $this->model = $model;
         $this->sequenceNumber = new SequenceNumber();
-        $this->element = $element;
+        if ($element) {
+            if ($element instanceof SoftwareSystem || $element instanceof Container) {
+                $this->element = $element;
+            } else {
+                throw new InvalidArgumentException(\sprintf("Dynamic View accepts only SoftwareSystem or Container types for Element, %s given", \get_class($element)));
+            }
+        }
     }
 
     protected function getModel() : ?Model
@@ -97,7 +110,7 @@ final class DynamicView extends View
             }
 
             if ($elementToBeAdded instanceof Container && !$elementToBeAdded->getParent()->equals($this->element)) {
-                throw new InvalidArgumentException(\sprintf("Only containers that reside inside \"%s\" can be added to this view.", + $this->element->getName()));
+                throw new InvalidArgumentException(\sprintf("Only containers that reside inside \"%s\" can be added to this view.", $this->element->getName()));
             }
             /* TODO: Add with Component
              *

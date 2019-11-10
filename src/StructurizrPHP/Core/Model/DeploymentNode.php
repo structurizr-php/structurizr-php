@@ -184,7 +184,8 @@ final class DeploymentNode extends DeploymentElement
         $deploymentNode->setName($deploymentNodeData['name']);
 
         if (isset($deploymentNodeData['parent'])) {
-            $deploymentNode->parent = $model->getElement($deploymentNodeData['parent']);
+            $element = $model->getElement($deploymentNodeData['parent']);
+            $deploymentNode->parent = ($element instanceof DeploymentNode) ? $element : null;
         }
 
         if (isset($deploymentNodeData['technology'])) {

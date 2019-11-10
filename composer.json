@@ -25,7 +25,8 @@
         "nyholm/psr7": "^1.2",
         "friendsofphp/php-cs-fixer": "^2.15",
         "phpunit/phpunit": "^8.4",
-        "symfony/var-dumper": "^4.3"
+        "symfony/var-dumper": "^4.3",
+        "phpstan/phpstan": "^0.11.19"
     },
     "suggest": {
         "symfony/http-client": "Psr18Client http factory works out of the box with StructurizrPHP\\StructurizrPHP\\SDK\\Client",
@@ -39,8 +40,12 @@
         }
     ],
     "scripts": {
+        "phpstan": [
+            "phpstan analyse -c phpstan.neon"
+        ],
         "test" : [
             "php-cs-fixer fix --dry-run",
+            "@phpstan",
             "phpunit"
         ],
         "cs:fix": [

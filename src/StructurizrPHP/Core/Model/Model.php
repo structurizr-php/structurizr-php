@@ -140,6 +140,28 @@ final class Model
         throw new RuntimeException(\sprintf("Element with id \"%s\" does not exists.", $id));
     }
 
+    public function getDeploymentNode(string $id) : DeploymentNode
+    {
+        $element = $this->getElement($id);
+
+        if ($element instanceof DeploymentNode) {
+            return $element;
+        }
+
+        throw new RuntimeException(\sprintf("Deployment Node with id \"%s\" does not exists.", $id));
+    }
+
+    public function getSoftwareSystem(string $id) : SoftwareSystem
+    {
+        $element = $this->getElement($id);
+
+        if ($element instanceof SoftwareSystem) {
+            return $element;
+        }
+
+        throw new RuntimeException(\sprintf("Software System with id \"%s\" does not exists.", $id));
+    }
+
     public function addRelationship(Element $source, Element $destination, string $description = "", string $technology = null, InteractionStyle $interactionStyle = null) : Relationship
     {
         $relationship = new Relationship(
@@ -440,7 +462,7 @@ final class Model
         if (\count($model->deploymentNodes)) {
             foreach ($modelData['deploymentNodes'] as $deploymentNodeData) {
                 DeploymentNode::hydrateRelationships($model->getElement($deploymentNodeData['id']), $deploymentNodeData);
-                DeploymentNode::hydrateChildrenRelationships($model->getElement($deploymentNodeData['id']), $deploymentNodeData);
+                DeploymentNode::hydrateChildrenRelationships($model->getDeploymentNode($deploymentNodeData['id']), $deploymentNodeData);
             }
         }
 
@@ -519,7 +541,7 @@ final class ModelDataObject
     }
 
     /**
-     * @return Person[]
+     * @return DeploymentNode[]
      */
     public function hydrateDeploymentNodes(Model $model) : array
     {

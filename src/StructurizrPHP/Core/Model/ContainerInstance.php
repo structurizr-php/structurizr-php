@@ -73,8 +73,10 @@ final class ContainerInstance extends DeploymentElement
 
     public static function hydrate(array $containerInstanceData, Model $model) : self
     {
+        $element = $model->getElement($containerInstanceData['containerId']);
+
         $instance = new self(
-            $model->getElement($containerInstanceData['containerId']),
+            $element instanceof Container ? $element : null,
             $containerInstanceData['instanceId'],
             $containerInstanceData['environment'],
             $containerInstanceData['id'],
