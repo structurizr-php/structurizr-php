@@ -147,9 +147,6 @@ final class Client
                 JSON_THROW_ON_ERROR
             );
 
-//            dump(json_encode($workspaceDefinition));
-//            die();
-
             return Workspace::hydrate($workspaceDefinition);
         } catch (ClientExceptionInterface $e) {
             throw new Exception('Can\'t put Workspace', 0, $e);
