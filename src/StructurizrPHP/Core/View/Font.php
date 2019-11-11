@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Structurizr for PHP.
  *
@@ -13,7 +15,7 @@ namespace StructurizrPHP\StructurizrPHP\Core\View;
 
 use StructurizrPHP\StructurizrPHP\Assertion;
 
-class Font
+final class Font
 {
     private $name;
 

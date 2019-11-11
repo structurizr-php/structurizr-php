@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Structurizr for PHP.
  *
@@ -13,7 +15,7 @@ namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
 
 use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
 
-class StructurizrDocumentationTemplate extends DocumentationTemplate
+final class StructurizrDocumentationTemplate extends DocumentationTemplate
 {
     public function addContextSection(SoftwareSystem $softwareSystem, Format $format, string $content) : void
     {

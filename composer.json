@@ -28,7 +28,8 @@
         "symfony/var-dumper": "^4.3",
         "phpstan/phpstan": "^0.11.19",
         "phpstan/phpstan-phpunit": "^0.11.2",
-        "thecodingmachine/phpstan-strict-rules": "^0.11.2"
+        "thecodingmachine/phpstan-strict-rules": "^0.11.2",
+        "localheinz/phpstan-rules": "^0.13.0"
     },
     "suggest": {
         "symfony/http-client": "Psr18Client http factory works out of the box with StructurizrPHP\\StructurizrPHP\\SDK\\Client",

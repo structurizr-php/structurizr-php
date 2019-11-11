@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Structurizr for PHP.
  *
@@ -11,7 +13,7 @@
 
 namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\View;
 
-use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 use StructurizrPHP\StructurizrPHP\Core\Util\ImageUtils;
 use StructurizrPHP\StructurizrPHP\Core\View\Branding;
 
