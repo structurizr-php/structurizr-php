@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\View;
 
+use StructurizrPHP\StructurizrPHP\Core\Exception\InvalidArgumentException;
+use StructurizrPHP\StructurizrPHP\Core\Exception\RuntimeException;
 use StructurizrPHP\StructurizrPHP\Core\Model\Element;
 use StructurizrPHP\StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\StructurizrPHP\Core\Model\Relationship;
 use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
-use StructurizrPHP\StructurizrPHP\Exception\InvalidArgumentException;
-use StructurizrPHP\StructurizrPHP\Exception\RuntimeException;
 
 abstract class View
 {

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
-use StructurizrPHP\StructurizrPHP\Assertion;
-use StructurizrPHP\StructurizrPHP\Exception\RuntimeException;
+use StructurizrPHP\StructurizrPHP\Core\Assertion;
+use StructurizrPHP\StructurizrPHP\Core\Exception\RuntimeException;
 
 abstract class Element extends ModelItem
 {

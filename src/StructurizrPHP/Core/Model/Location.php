@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
-use StructurizrPHP\StructurizrPHP\Assertion;
+use StructurizrPHP\StructurizrPHP\Core\Assertion;
 
 final class Location
 {

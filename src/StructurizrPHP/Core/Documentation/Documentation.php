@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
 
-use StructurizrPHP\StructurizrPHP\Assertion;
+use StructurizrPHP\StructurizrPHP\Core\Assertion;
+use StructurizrPHP\StructurizrPHP\Core\Exception\InvalidArgumentException;
 use StructurizrPHP\StructurizrPHP\Core\Model\Element;
 use StructurizrPHP\StructurizrPHP\Core\Model\Model;
-use StructurizrPHP\StructurizrPHP\Exception\InvalidArgumentException;
 
 final class Documentation
 {
@@ -96,13 +96,20 @@ final class Documentation
         $this->template = $template;
     }
 
+    public function isEmpty() : bool
+    {
+        return $this->template === null && !\count($this->sections);
+    }
+
     public function toArray() : array
     {
-        $data = [
-            'sections' => \array_map(function (Section $section) {
+        $data = [];
+
+        if (\count($this->sections)) {
+            $data['sections'] = \array_map(function (Section $section) {
                 return $section->toArray();
-            }, $this->sections),
-        ];
+            }, $this->sections);
+        }
 
         if (isset($this->template)) {
             $data['template'] = $this->template->toArray();

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
-use StructurizrPHP\StructurizrPHP\Exception\InvalidArgumentException;
+use StructurizrPHP\StructurizrPHP\Core\Exception\InvalidArgumentException;
 
 /**
  * Represents a "software system" in the C4 model.

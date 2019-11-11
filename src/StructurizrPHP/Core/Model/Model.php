@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
-use StructurizrPHP\StructurizrPHP\Assertion;
+use StructurizrPHP\StructurizrPHP\Core\Assertion;
+use StructurizrPHP\StructurizrPHP\Core\Exception\InvalidArgumentException;
+use StructurizrPHP\StructurizrPHP\Core\Exception\RuntimeException;
 use StructurizrPHP\StructurizrPHP\Core\Model\Relationship\InteractionStyle;
-use StructurizrPHP\StructurizrPHP\Exception\InvalidArgumentException;
-use StructurizrPHP\StructurizrPHP\Exception\RuntimeException;
 
 final class Model
 {

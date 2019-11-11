@@ -47,11 +47,16 @@ final class Configuration
 
     public function toArray() : array
     {
-        return [
+        $data = [
             'lastSavedView' => $this->lastSavedView,
             'styles' => $this->styles->toArray(),
-            'branding' => $this->branding->toArray(),
         ];
+
+        if (!$this->branding->isEmpty()) {
+            $data['branding'] = $this->branding->toArray();
+        }
+
+        return $data;
     }
 
     public static function hydrate(array $configurationData) : self
