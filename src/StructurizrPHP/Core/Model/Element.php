@@ -127,6 +127,20 @@ abstract class Element extends ModelItem
         return $this->id() === $element->id();
     }
 
+    public function hasEfferentRelationshipWith(Element $destination) : bool
+    {
+        try {
+            return $this->getEfferentRelationshipWith($destination) !== null;
+        } catch (RuntimeException $e) {
+            return false;
+        }
+    }
+
+    public function equalTo(Element $element) : bool
+    {
+        return $this->id() === $element->id();
+    }
+
     public function toArray() : array
     {
         $data = parent::toArray();

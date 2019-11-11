@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
+use StructurizrPHP\StructurizrPHP\Core\Assertion;
+
 /**
  * Represents a "container" in the C4 model.
  */
@@ -56,6 +58,23 @@ final class Container extends StaticStructureElement
     public function setTechnology(?string $technology) : void
     {
         $this->technology = $technology;
+    }
+
+    public function uses(Container $fileSystem, string $description) : Relationship
+    {
+        return $this->getModel()->addRelationship($this, $fileSystem, $description);
+    }
+
+    public function addComponent(string $name, string $type, string $description) : Component
+    {
+        return $this->getModel()->addComponentOfType($this, $name, $type, $description);
+    }
+
+    public function getComponentWithName(string $name) : ?Component
+    {
+        Assertion::notEmpty($name, 'A component name must be provided.');
+        //todo
+        return null;
     }
 
     public function toArray() : array

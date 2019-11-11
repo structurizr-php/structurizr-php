@@ -50,12 +50,18 @@ final class ViewSet
      */
     private $model;
 
+    /**
+     * @var ContainerView[]
+     */
+    private $containerViews;
+
     public function __construct(Model $model)
     {
         $this->systemContextViews = [];
         $this->systemLandscapeViews = [];
         $this->dynamicViews = [];
         $this->deploymentViews = [];
+        $this->containerViews = [];
         $this->configuration = new Configuration();
         $this->model = $model;
     }
@@ -203,6 +209,14 @@ final class ViewSet
         }
     }
 
+    public function createContainerView(SoftwareSystem $softwareSystem, string $key, string $description) : ContainerView
+    {
+        $view = new ContainerView($softwareSystem, $key, $description, $this);
+        $this->containerViews[] = $view;
+
+        return $view;
+    }
+
     public function toArray() : ?array
     {
         if (!\count($this->systemContextViews) && !\count($this->systemLandscapeViews) && !\count($this->dynamicViews) && !\count($this->deploymentViews)) {
@@ -219,6 +233,15 @@ final class ViewSet
                     return $systemContextView->toArray();
                 },
                 $this->systemContextViews
+            );
+        }
+
+        if (\count($this->containerViews)) {
+            $data['containerViews'] = \array_map(
+                function (ContainerView $containerView) {
+                    return $containerView->toArray();
+                },
+                $this->containerViews
             );
         }
 
@@ -267,6 +290,15 @@ final class ViewSet
                 'systemLandscapeViews',
                 function (array $viewData) use ($viewSet) {
                     return SystemLandscapeView::hydrate($viewData, $viewSet);
+                }
+            );
+        }
+
+        if ($viewSetDataModel->hasViews('containerViews')) {
+            $viewSet->containerViews = $viewSetDataModel->map(
+                'containerViews',
+                function (array $viewData) use ($viewSet) {
+                    return ContainerView::hydrate($viewData, $viewSet);
                 }
             );
         }
@@ -324,7 +356,7 @@ final class ViewSetDataObject
 
     public function hasViews(string $name) : bool
     {
-        Assertion::inArray($name, ['systemLandscapeViews', 'systemContextViews', 'dynamicViews', 'deploymentViews']);
+        Assertion::inArray($name, ['systemLandscapeViews', 'systemContextViews', 'dynamicViews', 'deploymentViews', 'containerViews']);
 
         return \array_key_exists($name, $this->viewSetData) && \is_array($this->viewSetData[$name]);
     }
