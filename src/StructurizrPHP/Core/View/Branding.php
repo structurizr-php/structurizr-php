@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\View;
 
-use StructurizrPHP\StructurizrPHP\Assertion;
+use StructurizrPHP\StructurizrPHP\Core\Assertion;
 
 final class Branding
 {
@@ -34,6 +34,11 @@ final class Branding
         }
 
         $this->font = $font;
+    }
+
+    public function isEmpty() : bool
+    {
+        return $this->logo === null && $this->font === null;
     }
 
     public function setLogo(string $url) : void

@@ -13,11 +13,13 @@ services:
         arguments:
             allowAbstractClasses: true
             classesNotRequiredToBeAbstractOrFinal:
-                - StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\AbstractWorkspaceTestBase
-                - StructurizrPHP\StructurizrPHP\Exception\Exception
-                - StructurizrPHP\StructurizrPHP\Exception\InvalidArgumentException
+                - StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\AbstractWorkspaceTestBase
+                - StructurizrPHP\StructurizrPHP\Core\Exception\Exception
+                - StructurizrPHP\StructurizrPHP\Core\Exception\InvalidArgumentException
                 - StructurizrPHP\StructurizrPHP\Core\View\SequenceNumber\SequenceCounter
                 - StructurizrPHP\StructurizrPHP\Core\Documentation\DocumentationTemplate
+                - StructurizrPHP\StructurizrPHP\Client\Exception\Exception
+                - StructurizrPHP\StructurizrPHP\Client\Exception\InvalidArgumentException
         tags:
             - phpstan.rules.rule
 
@@ -29,6 +31,15 @@ parameters:
         - examples
     ignoreErrors:
         -
+            message: '#Parameter \#1 \$softwareSystem of method (.*)::__construct(.*)#'
+            path: src/StructurizrPHP/Core/View/DynamicView.php
+        -
+            message: '#Property (.*)\$softwareSystem(.*)#'
+            path: src/StructurizrPHP/Core/View/DynamicView.php
+        -
+            message: '#Property (.*)\$element(.*)#'
+            path: src/StructurizrPHP/Core/View/DynamicView.php
+        -
             message: '#In method \"(.*)::(toArray|map)\", return type is "array".(.*)#'
             path: *
         -
@@ -39,4 +50,4 @@ parameters:
             path: *
         -
             message: '#(.*)#'
-            path: src/StructurizrPHP/Http/RequestFactory.php
+            path: src/StructurizrPHP/Client/RequestFactory.php

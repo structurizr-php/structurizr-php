@@ -33,7 +33,7 @@ final class ContainerInstance extends DeploymentElement
     private $instanceId;
 
     /**
-     * @var array
+     * @var HttpHealthCheck[]
      */
     private $healthChecks;
 
@@ -52,9 +52,36 @@ final class ContainerInstance extends DeploymentElement
         return $this->container;
     }
 
+    public function getParent() : ?Element
+    {
+        return $this->container->getParent();
+    }
+
     public function getCanonicalName() : string
     {
         return $this->container->getCanonicalName() . "[" . $this->instanceId . "]";
+    }
+
+    /**
+     * @return HttpHealthCheck[]
+     */
+    public function getHealthChecks() : array
+    {
+        return $this->healthChecks;
+    }
+
+    public function addHealthCheck(string $name, string $url, ?int $interval = null, ?int $timeout = null) : HttpHealthCheck
+    {
+        $healthCheck = new HttpHealthCheck(
+            $name,
+            $url,
+            $interval ? $interval : self::DEFAULT_HEALTH_CHECK_INTERVAL_IN_SECONDS,
+            $timeout ? $timeout : self::DEFAULT_HEALTH_CHECK_TIMEOUT_IN_MILLISECONDS
+        );
+
+        $this->healthChecks[] = $healthCheck;
+
+        return $healthCheck;
     }
 
     public function toArray() : array
@@ -63,10 +90,18 @@ final class ContainerInstance extends DeploymentElement
             [
                 'containerId' => $this->container->id(),
                 'instanceId' => $this->instanceId,
-                'healthChecks' => [],
             ],
             parent::toArray()
         );
+
+        if (\count($this->healthChecks)) {
+            $data['healthChecks'] = \array_map(
+                function (HttpHealthCheck $healthCheck) {
+                    return $healthCheck->toArray();
+                },
+                $this->healthChecks
+            );
+        }
 
         return $data;
     }
@@ -82,6 +117,14 @@ final class ContainerInstance extends DeploymentElement
             $containerInstanceData['id'],
             $model
         );
+
+        if (isset($containerInstanceData['healthChecks'])) {
+            if (\is_array($containerInstanceData['healthChecks'])) {
+                foreach ($containerInstanceData['healthChecks'] as $healthCheckData) {
+                    $instance->healthChecks[] = HttpHealthCheck::hydrate($healthCheckData);
+                }
+            }
+        }
 
         parent::hydrateDeploymentElement($instance, $containerInstanceData);
 

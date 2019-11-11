@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core;
 
-use StructurizrPHP\StructurizrPHP\Assertion;
 use StructurizrPHP\StructurizrPHP\Core\Documentation\Documentation;
 use StructurizrPHP\StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\StructurizrPHP\Core\View\ViewSet;
@@ -81,7 +80,7 @@ final class Workspace
 
     public function toArray(string $agentName) : array
     {
-        return [
+        $data = [
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
@@ -89,8 +88,13 @@ final class Workspace
             'lastModifiedAgent' => $agentName,
             'model' => $this->model->toArray(),
             'views' => $this->viewSet->toArray(),
-            'documentation' => $this->documentation->toArray(),
         ];
+
+        if (!$this->documentation->isEmpty()) {
+            $data['documentation'] = $this->documentation->toArray();
+        }
+
+        return $data;
     }
 
     public static function hydrate(array $workspaceData) : self
@@ -103,7 +107,10 @@ final class Workspace
 
         $workspace->model = Model::hydrate((array) $workspaceData['model']);
         $workspace->viewSet = ViewSet::hydrate((array) $workspaceData['views'], $workspace->model);
-        $workspace->documentation = Documentation::hydrate((array) $workspaceData['documentation'], $workspace->model);
+
+        if (isset($workspaceData['documentation'])) {
+            $workspace->documentation = Documentation::hydrate((array)$workspaceData['documentation'], $workspace->model);
+        }
 
         return $workspace;
     }

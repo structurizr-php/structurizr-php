@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\View;
 
+use StructurizrPHP\StructurizrPHP\Core\Exception\RuntimeException;
 use StructurizrPHP\StructurizrPHP\Core\View\SequenceNumber\ParallelSequenceCounter;
-use StructurizrPHP\StructurizrPHP\Exception\RuntimeException;
 
 final class SequenceNumber
 {

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
-use StructurizrPHP\StructurizrPHP\Assertion;
+use StructurizrPHP\StructurizrPHP\Core\Assertion;
+use StructurizrPHP\StructurizrPHP\Core\Exception\InvalidArgumentException;
+use StructurizrPHP\StructurizrPHP\Core\Exception\RuntimeException;
 use StructurizrPHP\StructurizrPHP\Core\Model\Relationship\InteractionStyle;
-use StructurizrPHP\StructurizrPHP\Exception\InvalidArgumentException;
-use StructurizrPHP\StructurizrPHP\Exception\RuntimeException;
 
 final class Model
 {
@@ -320,7 +320,7 @@ final class Model
             foreach ($containerInstances as $ci) {
                 $c = $ci->getContainer();
 
-                foreach ($c->getRelationships() as $relationship) {
+                foreach ($container->getRelationships() as $relationship) {
                     if ($relationship->getDestination()->equals($c)) {
                         $newRelationship = $this->addRelationship($containerInstance, $ci, $relationship->getDescription(), $relationship->getTechnology(), $relationship->getInteractionStyle());
 
@@ -330,7 +330,7 @@ final class Model
                 }
 
                 foreach ($c->getRelationships() as $relationship) {
-                    if ($relationship->getDestination()->equals($c)) {
+                    if ($relationship->getDestination()->equals($container)) {
                         $newRelationship = $this->addRelationship($ci, $containerInstance, $relationship->getDescription(), $relationship->getTechnology(), $relationship->getInteractionStyle());
                         $newRelationship->setTags(new Tags());
                         $newRelationship->setLinkedRelationshipId($relationship->id());
@@ -461,7 +461,8 @@ final class Model
 
         if (\count($model->deploymentNodes)) {
             foreach ($modelData['deploymentNodes'] as $deploymentNodeData) {
-                DeploymentNode::hydrateRelationships($model->getElement($deploymentNodeData['id']), $deploymentNodeData);
+                DeploymentNode::hydrateRelationships($model->getDeploymentNode($deploymentNodeData['id']), $deploymentNodeData);
+                DeploymentNode::hydrateContainerInstancesRelationships($model->getDeploymentNode($deploymentNodeData['id']), $deploymentNodeData);
                 DeploymentNode::hydrateChildrenRelationships($model->getDeploymentNode($deploymentNodeData['id']), $deploymentNodeData);
             }
         }
