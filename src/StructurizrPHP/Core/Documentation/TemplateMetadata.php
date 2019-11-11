@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Structurizr for PHP.
  *
@@ -11,7 +13,7 @@
 
 namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
 
-class TemplateMetadata
+final class TemplateMetadata
 {
     /**
      * @var string

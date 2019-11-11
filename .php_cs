@@ -30,6 +30,8 @@ return PhpCsFixer\Config::create()
         'strict_comparison' => true,
         'return_type_declaration' => ['space_before' => 'one'],
         'class_attributes_separation' => ['elements' => ['const', 'property', 'method']],
-        'no_unused_imports' => true
+        'no_unused_imports' => true,
+        'declare_strict_types' => true,
+        'blank_line_after_opening_tag' => true
     ])
     ->setFinder($finder);

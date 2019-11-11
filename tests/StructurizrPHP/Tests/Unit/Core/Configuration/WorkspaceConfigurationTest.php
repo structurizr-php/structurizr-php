@@ -18,7 +18,7 @@ use StructurizrPHP\StructurizrPHP\Core\Configuration\Role;
 use StructurizrPHP\StructurizrPHP\Core\Configuration\WorkspaceConfiguration;
 use StructurizrPHP\StructurizrPHP\Exception\AssertionException;
 
-class WorkspaceConfigurationTest extends TestCase
+final class WorkspaceConfigurationTest extends TestCase
 {
     public function test_addUser() : void
     {

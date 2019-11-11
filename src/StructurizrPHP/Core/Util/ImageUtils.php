@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Structurizr for PHP.
  *
@@ -13,7 +15,7 @@ namespace StructurizrPHP\StructurizrPHP\Core\Util;
 
 use StructurizrPHP\StructurizrPHP\Assertion;
 
-class ImageUtils
+final class ImageUtils
 {
     public static function getImageAsDataUri(string $imagePath) : string
     {

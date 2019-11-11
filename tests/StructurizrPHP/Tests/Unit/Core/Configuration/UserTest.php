@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use StructurizrPHP\StructurizrPHP\Core\Configuration\Role;
 use StructurizrPHP\StructurizrPHP\Core\Configuration\User;
 
-class UserTest extends TestCase
+final class UserTest extends TestCase
 {
     public function test_equals_the_same_users() : void
     {
