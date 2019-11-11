@@ -107,7 +107,10 @@ final class Workspace
 
         $workspace->model = Model::hydrate((array) $workspaceData['model']);
         $workspace->viewSet = ViewSet::hydrate((array) $workspaceData['views'], $workspace->model);
-        $workspace->documentation = Documentation::hydrate((array) $workspaceData['documentation'], $workspace->model);
+
+        if (isset($workspaceData['documentation'])) {
+            $workspace->documentation = Documentation::hydrate((array)$workspaceData['documentation'], $workspace->model);
+        }
 
         return $workspace;
     }

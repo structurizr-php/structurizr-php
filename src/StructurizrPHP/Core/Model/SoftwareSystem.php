@@ -39,6 +39,11 @@ final class SoftwareSystem extends StaticStructureElement
         $this->setTags(new Tags(Tags::ELEMENT, Tags::SOFTWARE_SYSTEM));
     }
 
+    public function getParent() : ?Element
+    {
+        return null;
+    }
+
     public function add(Container $container) : void
     {
         $this->containers[] = $container;

@@ -28,6 +28,11 @@ final class Person extends StaticStructureElement
         $this->setTags(new Tags(Tags::ELEMENT, Tags::PERSON));
     }
 
+    public function getParent() : ?Element
+    {
+        return null;
+    }
+
     public function toArray() : array
     {
         return \array_merge(

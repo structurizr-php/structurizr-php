@@ -80,7 +80,7 @@ final class DeploymentNode extends DeploymentElement
         $this->parent = $parent;
     }
 
-    public function getParent() : ?DeploymentNode
+    public function getParent() : ?Element
     {
         return $this->parent;
     }
@@ -140,16 +140,28 @@ final class DeploymentNode extends DeploymentElement
                 'id' => $this->id(),
                 'name' => $this->getName(),
                 'environment' => $this->getEnvironment(),
-                'children' => \array_map(function (DeploymentNode $child) {
-                    return $child->toArray();
-                }, $this->children),
-                'containerInstances' => \array_map(function (ContainerInstance $containerInstance) {
-                    return $containerInstance->toArray();
-                }, $this->containerInstances),
                 'instances' => $this->instances,
             ],
             parent::toArray()
         );
+
+        if (\count($this->children)) {
+            $data['children'] = \array_map(
+                function (DeploymentNode $child) {
+                    return $child->toArray();
+                },
+                $this->children
+            );
+        }
+
+        if (\count($this->containerInstances)) {
+            $data['containerInstances'] = \array_map(
+                function (ContainerInstance $containerInstance) {
+                    return $containerInstance->toArray();
+                },
+                $this->containerInstances
+            );
+        }
 
         if ($this->technology !== null) {
             $data['technology'] = $this->technology;
@@ -213,12 +225,26 @@ final class DeploymentNode extends DeploymentElement
         return $deploymentNode;
     }
 
+    public static function hydrateContainerInstancesRelationships(DeploymentNode $deploymentNode, array $deploymentNodeData) : void
+    {
+        if (isset($deploymentNodeData['containerInstances']) && \is_array($deploymentNodeData['containerInstances'])) {
+            foreach ($deploymentNode->containerInstances as $containerInstance) {
+                foreach ($deploymentNodeData['containerInstances'] as $containerInstanceData) {
+                    if ($containerInstanceData['id'] === $containerInstance->id()) {
+                        parent::hydrateRelationships($containerInstance, $containerInstanceData);
+                    }
+                }
+            }
+        }
+    }
+
     public static function hydrateChildrenRelationships(DeploymentNode $deploymentNode, array $deploymentNodeData) : void
     {
         foreach ($deploymentNode->children as $child) {
             foreach ($deploymentNodeData['children'] as $childData) {
                 if ($childData['id'] === $child->id()) {
                     parent::hydrateRelationships($child, $childData);
+                    self::hydrateContainerInstancesRelationships($child, $childData);
 
                     self::hydrateChildrenRelationships($child, $childData);
                 }

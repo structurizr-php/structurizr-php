@@ -203,15 +203,15 @@ abstract class View
     private function addRelationships(Element $element) : void
     {
         foreach ($element->getRelationships() as $relationship) {
-            foreach ($this->elementViews as $elementView) {
-                if ($elementView->element()->equals($relationship->getDestination())) {
+            foreach ($this->elementViews as $e) {
+                if ($e->element()->equals($relationship->getDestination())) {
                     $this->relationshipsViews[] = new RelationshipView($relationship);
                 }
             }
         }
 
-        foreach ($this->elementViews as $elementView) {
-            foreach ($elementView->element()->getRelationships() as $r) {
+        foreach ($this->elementViews as $e) {
+            foreach ($e->element()->getRelationships() as $r) {
                 if ($r->getDestination()->equals($element)) {
                     $this->relationshipsViews[] = new RelationshipView($r);
                 }

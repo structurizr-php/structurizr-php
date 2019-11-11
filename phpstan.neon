@@ -31,6 +31,15 @@ parameters:
         - examples
     ignoreErrors:
         -
+            message: '#Parameter \#1 \$softwareSystem of method (.*)::__construct(.*)#'
+            path: src/StructurizrPHP/Core/View/DynamicView.php
+        -
+            message: '#Property (.*)\$softwareSystem(.*)#'
+            path: src/StructurizrPHP/Core/View/DynamicView.php
+        -
+            message: '#Property (.*)\$element(.*)#'
+            path: src/StructurizrPHP/Core/View/DynamicView.php
+        -
             message: '#In method \"(.*)::(toArray|map)\", return type is "array".(.*)#'
             path: *
         -

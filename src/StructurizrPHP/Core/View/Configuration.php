@@ -63,7 +63,10 @@ final class Configuration
     {
         $configuration = new self();
         $configuration->styles = Styles::hydrate($configurationData['styles']);
-        $configuration->branding = Branding::hydrate($configurationData['branding']);
+
+        if (isset($configurationData['branding'])) {
+            $configuration->branding = Branding::hydrate($configurationData['branding']);
+        }
 
         if (isset($configurationData['lastSavedView'])) {
             $configuration->lastSavedView = $configurationData['lastSavedView'];

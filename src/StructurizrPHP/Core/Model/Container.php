@@ -42,7 +42,10 @@ final class Container extends StaticStructureElement
         $this->parent = $parent;
     }
 
-    public function getParent() : SoftwareSystem
+    /**
+     * @return Element|SoftwareSystem|null
+     */
+    public function getParent() : ?Element
     {
         return $this->parent;
     }

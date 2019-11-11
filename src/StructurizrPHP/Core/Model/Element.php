@@ -57,6 +57,8 @@ abstract class Element extends ModelItem
         return $this->name;
     }
 
+    abstract public function getParent() : ?Element;
+
     public function getCanonicalName() : string
     {
         return $this->formatForCanonicalName($this->name);
@@ -127,14 +129,16 @@ abstract class Element extends ModelItem
 
     public function toArray() : array
     {
-        $data = \array_merge(
-            [
-                'relationships' => \array_map(function (Relationship $relationship) {
+        $data = parent::toArray();
+
+        if (\count($this->relationships)) {
+            $data['relationships'] = \array_map(
+                function (Relationship $relationship) {
                     return $relationship->toArray();
-                }, $this->relationships),
-            ],
-            parent::toArray()
-        );
+                },
+                $this->relationships
+            );
+        }
 
         if ($this->name) {
             $data['name'] = $this->name;
