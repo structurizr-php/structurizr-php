@@ -15,10 +15,10 @@ use StructurizrPHP\StructurizrPHP\Client\Client;
 use StructurizrPHP\StructurizrPHP\Client\Credentials;
 use StructurizrPHP\StructurizrPHP\Client\Infrastructure\Http\SymfonyRequestFactory;
 use StructurizrPHP\StructurizrPHP\Client\UrlMap;
+use StructurizrPHP\StructurizrPHP\Core\Documentation\AdrToolsImporter;
 use StructurizrPHP\StructurizrPHP\Core\Model\Tags;
 use StructurizrPHP\StructurizrPHP\Core\View\Configuration\Shape;
 use StructurizrPHP\StructurizrPHP\Core\Workspace;
-use StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\Documentation\AdrToolsImporter;
 use Symfony\Component\HttpClient\Psr18Client;
 
 require __DIR__ . '/../vendor/autoload.php';

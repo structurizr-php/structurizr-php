@@ -18,7 +18,6 @@ use StructurizrPHP\StructurizrPHP\Core\Exception\InvalidArgumentException;
 use StructurizrPHP\StructurizrPHP\Core\Model\Element;
 use StructurizrPHP\StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
-use StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\Documentation\DecisionStatus;
 
 final class Documentation
 {

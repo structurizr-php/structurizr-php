@@ -529,7 +529,9 @@ final class Model
             }
 
             $component->setParent($parent);
+            $parent->add($component);
 
+            $component->setId($this->idGenerator->generateId());
             $this->addElementToInternalStructures($component);
 
             return $component;

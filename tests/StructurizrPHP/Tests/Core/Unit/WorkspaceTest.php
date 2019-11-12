@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit;
 
 use PHPUnit\Framework\TestCase;
+use StructurizrPHP\StructurizrPHP\Core\Documentation\AdrToolsImporter;
 use StructurizrPHP\StructurizrPHP\Core\Documentation\Format;
 use StructurizrPHP\StructurizrPHP\Core\Documentation\StructurizrDocumentationTemplate;
 use StructurizrPHP\StructurizrPHP\Core\Model\Tags;
 use StructurizrPHP\StructurizrPHP\Core\Util\ImageUtils;
 use StructurizrPHP\StructurizrPHP\Core\View\Configuration\Shape;
 use StructurizrPHP\StructurizrPHP\Core\Workspace;
-use StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\Documentation\AdrToolsImporter;
 
 final class WorkspaceTest extends TestCase
 {

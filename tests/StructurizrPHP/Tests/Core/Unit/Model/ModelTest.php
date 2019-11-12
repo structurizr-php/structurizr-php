@@ -81,7 +81,7 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $this->assertEquals($model, Model::hydrate($model->toArray()));
     }
 
-    public function test_addImplicitRelationships_WhenSourceAndDestinationAreComponentsInDifferentSoftwareSystems() : void
+    public function test_add_implicit_relationships_when_source_and_destination_are_components_in_different_software_systems() : void
     {
         $a = $this->model->addSoftwareSystem('A', '');
         $aa = $a->addContainer('AA', '', '');
@@ -109,16 +109,16 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $this->assertTrue($a->hasEfferentRelationshipWith($b));
     }
 
-    public function test_addImplicitRelationships_WhenSourceIsAComponentAndDestinationIsAContainerInADifferentSoftwareSystem() : void
+    public function test_add_implicit_relationships_when_source_is_a_component_and_destination_is_a_container_in_a_different_software_system() : void
     {
-        $a = $this->model->addSoftwareSystem("A", "");
-        $aa = $a->addContainer("AA", "", "");
-        $aaa = $aa->addComponent("AAA", "", "");
+        $a = $this->model->addSoftwareSystem('A', '');
+        $aa = $a->addContainer('AA', '', '');
+        $aaa = $aa->addComponent('AAA', '', '');
 
-        $b = $this->model->addSoftwareSystem("B", "");
-        $bb = $b->addContainer("BB", "", "");
+        $b = $this->model->addSoftwareSystem('B', '');
+        $bb = $b->addContainer('BB', '', '');
 
-        $aaa->usesContainer($bb, "Uses");
+        $aaa->usesContainer($bb, 'Uses');
         $this->assertCount(1, $this->model->getRelationships());
         $this->assertTrue($aaa->hasEfferentRelationshipWith($bb));
 
@@ -133,15 +133,15 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $this->assertTrue($a->hasEfferentRelationshipWith($b));
     }
 
-    public function test_addImplicitRelationships_WhenSourceIsAComponentAndDestinationIsADifferentSoftwareSystem() : void
+    public function test_add_implicit_relationships_when_source_is_a_component_and_destination_is_a_different_software_system() : void
     {
-        $a = $this->model->addSoftwareSystem("A", "");
-        $aa = $a->addContainer("AA", "", "");
-        $aaa = $aa->addComponent("AAA", "", "");
+        $a = $this->model->addSoftwareSystem('A', '');
+        $aa = $a->addContainer('AA', '', '');
+        $aaa = $aa->addComponent('AAA', '', '');
 
-        $b = $this->model->addSoftwareSystem("B", "");
+        $b = $this->model->addSoftwareSystem('B', '');
 
-        $aaa->usesSoftwareSystem($b, "Uses");
+        $aaa->usesSoftwareSystem($b, 'Uses');
         $this->assertCount(1, $this->model->getRelationships());
         $this->assertTrue($aaa->hasEfferentRelationshipWith($b));
 
@@ -153,16 +153,16 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $this->assertTrue($a->hasEfferentRelationshipWith($b));
     }
 
-    public function test_addImplicitRelationships_WhenSourceIsAContainerAndDestinationIsAComponentInADifferentSoftwareSystem() : void
+    public function test_add_implicit_relationships_when_source_is_a_container_and_destination_is_a_component_in_a_different_software_system() : void
     {
-        $a = $this->model->addSoftwareSystem("A", "");
-        $aa = $a->addContainer("AA", "", "");
+        $a = $this->model->addSoftwareSystem('A', '');
+        $aa = $a->addContainer('AA', '', '');
 
-        $b = $this->model->addSoftwareSystem("B", "");
-        $bb = $b->addContainer("BB", "", "");
-        $bbb = $bb->addComponent("BBB", "", "");
+        $b = $this->model->addSoftwareSystem('B', '');
+        $bb = $b->addContainer('BB', '', '');
+        $bbb = $bb->addComponent('BBB', '', '');
 
-        $aa->usesComponent($bbb, "Uses");
+        $aa->usesComponent($bbb, 'Uses');
         $this->assertCount(1, $this->model->getRelationships());
         $this->assertTrue($aa->hasEfferentRelationshipWith($bbb));
 
@@ -177,15 +177,15 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $this->assertTrue($a->hasEfferentRelationshipWith($b));
     }
 
-    public function test_addImplicitRelationships_WhenSourceAndDestinationAreContainersInDifferentSoftwareSystems() : void
+    public function test_add_implicit_relationships_when_source_and_destination_are_containers_in_different_software_systems() : void
     {
-        $a = $this->model->addSoftwareSystem("A", "");
-        $aa = $a->addContainer("AA", "", "");
+        $a = $this->model->addSoftwareSystem('A', '');
+        $aa = $a->addContainer('AA', '', '');
 
-        $b = $this->model->addSoftwareSystem("B", "");
-        $bb = $b->addContainer("BB", "", "");
+        $b = $this->model->addSoftwareSystem('B', '');
+        $bb = $b->addContainer('BB', '', '');
 
-        $aa->usesContainer($bb, "Uses");
+        $aa->usesContainer($bb, 'Uses');
         $this->assertCount(1, $this->model->getRelationships());
         $this->assertTrue($aa->hasEfferentRelationshipWith($bb));
 
@@ -198,14 +198,14 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $this->assertTrue($a->hasEfferentRelationshipWith($b));
     }
 
-    public function test_addImplicitRelationships_WhenSourceIsAContainerAndDestinationIsADifferentSoftwareSystem() : void
+    public function test_add_implicit_relationships_when_source_is_a_container_and_destination_is_a_different_software_system() : void
     {
-        $a = $this->model->addSoftwareSystem("A", "");
-        $aa = $a->addContainer("AA", "", "");
+        $a = $this->model->addSoftwareSystem('A', '');
+        $aa = $a->addContainer('AA', '', '');
 
-        $b = $this->model->addSoftwareSystem("B", "");
+        $b = $this->model->addSoftwareSystem('B', '');
 
-        $aa->usesSoftwareSystem($b, "Uses");
+        $aa->usesSoftwareSystem($b, 'Uses');
         $this->assertCount(1, $this->model->getRelationships());
         $this->assertTrue($aa->hasEfferentRelationshipWith($b));
 
@@ -216,15 +216,15 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $this->assertTrue($a->hasEfferentRelationshipWith($b));
     }
 
-    public function test_addImplicitRelationships_WhenSourceIsASoftwareSystemAndDestinationIsAComponentInADifferentSoftwareSystem() : void
+    public function test_add_implicit_relationships_when_source_is_a_software_system_and_destination_is_a_component_in_a_different_software_system() : void
     {
-        $a = $this->model->addSoftwareSystem("A", "");
+        $a = $this->model->addSoftwareSystem('A', '');
 
-        $b = $this->model->addSoftwareSystem("B", "");
-        $bb = $b->addContainer("BB", "", "");
-        $bbb = $bb->addComponent("BBB", "", "");
+        $b = $this->model->addSoftwareSystem('B', '');
+        $bb = $b->addContainer('BB', '', '');
+        $bbb = $bb->addComponent('BBB', '', '');
 
-        $a -> usesComponent($bbb, "Uses");
+        $a -> usesComponent($bbb, 'Uses');
         $this->assertCount(1, $this->model->getRelationships());
         $this->assertTrue($a->hasEfferentRelationshipWith($bbb));
 
@@ -236,7 +236,7 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $this->assertTrue($a->hasEfferentRelationshipWith($b));
     }
 
-    public function test_addImplicitRelationships_WhenSourceIsASoftwareSystemAndDestinationIsAContainerInADifferentSoftwareSystem() : void
+    public function test_add_implicit_relationships_when_source_is_a_software_system_and_destination_is_a_container_in_a_different_software_system() : void
     {
         $a = $this->model->addSoftwareSystem('A', '');
 
@@ -254,13 +254,13 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $this->assertTrue($a->hasEfferentRelationshipWith($b));
     }
 
-    public function test_addImplicitRelationships_WhenSourceAndDestinationAreDifferentSoftwareSystems() : void
+    public function test_add_implicit_relationships_when_source_and_destination_are_different_software_systems() : void
     {
-        $a = $this->model->addSoftwareSystem("A", "");
+        $a = $this->model->addSoftwareSystem('A', '');
 
-        $b = $this->model->addSoftwareSystem("B", "");
+        $b = $this->model->addSoftwareSystem('B', '');
 
-        $a->usesSoftwareSystem($b, "Uses");
+        $a->usesSoftwareSystem($b, 'Uses');
         $this->assertCount(1, $this->model->getRelationships());
         $this->assertTrue($a->hasEfferentRelationshipWith($b));
 
@@ -269,15 +269,14 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $this->assertCount(0, $implicitRelationships);
     }
 
-//
-    public function test_addImplicitRelationships_WhenSourceAndDestinationAreComponentsInTheSameContainer() : void
+    public function test_add_implicit_relationships_when_source_and_destination_are_components_in_the_same_container() : void
     {
-        $a = $this->model->addSoftwareSystem("A", "");
-        $aa = $a->addContainer("AA", "", "");
-        $aaa1 = $aa->addComponent("AAA1", "", "");
-        $aaa2 = $aa->addComponent("AAA2", "", "");
+        $a = $this->model->addSoftwareSystem('A', '');
+        $aa = $a->addContainer('AA', '', '');
+        $aaa1 = $aa->addComponent('AAA1', '', '');
+        $aaa2 = $aa->addComponent('AAA2', '', '');
 
-        $aaa1->usesComponent($aaa2, "Uses");
+        $aaa1->usesComponent($aaa2, 'Uses');
         $this->assertCount(1, $this->model->getRelationships());
         $this->assertTrue($aaa1->hasEfferentRelationshipWith($aaa2));
 
@@ -286,15 +285,13 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $this->assertCount(0, $implicitRelationships);
     }
 
-//
-//    @Test
-    public function test_addImplicitRelationships_WhenSourceAndDestinationAreContainersInTheSameContainer() : void
+    public function test_add_implicit_relationships_when_source_and_destination_are_containers_in_the_same_container() : void
     {
-        $a = $this->model->addSoftwareSystem("A", "");
-        $aa1 = $a->addContainer("AA1", "", "");
-        $aa2 = $a->addContainer("AA2", "", "");
+        $a = $this->model->addSoftwareSystem('A', '');
+        $aa1 = $a->addContainer('AA1', '', '');
+        $aa2 = $a->addContainer('AA2', '', '');
 
-        $aa1->usesContainer($aa2, "Uses");
+        $aa1->usesContainer($aa2, 'Uses');
         $this->assertCount(1, $this->model->getRelationships());
         $this->assertTrue($aa1->hasEfferentRelationshipWith($aa2));
 
@@ -303,17 +300,15 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $this->assertCount(0, $implicitRelationships);
     }
 
-//
-//    @Test
-    public function test_addImplicitRelationships_WhenSourceAndDestinationAreComponentsInTheDifferentContainersInTheSameSoftwareSystem() : void
+    public function test_add_implicit_relationships_when_source_and_destination_are_components_in_the_different_containers_in_the_same_software_system() : void
     {
-        $a = $this->model->addSoftwareSystem("A", "");
-        $aa1 = $a->addContainer("AA1", "", "");
-        $aa2 = $a->addContainer("AA2", "", "");
-        $aaa1 = $aa1->addComponent("AAA1", "", "");
-        $aaa2 = $aa2->addComponent("AAA2", "", "");
+        $a = $this->model->addSoftwareSystem('A', '');
+        $aa1 = $a->addContainer('AA1', '', '');
+        $aa2 = $a->addContainer('AA2', '', '');
+        $aaa1 = $aa1->addComponent('AAA1', '', '');
+        $aaa2 = $aa2->addComponent('AAA2', '', '');
 
-        $aaa1->usesComponent($aaa2, "Uses");
+        $aaa1->usesComponent($aaa2, 'Uses');
         $this->assertCount(1, $this->model->getRelationships());
         $this->assertTrue($aaa1->hasEfferentRelationshipWith($aaa2));
 

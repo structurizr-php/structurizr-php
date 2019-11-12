@@ -63,4 +63,35 @@ final class Component extends StaticStructureElement
     {
         $this->parent = $parent;
     }
+
+    public function toArray() : array
+    {
+        $data = \array_merge(
+            [
+                'type' => $this->type,
+                'technology' => $this->technology,
+                'parent' => $this->parent->toArray(),
+            ],
+            parent::toArray()
+        );
+
+        return $data;
+    }
+
+    public static function hydrate(array $componentData, Model $model, ?Element $parent) : self
+    {
+        $component = new self($componentData['id'], $model);
+        if ($parent instanceof Element) {
+            $component->setParent($parent);
+        }
+
+        if (isset($componentData['technology'])) {
+            $component->setTechnology($componentData['technology']);
+        }
+        if (isset($componentData['type'])) {
+            $component->setType($componentData['type']);
+        }
+
+        return $component;
+    }
 }

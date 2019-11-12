@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
 
 use StructurizrPHP\StructurizrPHP\Core\Model\Element;
-use StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\Documentation\DecisionStatus;
 
 final class Decision
 {
@@ -81,19 +80,7 @@ final class Decision
      */
     public function getElementId() : string
     {
-        if (isset($this->element)) {
-            return $this->element->id();
-        }
-
         return $this->elementId;
-    }
-
-    /**
-     * @param string $elementId
-     */
-    public function setElementId(string $elementId) : void
-    {
-        $this->elementId = $elementId;
     }
 
     /**

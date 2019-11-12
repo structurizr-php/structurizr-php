@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Unit\Core\Documentation;
+namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
 
 use StructurizrPHP\StructurizrPHP\Core\Assertion;
 

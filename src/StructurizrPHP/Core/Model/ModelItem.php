@@ -46,6 +46,11 @@ abstract class ModelItem
         return $this->id;
     }
 
+    public function setId(string $id) : void
+    {
+        $this->id=$id;
+    }
+
     public function setTags(Tags $tags) : void
     {
         $this->tags = $tags;
