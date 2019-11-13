@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\Util;
+namespace StructurizrPHP\Core\Util;
 
-use StructurizrPHP\StructurizrPHP\Core\Assertion;
+use StructurizrPHP\Core\Assertion;
 
 final class ImageUtils
 {

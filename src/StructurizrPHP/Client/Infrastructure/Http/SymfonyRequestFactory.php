@@ -11,12 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Client\Infrastructure\Http;
+namespace StructurizrPHP\Client\Infrastructure\Http;
 
 use Nyholm\Psr7\Request;
 use Psr\Http\Message\RequestInterface;
+use StructurizrPHP\Client\RequestFactory;
 
-final class SymfonyRequestFactory implements \StructurizrPHP\StructurizrPHP\Client\RequestFactory
+final class SymfonyRequestFactory implements RequestFactory
 {
     public function create(string $uri, string $method, array $headers, ?string $body) : RequestInterface
     {

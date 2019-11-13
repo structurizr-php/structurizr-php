@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\Model;
+namespace StructurizrPHP\Tests\Core\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use StructurizrPHP\StructurizrPHP\Core\Exception\RuntimeException;
-use StructurizrPHP\StructurizrPHP\Core\Model\Location;
-use StructurizrPHP\StructurizrPHP\Core\Model\Model;
-use StructurizrPHP\StructurizrPHP\Core\Model\Properties;
-use StructurizrPHP\StructurizrPHP\Core\Model\Property;
-use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
+use StructurizrPHP\Core\Exception\RuntimeException;
+use StructurizrPHP\Core\Model\Location;
+use StructurizrPHP\Core\Model\Model;
+use StructurizrPHP\Core\Model\Properties;
+use StructurizrPHP\Core\Model\Property;
+use StructurizrPHP\Core\Model\SoftwareSystem;
 
 final class SoftwareSystemTest extends TestCase
 {

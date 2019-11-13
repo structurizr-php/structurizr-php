@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\Model;
+namespace StructurizrPHP\Core\Model;
 
-use StructurizrPHP\StructurizrPHP\Core\Exception\InvalidArgumentException;
+use StructurizrPHP\Core\Exception\InvalidArgumentException;
 
 /**
  * Represents a "software system" in the C4 model.

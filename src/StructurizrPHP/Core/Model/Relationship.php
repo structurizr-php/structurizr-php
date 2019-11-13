@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\Model;
+namespace StructurizrPHP\Core\Model;
 
-use StructurizrPHP\StructurizrPHP\Core\Model\Relationship\InteractionStyle;
+use StructurizrPHP\Core\Model\Relationship\InteractionStyle;
 
 final class Relationship extends ModelItem
 {

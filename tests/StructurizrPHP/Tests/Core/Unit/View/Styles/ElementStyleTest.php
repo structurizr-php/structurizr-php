@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\View\Styles;
+namespace StructurizrPHP\Tests\Core\Unit\View\Styles;
 
 use PHPUnit\Framework\TestCase;
-use StructurizrPHP\StructurizrPHP\Core\View\Configuration\Border;
-use StructurizrPHP\StructurizrPHP\Core\View\Configuration\ElementStyle;
-use StructurizrPHP\StructurizrPHP\Core\View\Configuration\Shape;
+use StructurizrPHP\Core\View\Configuration\Border;
+use StructurizrPHP\Core\View\Configuration\ElementStyle;
+use StructurizrPHP\Core\View\Configuration\Shape;
 
 final class ElementStyleTest extends TestCase
 {

@@ -12,12 +12,12 @@
     },
     "autoload": {
         "psr-4": {
-            "StructurizrPHP\\": "src/"
+            "StructurizrPHP\\": "src/StructurizrPHP/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "StructurizrPHP\\Tests\\": "tests/"
+            "StructurizrPHP\\Tests\\": "tests/StructurizrPHP/Tests/"
         }
     },
     "require-dev": {

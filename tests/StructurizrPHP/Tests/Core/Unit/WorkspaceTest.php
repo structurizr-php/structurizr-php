@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit;
+namespace StructurizrPHP\Tests\Core\Unit;
 
 use PHPUnit\Framework\TestCase;
 use StructurizrPHP\AdrTools\AdrToolsImporter;
-use StructurizrPHP\StructurizrPHP\Core\Documentation\Format;
-use StructurizrPHP\StructurizrPHP\Core\Documentation\StructurizrDocumentationTemplate;
-use StructurizrPHP\StructurizrPHP\Core\Model\Tags;
-use StructurizrPHP\StructurizrPHP\Core\Util\ImageUtils;
-use StructurizrPHP\StructurizrPHP\Core\View\Configuration\Shape;
-use StructurizrPHP\StructurizrPHP\Core\Workspace;
+use StructurizrPHP\Core\Documentation\Format;
+use StructurizrPHP\Core\Documentation\StructurizrDocumentationTemplate;
+use StructurizrPHP\Core\Model\Tags;
+use StructurizrPHP\Core\Util\ImageUtils;
+use StructurizrPHP\Core\View\Configuration\Shape;
+use StructurizrPHP\Core\Workspace;
 
 final class WorkspaceTest extends TestCase
 {

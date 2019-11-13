@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core;
+namespace StructurizrPHP\Core;
 
-use StructurizrPHP\StructurizrPHP\Core\Documentation\Documentation;
-use StructurizrPHP\StructurizrPHP\Core\Model\Model;
-use StructurizrPHP\StructurizrPHP\Core\View\ViewSet;
+use StructurizrPHP\Core\Documentation\Documentation;
+use StructurizrPHP\Core\Model\Model;
+use StructurizrPHP\Core\View\ViewSet;
 
 final class Workspace
 {

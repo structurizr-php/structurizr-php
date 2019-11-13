@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\Model;
+namespace StructurizrPHP\Tests\Core\Unit\Model;
 
-use StructurizrPHP\StructurizrPHP\Core\Model\Model;
-use StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\AbstractWorkspaceTestBase;
+use StructurizrPHP\Core\Model\Model;
+use StructurizrPHP\Tests\Core\Unit\AbstractWorkspaceTestBase;
 
 final class ModelTest extends AbstractWorkspaceTestBase
 {

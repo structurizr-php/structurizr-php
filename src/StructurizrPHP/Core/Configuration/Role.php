@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\Configuration;
+namespace StructurizrPHP\Core\Configuration;
 
 final class Role
 {

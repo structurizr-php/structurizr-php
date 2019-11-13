@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\Configuration;
+namespace StructurizrPHP\Tests\Core\Unit\Configuration;
 
 use PHPUnit\Framework\TestCase;
-use StructurizrPHP\StructurizrPHP\Core\Configuration\Role;
-use StructurizrPHP\StructurizrPHP\Core\Configuration\WorkspaceConfiguration;
-use StructurizrPHP\StructurizrPHP\Core\Exception\AssertionException;
+use StructurizrPHP\Core\Configuration\Role;
+use StructurizrPHP\Core\Configuration\WorkspaceConfiguration;
+use StructurizrPHP\Core\Exception\AssertionException;
 
 final class WorkspaceConfigurationTest extends TestCase
 {

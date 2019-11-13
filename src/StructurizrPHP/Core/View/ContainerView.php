@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\View;
+namespace StructurizrPHP\Core\View;
 
-use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
+use StructurizrPHP\Core\Model\SoftwareSystem;
 
 final class ContainerView extends StaticView
 {

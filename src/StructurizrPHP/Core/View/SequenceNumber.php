@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\View;
+namespace StructurizrPHP\Core\View;
 
-use StructurizrPHP\StructurizrPHP\Core\Exception\RuntimeException;
-use StructurizrPHP\StructurizrPHP\Core\View\SequenceNumber\ParallelSequenceCounter;
+use StructurizrPHP\Core\Exception\RuntimeException;
+use StructurizrPHP\Core\View\SequenceNumber\ParallelSequenceCounter;
 
 final class SequenceNumber
 {
