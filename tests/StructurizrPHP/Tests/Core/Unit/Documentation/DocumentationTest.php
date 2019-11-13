@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\Documentation;
+namespace StructurizrPHP\Tests\Core\Unit\Documentation;
 
-use StructurizrPHP\StructurizrPHP\Core\Documentation\Documentation;
-use StructurizrPHP\StructurizrPHP\Core\Documentation\Format;
-use StructurizrPHP\StructurizrPHP\Core\Documentation\StructurizrDocumentationTemplate;
-use StructurizrPHP\StructurizrPHP\Core\Exception\AssertionException;
-use StructurizrPHP\StructurizrPHP\Core\Exception\InvalidArgumentException;
-use StructurizrPHP\StructurizrPHP\Core\Workspace;
-use StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\AbstractWorkspaceTestBase;
+use StructurizrPHP\Core\Documentation\Documentation;
+use StructurizrPHP\Core\Documentation\Format;
+use StructurizrPHP\Core\Documentation\StructurizrDocumentationTemplate;
+use StructurizrPHP\Core\Exception\AssertionException;
+use StructurizrPHP\Core\Exception\InvalidArgumentException;
+use StructurizrPHP\Core\Workspace;
+use StructurizrPHP\Tests\Core\Unit\AbstractWorkspaceTestBase;
 
 final class DocumentationTest extends AbstractWorkspaceTestBase
 {

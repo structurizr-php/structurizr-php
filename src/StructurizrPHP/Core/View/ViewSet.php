@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\View;
+namespace StructurizrPHP\Core\View;
 
-use StructurizrPHP\StructurizrPHP\Core\Assertion;
-use StructurizrPHP\StructurizrPHP\Core\Model\Container;
-use StructurizrPHP\StructurizrPHP\Core\Model\Model;
-use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
+use StructurizrPHP\Core\Assertion;
+use StructurizrPHP\Core\Model\Container;
+use StructurizrPHP\Core\Model\Model;
+use StructurizrPHP\Core\Model\SoftwareSystem;
 
 final class ViewSet
 {

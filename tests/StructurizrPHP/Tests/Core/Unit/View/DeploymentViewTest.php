@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\View;
+namespace StructurizrPHP\Tests\Core\Unit\View;
 
 use PHPUnit\Framework\TestCase;
-use StructurizrPHP\StructurizrPHP\Core\Model\Model;
-use StructurizrPHP\StructurizrPHP\Core\View\DeploymentView;
-use StructurizrPHP\StructurizrPHP\Core\View\ViewSet;
+use StructurizrPHP\Core\Model\Model;
+use StructurizrPHP\Core\View\DeploymentView;
+use StructurizrPHP\Core\View\ViewSet;
 
 final class DeploymentViewTest extends TestCase
 {

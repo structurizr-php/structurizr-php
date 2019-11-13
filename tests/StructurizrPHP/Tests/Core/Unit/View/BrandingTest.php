@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\View;
+namespace StructurizrPHP\Tests\Core\Unit\View;
 
 use PHPUnit\Framework\TestCase;
-use StructurizrPHP\StructurizrPHP\Core\Util\ImageUtils;
-use StructurizrPHP\StructurizrPHP\Core\View\Branding;
+use StructurizrPHP\Core\Util\ImageUtils;
+use StructurizrPHP\Core\View\Branding;
 
 final class BrandingTest extends TestCase
 {

@@ -13,13 +13,13 @@ services:
         arguments:
             allowAbstractClasses: true
             classesNotRequiredToBeAbstractOrFinal:
-                - StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\AbstractWorkspaceTestBase
-                - StructurizrPHP\StructurizrPHP\Core\Exception\Exception
-                - StructurizrPHP\StructurizrPHP\Core\Exception\InvalidArgumentException
-                - StructurizrPHP\StructurizrPHP\Core\View\SequenceNumber\SequenceCounter
-                - StructurizrPHP\StructurizrPHP\Core\Documentation\DocumentationTemplate
-                - StructurizrPHP\StructurizrPHP\Client\Exception\Exception
-                - StructurizrPHP\StructurizrPHP\Client\Exception\InvalidArgumentException
+                - StructurizrPHP\Tests\Core\Unit\AbstractWorkspaceTestBase
+                - StructurizrPHP\Core\Exception\Exception
+                - StructurizrPHP\Core\Exception\InvalidArgumentException
+                - StructurizrPHP\Core\View\SequenceNumber\SequenceCounter
+                - StructurizrPHP\Core\Documentation\DocumentationTemplate
+                - StructurizrPHP\Client\Exception\Exception
+                - StructurizrPHP\Client\Exception\InvalidArgumentException
         tags:
             - phpstan.rules.rule
 

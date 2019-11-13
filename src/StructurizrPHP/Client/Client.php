@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Client;
+namespace StructurizrPHP\Client;
 
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
-use StructurizrPHP\StructurizrPHP\Client\Exception\Exception;
-use StructurizrPHP\StructurizrPHP\Core\Workspace;
+use StructurizrPHP\Client\Exception\Exception;
+use StructurizrPHP\Core\Workspace;
 
 final class Client
 {

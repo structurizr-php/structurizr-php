@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\Model;
+namespace StructurizrPHP\Tests\Core\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use StructurizrPHP\StructurizrPHP\Core\Model\DeploymentNode;
-use StructurizrPHP\StructurizrPHP\Core\Model\Model;
-use StructurizrPHP\StructurizrPHP\Core\Model\Properties;
-use StructurizrPHP\StructurizrPHP\Core\Model\Property;
-use StructurizrPHP\StructurizrPHP\Core\Model\Tags;
+use StructurizrPHP\Core\Model\DeploymentNode;
+use StructurizrPHP\Core\Model\Model;
+use StructurizrPHP\Core\Model\Properties;
+use StructurizrPHP\Core\Model\Property;
+use StructurizrPHP\Core\Model\Tags;
 
 final class DeploymentNodeTest extends TestCase
 {

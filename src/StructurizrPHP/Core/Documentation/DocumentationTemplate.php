@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
+namespace StructurizrPHP\Core\Documentation;
 
-use StructurizrPHP\StructurizrPHP\Core\Model\Element;
-use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
-use StructurizrPHP\StructurizrPHP\Core\Workspace;
+use StructurizrPHP\Core\Model\Element;
+use StructurizrPHP\Core\Model\SoftwareSystem;
+use StructurizrPHP\Core\Workspace;
 
 abstract class DocumentationTemplate
 {

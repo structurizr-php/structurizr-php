@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\View;
+namespace StructurizrPHP\Core\View;
 
-use StructurizrPHP\StructurizrPHP\Core\Assertion;
-use StructurizrPHP\StructurizrPHP\Core\Model\Element;
+use StructurizrPHP\Core\Assertion;
+use StructurizrPHP\Core\Model\Element;
 
 final class ElementView
 {

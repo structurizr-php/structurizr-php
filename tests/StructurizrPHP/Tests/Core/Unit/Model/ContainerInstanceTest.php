@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit\Model;
+namespace StructurizrPHP\Tests\Core\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use StructurizrPHP\StructurizrPHP\Core\Model\ContainerInstance;
-use StructurizrPHP\StructurizrPHP\Core\Model\Model;
+use StructurizrPHP\Core\Model\ContainerInstance;
+use StructurizrPHP\Core\Model\Model;
 
 final class ContainerInstanceTest extends TestCase
 {

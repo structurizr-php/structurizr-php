@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core;
+namespace StructurizrPHP\Core;
 
 use Assert\Assertion as BaseAssertion;
-use StructurizrPHP\StructurizrPHP\Core\Exception\AssertionException;
+use StructurizrPHP\Core\Exception\AssertionException;
 
 final class Assertion extends BaseAssertion
 {

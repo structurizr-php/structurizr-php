@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\Model;
+namespace StructurizrPHP\Core\Model;
 
 /**
  * Represents a deployment instance of a {@link Container}, which can be added to a {@link DeploymentNode}.
