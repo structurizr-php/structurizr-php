@@ -275,7 +275,7 @@ final class Model
 
     public function addContainerInstance(DeploymentElement $deploymentElement, Container $container, bool $replicateContainerRelationships = true) : ContainerInstance
     {
-        $instanceNumber =  \count(\array_unique(\array_map(
+        $instanceNumber = \count(\array_unique(\array_map(
             function (DeploymentNode $deploymentNode) {
                 foreach ($deploymentNode->getContainerInstances() as $instance) {
                     return 1;
@@ -291,7 +291,7 @@ final class Model
         if ($replicateContainerRelationships) {
             // get all ContainerInstance objects
             /** @return ContainerInstance[] */
-            $getContainerInstances = function (DeploymentNode $deploymentNode) use (&$getContainerInstances) : ? array {
+            $getContainerInstances = function (DeploymentNode $deploymentNode) use (&$getContainerInstances) : ?array {
                 $containerInstances = [];
                 $containerInstances = \array_merge($containerInstances, $deploymentNode->getContainerInstances());
 
@@ -369,7 +369,7 @@ final class Model
     public function addElementToInternalStructures(Element $element) : void
     {
         if (\array_key_exists($element->id(), $this->elementsById) || \array_key_exists($element->id(), $this->relationshipsById)) {
-            return ;
+            return;
         }
 
         $this->elementsById[$element->id()] = $element;
@@ -379,7 +379,7 @@ final class Model
     public function addRelationshipToInternalStructures(Relationship $relationship) : void
     {
         if (\array_key_exists($relationship->id(), $this->elementsById) || \array_key_exists($relationship->id(), $this->relationshipsById)) {
-            return ;
+            return;
         }
 
         $this->relationshipsById[$relationship->id()] = $relationship;
@@ -399,7 +399,148 @@ final class Model
         return null;
     }
 
-    public function toArray() : ?array
+    /**
+     * @return Relationship[]
+     */
+    public function addImplicitRelationships() : array
+    {
+        $implicitRelationships = [];
+        $descriptionKey = 'D';
+        $technologyKey = 'T';
+        $candidateRelationships = [];
+        $objMap = [];
+
+        foreach ($this->relationshipsById as $relationship) {
+            $source = $relationship->getSource();
+            $destination = $relationship->getDestination();
+
+            while ($source !== null) {
+                while ($destination !== null) {
+                    if (!$source->hasEfferentRelationshipWith($destination) && $this->propagatedRelationshipIsAllowed($source, $destination)) {
+                        if (!in_array($source, $objMap, true)) {
+                            $objMap[] = $source;
+                        }
+                        $sourceKey = (int)array_search($source, $objMap, true);
+                        if (!in_array($destination, $objMap, true)) {
+                            $objMap[] = $destination;
+                        }
+                        $destinationKey = (int)array_search($destination, $objMap, true);
+
+                        if (!array_key_exists($sourceKey, $candidateRelationships)) {
+                            $candidateRelationships[$sourceKey] = [];
+                        }
+
+                        if (!array_key_exists($destinationKey, $candidateRelationships[$sourceKey])) {
+                            $candidateRelationships[$sourceKey][$destinationKey] = [
+                                $descriptionKey => [],
+                                $technologyKey => [],
+                            ];
+                        }
+
+                        if ($relationship->getDescription() !== null) {
+                            $candidateRelationships[$sourceKey][$destinationKey][$descriptionKey][] = $relationship->getDescription();
+                        }
+
+                        if ($relationship->getTechnology() !== null) {
+                            $candidateRelationships[$sourceKey][$destinationKey][$technologyKey][] = $relationship->getTechnology();
+                        }
+                    }
+
+                    $destination = $destination->getParent();
+                }
+
+                $destination = $relationship->getDestination();
+
+                $source = $source->getParent();
+            }
+        }
+
+        foreach ($candidateRelationships as $sourceKey => $source) {
+            foreach ($candidateRelationships[$sourceKey] as $destinationKey => $destination) {
+                $possibleDescriptions = $candidateRelationships[$sourceKey][$destinationKey][$descriptionKey] ?? [];
+                $possibleTechnologies = $candidateRelationships[$sourceKey][$destinationKey][$technologyKey] ?? [];
+
+                $description = '';
+                if (count($possibleDescriptions) === 1) {
+                    $description = $possibleDescriptions[0];
+                }
+
+                $technology = '';
+                if (count($possibleTechnologies) === 1) {
+                    $technology = $possibleTechnologies[0];
+                }
+
+                // todo ... this defaults to being a synchronous relationship
+                $implicitRelationship = $this->addRelationship($objMap[$sourceKey], $objMap[$destinationKey], $description, $technology, InteractionStyle::synchronous());
+                if ($implicitRelationship !== null) {
+                    $implicitRelationships[] = $implicitRelationship;
+                }
+            }
+        }
+
+        return $implicitRelationships;
+    }
+
+    private function propagatedRelationshipIsAllowed(Element $source, Element $destination) : bool
+    {
+        if ($source->equalTo($destination)) {
+            return false;
+        }
+
+        return !($this->isChildOf($source, $destination) || $this->isChildOf($destination, $source));
+    }
+
+    private function isChildOf(Element $e1, Element $e2) : bool
+    {
+        if ($e1 instanceof Person || $e2 instanceof Person) {
+            return false;
+        }
+
+        /** @var Element $parent */
+        $parent = $e2->getParent();
+        while ($parent !== null) {
+            if ($parent->id() === $e1->id()) {
+                return true;
+            }
+
+            $parent = $parent->getParent();
+        }
+
+        return false;
+    }
+
+    /**
+     * @return Relationship[]
+     */
+    public function getRelationships() : array
+    {
+        return $this->relationshipsById;
+    }
+
+    public function addComponentOfType(Container $parent, string $name, string $type, string $description) : Component
+    {
+        if ($parent->getComponentWithName($name)===null) {
+            $component = new Component($this->idGenerator->generateId(), $this);
+            $component->setName($name);
+            $component->setDescription($description);
+
+            if (strlen($type)>0) {
+                $component->setType($type);
+            }
+
+            $component->setParent($parent);
+            $parent->add($component);
+
+            $component->setId($this->idGenerator->generateId());
+            $this->addElementToInternalStructures($component);
+
+            return $component;
+        }
+
+        throw new InvalidArgumentException("A component named '" . $name . "' already exists for this container.");
+    }
+
+    public function toArray() : array
     {
         $data = [
             'enterprise' => ($this->enterprise) ? $this->enterprise->name() : null,
@@ -470,7 +611,7 @@ final class Model
         \usort(
             $model->people,
             function (Person $personA, Person $personB) {
-                return (int) $personA->id() > (int) $personB->id()
+                return (int)$personA->id() > (int)$personB->id()
                     ? 1
                     : 0;
             }
@@ -479,7 +620,7 @@ final class Model
         \usort(
             $model->softwareSystems,
             function (SoftwareSystem $softwareSystemA, SoftwareSystem $softwareSystemB) {
-                return (int) $softwareSystemA->id() > (int) $softwareSystemB->id()
+                return (int)$softwareSystemA->id() > (int)$softwareSystemB->id()
                     ? 1
                     : 0;
             }
@@ -488,7 +629,7 @@ final class Model
         \usort(
             $model->deploymentNodes,
             function (DeploymentNode $deploymentNodeA, DeploymentNode $deploymentNodeB) {
-                return (int) $deploymentNodeA->id() > (int) $deploymentNodeB->id()
+                return (int)$deploymentNodeA->id() > (int)$deploymentNodeB->id()
                     ? 1
                     : 0;
             }

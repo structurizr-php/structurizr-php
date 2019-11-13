@@ -46,4 +46,19 @@ abstract class StaticStructureElement extends Element
             $interactionStyle
         );
     }
+
+    public function usesComponent(
+        Component $container,
+        string $description = "Uses",
+        string $technology = null,
+        InteractionStyle $interactionStyle = null
+    ) : Relationship {
+        return $this->getModel()->addRelationship(
+            $this,
+            $container,
+            $description,
+            $technology,
+            $interactionStyle
+        );
+    }
 }

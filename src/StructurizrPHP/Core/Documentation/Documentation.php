@@ -17,6 +17,7 @@ use StructurizrPHP\StructurizrPHP\Core\Assertion;
 use StructurizrPHP\StructurizrPHP\Core\Exception\InvalidArgumentException;
 use StructurizrPHP\StructurizrPHP\Core\Model\Element;
 use StructurizrPHP\StructurizrPHP\Core\Model\Model;
+use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
 
 final class Documentation
 {
@@ -35,9 +36,15 @@ final class Documentation
      */
     private $template;
 
+    /**
+     * @var array
+     */
+    private $decisions;
+
     public function __construct(Model $model)
     {
         $this->model = $model;
+        $this->decisions = [];
     }
 
     public function addSection(Element $element, string $title, Format $format, string $content) : Section
@@ -98,7 +105,7 @@ final class Documentation
 
     public function isEmpty() : bool
     {
-        return $this->template === null && !\count($this->sections);
+        return $this->template === null && !\count($this->sections) && !\count($this->decisions);
     }
 
     public function toArray() : array
@@ -109,6 +116,12 @@ final class Documentation
             $data['sections'] = \array_map(function (Section $section) {
                 return $section->toArray();
             }, $this->sections);
+        }
+
+        if (\count($this->decisions)) {
+            $data['decisions'] = \array_map(function (Decision $decisions) {
+                return $decisions->toArray();
+            }, $this->decisions);
         }
 
         if (isset($this->template)) {
@@ -123,12 +136,21 @@ final class Documentation
         $documentation = new self($model);
 
         $documentationDataModel = new DocumentationDataObject($documentationData);
-        $documentation->sections = $documentationDataModel->hydrateSection($model);
+        $documentation->sections = $documentationDataModel->hydrateSections($model);
+        $documentation->decisions = $documentationDataModel->hydrateDecisions($model);
         if ($documentationDataModel->templateExist()) {
             $documentation->template = $documentationDataModel->hydrateTemplate();
         }
 
         return $documentation;
+    }
+
+    public function addDecision(SoftwareSystem $softwareSystem, string $id, \DateTimeImmutable $date, string $title, DecisionStatus $status, Format $format, string $content) : Decision
+    {
+        $decision = new Decision($softwareSystem, $id, $date, $title, $status, $format, $content);
+        $this->decisions[] = $decision;
+
+        return $decision;
     }
 }
 
@@ -148,7 +170,7 @@ final class DocumentationDataObject
      * @param Model $model
      * @return Section[]
      */
-    public function hydrateSection(Model $model) : array
+    public function hydrateSections(Model $model) : array
     {
         return \array_map(
             function (array $sectionData) use ($model) {
@@ -170,5 +192,22 @@ final class DocumentationDataObject
     public function templateExist() : bool
     {
         return isset($this->documentationSetData['template']);
+    }
+
+    /**
+     * @param Model $model
+     * @return Decision[]
+     */
+    public function hydrateDecisions(Model $model) : array
+    {
+        return \array_map(
+            function (array $decisionData) use ($model) {
+                return Decision::hydrate(
+                    $decisionData,
+                    $model->getElement($decisionData['elementId']),
+                );
+            },
+            $this->documentationSetData['decisions'] ?? []
+        );
     }
 }

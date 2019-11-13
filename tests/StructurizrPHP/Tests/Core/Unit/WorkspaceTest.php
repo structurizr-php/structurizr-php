@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit;
 
 use PHPUnit\Framework\TestCase;
+use StructurizrPHP\AdrTools\AdrToolsImporter;
 use StructurizrPHP\StructurizrPHP\Core\Documentation\Format;
 use StructurizrPHP\StructurizrPHP\Core\Documentation\StructurizrDocumentationTemplate;
 use StructurizrPHP\StructurizrPHP\Core\Model\Tags;
@@ -58,11 +59,56 @@ final class WorkspaceTest extends TestCase
         $template->addContextSection($system, Format::markdown(), 'Here is some context about the software system...\n\n![](embed:SystemContext)');
 
         $branding = $workspace->getViews()->getConfiguration()->getBranding();
-        $branding->setLogo(ImageUtils::getImageAsDataUri(__DIR__.'/../../../../../examples/documentation/logo.png'));
+        $branding->setLogo(ImageUtils::getImageAsDataUri(__DIR__ . '/../../../../../examples/documentation/logo.png'));
 
         $workspace->getViews()->getConfiguration()->getStyles()->addElementStyle(Tags::PERSON)
             ->shape(Shape::person());
 
+        $this->assertEquals($workspace, Workspace::hydrate($workspace->toArray("test")));
+    }
+
+    public function test_hydraing_adr_case() : void
+    {
+        $FILE_SYSTEM_TAG = 'File System';
+        $workspace = new Workspace(
+            "1",
+            "name",
+            "description"
+        );
+
+        $model = $workspace->getModel();
+
+        $user = $model->addPerson('User', 'Somebody on a software development team.');
+        $adrTools = $model->addSoftwareSystem('adr-tools', 'A command-line tool for working with Architecture Decision Records (ADRs).');
+        $adrTools->setUrl('https://github.com/npryce/adr-tools');
+
+        $adrShellScripts = $adrTools->addContainer('adr', 'A command-line tool for working with Architecture Decision Records (ADRs).', 'Shell Scripts');
+        $adrShellScripts->setUrl('https://github.com/npryce/adr-tools/tree/master/src');
+        $fileSystem = $adrTools->addContainer('File System', 'Stores ADRs, templates, etc.', 'File System');
+        $fileSystem->addTags($FILE_SYSTEM_TAG);
+        $user->uses($adrShellScripts, 'Manages ADRs using');
+        $adrShellScripts->uses($fileSystem, 'Reads from and writes to');
+        $model->addImplicitRelationships();
+
+        $views = $workspace->getViews();
+        $contextView = $views->createSystemContextView($adrTools, 'SystemContext', 'The system context diagram for adr-tools.');
+        $contextView->addAllElements();
+
+        $containerView = $views->createContainerView($adrTools, 'Containers', 'The container diagram for adr-tools.');
+        $containerView->addAllElements();
+
+        $adrDirectory = __DIR__ . '/../../../../../examples/documentation/adr';
+
+        $adrToolsImporter = new AdrToolsImporter($workspace, $adrDirectory);
+        $adrToolsImporter->importArchitectureDecisionRecords($adrTools);
+
+        $styles = $views->getConfiguration()->getStyles();
+        $styles->addElementStyle(Tags::ELEMENT)->shape(Shape::roundedBox())->color('#ffffff');
+        $styles->addElementStyle(Tags::SOFTWARE_SYSTEM)->background('#18ADAD')->color('#ffffff');
+        $styles->addElementStyle(Tags::PERSON)->shape(Shape::person())->background('#008282')->color('#ffffff');
+        $styles->addElementStyle(Tags::CONTAINER)->background('#6DBFBF');
+        $styles->addElementStyle($FILE_SYSTEM_TAG)->shape(Shape::folder());
+        /**/
         $this->assertEquals($workspace, Workspace::hydrate($workspace->toArray("test")));
     }
 }

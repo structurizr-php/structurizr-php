@@ -28,9 +28,22 @@ final class Person extends StaticStructureElement
         $this->setTags(new Tags(Tags::ELEMENT, Tags::PERSON));
     }
 
+    /**
+     * @param Location $location
+     */
+    public function setLocation(Location $location) : void
+    {
+        $this->location = $location;
+    }
+
+    public function uses(Element $softwareSystem, string $description) : Relationship
+    {
+        return $this->getModel()->addRelationship($this, $softwareSystem, $description);
+    }
+
     public function getParent() : ?Element
     {
-        return null;
+        return  null;
     }
 
     public function toArray() : array
@@ -41,14 +54,6 @@ final class Person extends StaticStructureElement
             ],
             parent::toArray()
         );
-    }
-
-    /**
-     * @param Location $location
-     */
-    public function setLocation(Location $location) : void
-    {
-        $this->location = $location;
     }
 
     public static function hydrate(array $personData, Model $model) : self
@@ -67,10 +72,5 @@ final class Person extends StaticStructureElement
         parent::hydrateElement($person, $personData);
 
         return $person;
-    }
-
-    public function uses(SoftwareSystem $softwareSystem, string $description) : void
-    {
-        $this->getModel()->addRelationship($this, $softwareSystem, $description);
     }
 }

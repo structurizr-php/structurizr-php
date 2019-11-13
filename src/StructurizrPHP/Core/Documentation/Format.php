@@ -13,8 +13,17 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
 
+use StructurizrPHP\StructurizrPHP\Core\Assertion;
+
 final class Format
 {
+    private const MARKDOWN = 'Markdown';
+
+    private const ASCII_DOC = 'AsciiDoc';
+
+    /**
+     * @var string
+     */
     private $name;
 
     private function __construct(string $name)
@@ -29,16 +38,18 @@ final class Format
 
     public static function markdown() : self
     {
-        return new self('Markdown');
+        return new self(self::MARKDOWN);
     }
 
     public static function asciiDoc() : self
     {
-        return new self('AsciiDoc');
+        return new self(self::ASCII_DOC);
     }
 
     public static function hydrate(string $name) : self
     {
+        Assertion::inArray($name, [self::MARKDOWN, self::ASCII_DOC]);
+
         return new self($name);
     }
 }

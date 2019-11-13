@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\StructurizrPHP\Core\Model;
 
+use StructurizrPHP\StructurizrPHP\Core\Assertion;
+
 /**
  * Represents a "container" in the C4 model.
  */
@@ -28,10 +30,16 @@ final class Container extends StaticStructureElement
      */
     private $technology;
 
+    /**
+     * @var Component[]
+     */
+    private $components;
+
     public function __construct(string $id, SoftwareSystem $parent, Model $model)
     {
         parent::__construct($id, $model);
         $this->parent = $parent;
+        $this->components = [];
     }
 
     /**
@@ -58,6 +66,30 @@ final class Container extends StaticStructureElement
         $this->technology = $technology;
     }
 
+    public function uses(Container $fileSystem, string $description) : Relationship
+    {
+        return $this->getModel()->addRelationship($this, $fileSystem, $description);
+    }
+
+    public function addComponent(string $name, string $type, string $description) : Component
+    {
+        return $this->getModel()->addComponentOfType($this, $name, $type, $description);
+    }
+
+    public function getComponentWithName(string $name) : ?Component
+    {
+        Assertion::notEmpty($name, 'A component name must be provided.');
+        //todo
+        return null;
+    }
+
+    public function add(Component $component) : void
+    {
+        if ($this->getComponentWithName($component->getName()) === null) {
+            $this->components[] = $component;
+        }
+    }
+
     public function toArray() : array
     {
         $data = \array_merge(
@@ -67,6 +99,15 @@ final class Container extends StaticStructureElement
             ],
             parent::toArray()
         );
+
+        if (\count($this->components)) {
+            $data['components'] = \array_map(
+                function (Component $component) {
+                    return $component->toArray();
+                },
+                $this->components
+            );
+        }
 
         return $data;
     }
@@ -79,6 +120,17 @@ final class Container extends StaticStructureElement
             $container->setTechnology($containerData['technology']);
         }
 
+        if (isset($containerData['components'])) {
+            foreach ($containerData['components'] as $componentData) {
+                $component = Component::hydrate(
+                    $componentData,
+                    $model,
+                    $container
+                );
+
+                $container->components[] = $component;
+            }
+        }
         parent::hydrateElement($container, $containerData);
 
         return $container;
