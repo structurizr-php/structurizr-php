@@ -24,6 +24,9 @@ use Symfony\Component\HttpClient\Psr18Client;
 require __DIR__ . '/../vendor/autoload.php';
 
 const FILE_SYSTEM_TAG = 'File System';
+
+// https://github.com/globtec/phpadr - ADR Tool for PHP
+
 $workspace = new Workspace((string)\getenv('STRUCTURIZR_WORKSPACE_ID'), 'adr-tools', 'A description of the adr-tools command line utility.');
 $model = $workspace->getModel();
 
