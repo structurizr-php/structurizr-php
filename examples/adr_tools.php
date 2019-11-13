@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use StructurizrPHP\AdrTools\AdrToolsImporter;
 use StructurizrPHP\StructurizrPHP\Client\Client;
 use StructurizrPHP\StructurizrPHP\Client\Credentials;
 use StructurizrPHP\StructurizrPHP\Client\Infrastructure\Http\SymfonyRequestFactory;
 use StructurizrPHP\StructurizrPHP\Client\UrlMap;
-use StructurizrPHP\StructurizrPHP\Core\Documentation\AdrToolsImporter;
 use StructurizrPHP\StructurizrPHP\Core\Model\Tags;
 use StructurizrPHP\StructurizrPHP\Core\View\Configuration\Shape;
 use StructurizrPHP\StructurizrPHP\Core\Workspace;

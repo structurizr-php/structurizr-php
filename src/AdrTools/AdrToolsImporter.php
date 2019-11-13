@@ -11,9 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace StructurizrPHP\StructurizrPHP\Core\Documentation;
+namespace StructurizrPHP\AdrTools;
 
 use StructurizrPHP\StructurizrPHP\Core\Assertion;
+use StructurizrPHP\StructurizrPHP\Core\Documentation\Decision;
+use StructurizrPHP\StructurizrPHP\Core\Documentation\DecisionStatus;
+use StructurizrPHP\StructurizrPHP\Core\Documentation\Format;
 use StructurizrPHP\StructurizrPHP\Core\Model\SoftwareSystem;
 use StructurizrPHP\StructurizrPHP\Core\Workspace;
 

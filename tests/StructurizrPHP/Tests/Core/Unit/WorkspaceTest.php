@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace StructurizrPHP\Tests\StructurizrPHP\Tests\Core\Unit;
 
 use PHPUnit\Framework\TestCase;
-use StructurizrPHP\StructurizrPHP\Core\Documentation\AdrToolsImporter;
+use StructurizrPHP\AdrTools\AdrToolsImporter;
 use StructurizrPHP\StructurizrPHP\Core\Documentation\Format;
 use StructurizrPHP\StructurizrPHP\Core\Documentation\StructurizrDocumentationTemplate;
 use StructurizrPHP\StructurizrPHP\Core\Model\Tags;
