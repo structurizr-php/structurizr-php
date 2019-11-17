@@ -11,8 +11,11 @@ this library is nothing more that simple port of the code that already exists in
 
 ### Installation
 
+> Because package does not have yet stable release you might need to use @dev stability flag to not get
+> into minimum stability composer error. 
+
 ```
-composer require structurizr-php/structurizr-php
+composer require struturizr-php/structurizr-php:@dev --dev
 ```
 
 ### A quick example
