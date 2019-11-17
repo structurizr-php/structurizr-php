@@ -1,0 +1,22 @@
+paths:
+  - ./src
+exclude_files: ~
+layers:
+  - name: AdrTools
+    collectors:
+      - type: directory
+        regex: src/StructurizrPHP/AdrTools/.*
+  - name: Client
+    collectors:
+      - type: directory
+        regex: src/StructurizrPHP/Client/.*
+  - name: Core
+    collectors:
+      - type: directory
+        regex: src/StructurizrPHP/Core/.*
+ruleset:
+  AdrTools:
+    - Core
+  Client:
+    - Core
+  Core: ~
