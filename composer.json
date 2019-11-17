@@ -31,7 +31,8 @@
         "phpstan/phpstan-phpunit": "^0.11.2",
         "thecodingmachine/phpstan-strict-rules": "^0.11.2",
         "localheinz/phpstan-rules": "^0.13.0",
-        "monolog/monolog": "^2.0"
+        "monolog/monolog": "^2.0",
+        "sensiolabs-de/deptrac-shim": "^0.6.0"
     },
     "suggest": {
         "symfony/http-client": "Psr18Client http factory works out of the box with StructurizrPHP\\StructurizrPHP\\SDK\\Client",
@@ -45,6 +46,9 @@
         }
     ],
     "scripts": {
+        "deptrac": [
+            "deptrac"
+        ],
         "phpstan": [
             "phpstan analyse -c phpstan.neon"
         ],
@@ -52,6 +56,7 @@
             "phpunit"
         ],
         "test" : [
+            "deptrac",
             "php-cs-fixer fix --dry-run",
             "@phpstan",
             "phpunit"
