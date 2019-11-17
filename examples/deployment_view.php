@@ -11,6 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use StructurizrPHP\Client\Client;
 use StructurizrPHP\Client\Credentials;
 use StructurizrPHP\Client\Infrastructure\Http\SymfonyRequestFactory;
@@ -29,13 +31,6 @@ $workspace = new Workspace(
     $description = 'This is a model of my software system. by structurizr-php/structurizr-php'
 );
 $workspace->getModel()->setEnterprise(new Enterprise('Structurizr PHP'));
-$client = new Client(
-    new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
-    new UrlMap('https://api.structurizr.com'),
-    new Psr18Client(),
-    new SymfonyRequestFactory(),
-);
-
 $softwareSystem = $workspace->getModel()->addSoftwareSystem(
     $name = 'Software System',
     $description = 'My software system.',
@@ -78,5 +73,14 @@ $workspace->getViews()->getConfiguration()->getStyles()->addElementStyle('PHP')
     ->shape(Shape::hexagon())
     ->background("#787CB5")
     ->color("#ffffff");
+
+$client = new Client(
+    new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
+    new UrlMap('https://api.structurizr.com'),
+    new Psr18Client(),
+    new SymfonyRequestFactory(),
+    // Logger can be replaced with new NullLogger()
+    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . basename(__FILE__) . '.log', Logger::DEBUG))
+);
 
 $client->put($workspace);

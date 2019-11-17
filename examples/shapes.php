@@ -11,6 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use StructurizrPHP\Client\Client;
 use StructurizrPHP\Client\Credentials;
 use StructurizrPHP\Client\Infrastructure\Http\SymfonyRequestFactory;
@@ -22,13 +24,6 @@ use StructurizrPHP\Core\Workspace;
 use Symfony\Component\HttpClient\Psr18Client;
 
 require __DIR__ . '/../vendor/autoload.php';
-
-$client = new Client(
-    new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
-    new UrlMap('https://api.structurizr.com'),
-    new Psr18Client(),
-    new SymfonyRequestFactory(),
-);
 
 $workspace = new Workspace(
     $id = (string)\getenv('STRUCTURIZR_WORKSPACE_ID'),
@@ -74,5 +69,14 @@ $styles->addElementStyle("Folder")->shape(Shape::folder());
 $styles->addElementStyle("Hexagon")->shape(Shape::hexagon());
 $styles->addElementStyle("Robot")->shape(Shape::robot())->width(550);
 $styles->addElementStyle("Person")->shape(Shape::person())->width(550);
+
+$client = new Client(
+    new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
+    new UrlMap('https://api.structurizr.com'),
+    new Psr18Client(),
+    new SymfonyRequestFactory(),
+    // Logger can be replaced with new NullLogger()
+    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . basename(__FILE__) . '.log', Logger::DEBUG))
+);
 
 $client->put($workspace);

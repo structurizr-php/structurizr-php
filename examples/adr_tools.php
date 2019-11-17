@@ -11,6 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use StructurizrPHP\AdrTools\AdrToolsImporter;
 use StructurizrPHP\Client\Client;
 use StructurizrPHP\Client\Credentials;
@@ -66,7 +68,9 @@ $client = new Client(
     new Credentials((string)\getenv('STRUCTURIZR_API_KEY'), (string)\getenv('STRUCTURIZR_API_SECRET')),
     new UrlMap('https://api.structurizr.com'),
     new Psr18Client(),
-    new SymfonyRequestFactory()
+    new SymfonyRequestFactory(),
+    // Logger can be replaced with new NullLogger()
+    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . basename(__FILE__) . '.log', Logger::DEBUG))
 );
 $client->setMergeRemote(false);
 $client->put($workspace);
