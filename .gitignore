@@ -1,3 +1,5 @@
 composer.lock
 *.cache
 vendor
+examples/var/logs/*
+!examples/var/logs/.gitkeep

@@ -15,6 +15,7 @@ namespace StructurizrPHP\Client;
 
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
+use Psr\Log\LoggerInterface;
 use StructurizrPHP\Client\Exception\Exception;
 use StructurizrPHP\Core\Workspace;
 
@@ -47,17 +48,24 @@ final class Client
      */
     private $mergeFromRemote;
 
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     public function __construct(
         Credentials $credentials,
         UrlMap $urlMap,
         ClientInterface $httpClient,
-        RequestFactory $httpRequestFactory
+        RequestFactory $httpRequestFactory,
+        LoggerInterface $logger
     ) {
         $this->urlMap = $urlMap;
         $this->httpClient = $httpClient;
         $this->httpRequestFactory = $httpRequestFactory;
         $this->credentials = $credentials;
         $this->mergeFromRemote = true;
+        $this->logger = $logger;
     }
 
     /**
@@ -84,7 +92,12 @@ final class Client
         try {
             $nonce = (int) \round(\microtime(true) * 1000);
 
-            $workspaceDefinition = \json_encode($workspace->toArray(self::AGENT_NAME), JSON_THROW_ON_ERROR);
+            $workspaceData = $workspace->toArray(self::AGENT_NAME);
+            $workspaceDefinition = \json_encode($workspaceData, JSON_THROW_ON_ERROR);
+
+            $this->logger->debug('Pre PUT workspace', [
+                'workspace' => $workspaceData,
+            ]);
 
             $url = $this->urlMap->workspaceUrl($workspace->id());
 
@@ -103,9 +116,29 @@ final class Client
                 )
             );
 
-            if ($response->getStatusCode() !== 200) {
-                throw new Exception(\sprintf('Status: %d, Message: %s', $response->getStatusCode(), $response->getBody()->getContents()));
+            $content = $response->getBody()->getContents();
+
+            if ($response->getStatusCode() === 401) {
+                $this->logger->error('Post PUT workspace - Unauthorized', [
+                    'status_code' => $response->getStatusCode(),
+                    'body' => $content,
+                ]);
+
+                return ;
             }
+
+            if ($response->getStatusCode() !== 200) {
+                $this->logger->error('Post PUT workspace - Invalid Response', [
+                    'status_code' => $response->getStatusCode(),
+                    'body' => $content,
+                ]);
+
+                throw new Exception(\sprintf('Status: %d, Message: %s', $response->getStatusCode(), $content));
+            }
+
+            $this->logger->debug('Post PUT workspace', [
+                'revision' => \json_decode($content, true, 512, JSON_THROW_ON_ERROR)['revision'],
+            ]);
         } catch (ClientExceptionInterface $e) {
             throw new Exception('Can\'t put Workspace', 0, $e);
         }
@@ -116,6 +149,10 @@ final class Client
         $nonce = (int) \round(\microtime(true) * 1000);
 
         try {
+            $this->logger->debug('Pre GET workspace', [
+                'workspace_id' => $workspaceId,
+            ]);
+
             $response = $this->httpClient->sendRequest(
                 $this->httpRequestFactory->create(
                     $this->urlMap->workspaceUrl($workspaceId),
@@ -131,21 +168,36 @@ final class Client
                 )
             );
 
+            $content = $response->getBody()->getContents();
 
             if ($response->getStatusCode() === 401) {
+                $this->logger->error('Post PUT workspace - Unauthorized', [
+                    'status_code' => $response->getStatusCode(),
+                    'body' => $content,
+                ]);
+
                 return null;
             }
 
             if ($response->getStatusCode() !== 200) {
+                $this->logger->error('Post PUT workspace - Invalid Response', [
+                    'status_code' => $response->getStatusCode(),
+                    'body' => $content,
+                ]);
+
                 throw new Exception(\sprintf("Invalid API responses, expected 200, got %d", $response->getStatusCode()));
             }
 
             $workspaceDefinition = (array) \json_decode(
-                $response->getBody()->getContents(),
+                $content,
                 true,
                 512,
                 JSON_THROW_ON_ERROR
             );
+
+            $this->logger->debug('Post GET workspace', [
+                'workspace' => $workspaceDefinition,
+            ]);
 
             return Workspace::hydrate($workspaceDefinition);
         } catch (ClientExceptionInterface $e) {

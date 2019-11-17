@@ -11,6 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use StructurizrPHP\Client\Client;
 use StructurizrPHP\Client\Credentials;
 use StructurizrPHP\Client\Infrastructure\Http\SymfonyRequestFactory;
@@ -56,5 +58,7 @@ $client = new Client(
     new UrlMap('https://api.structurizr.com'),
     new Psr18Client(),
     new SymfonyRequestFactory(),
+    // Logger can be replaced with new NullLogger()
+    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . basename(__FILE__) . '.log', Logger::DEBUG))
 );
 $client->put($workspace);
