@@ -29,7 +29,7 @@ final class ViewSetTest extends TestCase
     public function test_hydrating_view_set_with_views() : void
     {
         $viewSet = new ViewSet($model = new Model());
-        $softwareSystem = $model->addSoftwareSystem('software');
+        $softwareSystem = $model->addSoftwareSystem('software', 'description');
 
         $viewSet->createSystemLandscapeView('landscape', 'Landscape View');
         $viewSet->createSystemContextView($softwareSystem, 'context', 'Context View');

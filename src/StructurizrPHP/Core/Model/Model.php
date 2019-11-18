@@ -205,7 +205,7 @@ final class Model
         return $person;
     }
 
-    public function addSoftwareSystem(string $name = null, string $description = null, Location $location = null) : SoftwareSystem
+    public function addSoftwareSystem(string $name, string $description, Location $location = null) : SoftwareSystem
     {
         $softwareSystem = new SoftwareSystem(
             $this->idGenerator->generateId(),

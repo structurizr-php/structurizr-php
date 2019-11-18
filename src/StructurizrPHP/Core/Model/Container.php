@@ -66,9 +66,9 @@ final class Container extends StaticStructureElement
         $this->technology = $technology;
     }
 
-    public function uses(Container $fileSystem, string $description) : Relationship
+    public function uses(Container $container, string $description) : Relationship
     {
-        return $this->getModel()->addRelationship($this, $fileSystem, $description);
+        return $this->getModel()->addRelationship($this, $container, $description);
     }
 
     public function addComponent(string $name, string $type, string $description) : Component
@@ -79,8 +79,15 @@ final class Container extends StaticStructureElement
     public function getComponentWithName(string $name) : ?Component
     {
         Assertion::notEmpty($name, 'A component name must be provided.');
-        //todo
-        return null;
+
+        $component = \current(\array_filter(
+            $this->components,
+            function (Component $component) use ($name) {
+                return $component->getName() === $name;
+            }
+        ));
+
+        return $component ? $component : null;
     }
 
     public function add(Component $component) : void
