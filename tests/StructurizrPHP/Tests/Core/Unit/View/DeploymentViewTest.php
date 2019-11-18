@@ -24,7 +24,7 @@ final class DeploymentViewTest extends TestCase
     {
         $model = new Model();
         $viewSet = new ViewSet($model);
-        $softwareSystem = $model->addSoftwareSystem('system');
+        $softwareSystem = $model->addSoftwareSystem('system', 'description');
 
         $view = new DeploymentView($softwareSystem, 'test', 'test', $viewSet);
         $view->setEnvironment('prod');

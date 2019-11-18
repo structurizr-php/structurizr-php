@@ -22,13 +22,13 @@ final class ContainerInstanceTest extends TestCase
     public function test_hydrate_container_instance() : void
     {
         $model = new Model();
-        $softwareSystem = $model->addSoftwareSystem('system');
+        $softwareSystem = $model->addSoftwareSystem('system', 'description');
         $container = $model->addContainer($softwareSystem, 'container', 'test', 'php');
         $deploymentNode = $model->addDeploymentNode('node');
         $instance = $model->addContainerInstance($deploymentNode, $container);
 
         $newModel = new Model();
-        $softwareSystem = $newModel->addSoftwareSystem('system');
+        $softwareSystem = $newModel->addSoftwareSystem('system', 'description');
         $container = $newModel->addContainer($softwareSystem, 'container', 'test', 'php');
         $deploymentNode = $newModel->addDeploymentNode('node');
 
