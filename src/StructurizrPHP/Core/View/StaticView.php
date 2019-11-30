@@ -13,8 +13,22 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\Core\View;
 
+use StructurizrPHP\Core\Model\Person;
+use StructurizrPHP\Core\Model\Relationship;
+use StructurizrPHP\Core\Model\SoftwareSystem;
+
 abstract class StaticView extends View
 {
+    public function addSoftwareSystem(SoftwareSystem $softwareSystem, bool $addRelationships = true) : void
+    {
+        $this->addElement($softwareSystem, $addRelationships);
+    }
+
+    public function addPerson(Person $person, bool $addRelationships = true) : void
+    {
+        $this->addElement($person, $addRelationships);
+    }
+
     public function addAllSoftwareSystems(bool $addRelationships = true) : void
     {
         $model = $this->getModel();
@@ -39,6 +53,11 @@ abstract class StaticView extends View
         foreach ($model->people() as $person) {
             $this->addElement($person, $addRelationships);
         }
+    }
+
+    public function addRelationship(Relationship $relationship) : ?RelationshipView
+    {
+        return parent::addRelationship($relationship);
     }
 
     abstract public function addAllElements() : void;

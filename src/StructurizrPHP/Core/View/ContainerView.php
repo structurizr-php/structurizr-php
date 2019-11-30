@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\Core\View;
 
+use StructurizrPHP\Core\Model\Container;
 use StructurizrPHP\Core\Model\SoftwareSystem;
 
 final class ContainerView extends StaticView
@@ -29,11 +30,16 @@ final class ContainerView extends StaticView
         $this->addAllContainers();
     }
 
-    private function addAllContainers() : void
+    public function addAllContainers() : void
     {
         foreach ($this->softwareSystem->getContainers() as $container) {
             $this->addElement($container, true);
         }
+    }
+
+    public function addContainer(Container $container, bool $addRelationships = true) : void
+    {
+        $this->addElement($container, $addRelationships);
     }
 
     public static function hydrate(array $viewData, ViewSet $viewSet) : self

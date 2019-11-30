@@ -49,7 +49,8 @@ $contextView = $views->createSystemContextView($adrTools, 'SystemContext', 'The 
 $contextView->addAllElements();
 
 $containerView = $views->createContainerView($adrTools, 'Containers', 'The container diagram for adr-tools.');
-$containerView->addAllElements();
+$containerView->addPerson($user);
+$containerView->addSoftwareSystem($adrTools);
 
 $adrDirectory = __DIR__ . '/documentation/adr';
 
