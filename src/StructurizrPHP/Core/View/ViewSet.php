@@ -195,6 +195,19 @@ final class ViewSet
             }
         }
 
+        foreach ($this->containerViews as $containerView) {
+            $sourceContainerView = \current(\array_filter(
+                $source->containerViews,
+                function (ContainerView $nextContainerView) use ($containerView) {
+                    return $nextContainerView->keyEquals($containerView);
+                }
+            ));
+
+            if ($sourceContainerView) {
+                $containerView->copyLayoutInformationFrom($sourceContainerView);
+            }
+        }
+
         foreach ($this->deploymentViews as $deploymentView) {
             $sourceDeploymentView = \current(\array_filter(
                 $source->deploymentViews,

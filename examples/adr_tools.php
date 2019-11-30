@@ -73,5 +73,4 @@ $client = new Client(
     // Logger can be replaced with new NullLogger()
     (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . basename(__FILE__) . '.log', Logger::DEBUG))
 );
-$client->setMergeRemote(false);
 $client->put($workspace);
