@@ -45,8 +45,6 @@ final class ElementView
 
     public function setX(?int $x) : self
     {
-        Assertion::greaterOrEqualThan($x, 0);
-
         $this->x = $x;
 
         return $this;
@@ -54,8 +52,6 @@ final class ElementView
 
     public function setY(?int $y) : self
     {
-        Assertion::greaterOrEqualThan($y, 0);
-
         $this->y = $y;
 
         return $this;
