@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\Core\View;
 
-use StructurizrPHP\Core\Assertion;
 use StructurizrPHP\Core\Model\Element;
 
 final class ElementView
