@@ -128,14 +128,21 @@ final class SoftwareSystem extends StaticStructureElement
                     $container = Container::hydrate($containerData, $softwareSystem, $model);
                     $softwareSystem->add($container);
                 }
+            }
+        }
 
+        return $softwareSystem;
+    }
+
+    public static function hydrateContainersRelationships(self $softwareSystem, array $softwareSystemData) : void
+    {
+        if (isset($softwareSystemData['containers'])) {
+            if (\is_array($softwareSystemData['containers'])) {
                 // hydrate containers missing relationships
                 foreach ($softwareSystemData['containers'] as $containerData) {
                     Container::hydrateRelationships($softwareSystem->getContainer($containerData['id']), $containerData);
                 }
             }
         }
-
-        return $softwareSystem;
     }
 }
