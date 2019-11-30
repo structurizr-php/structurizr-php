@@ -597,6 +597,7 @@ final class Model
         if (\count($model->softwareSystems)) {
             foreach ($modelData['softwareSystems'] as $softwareSystemData) {
                 SoftwareSystem::hydrateRelationships($model->getElement($softwareSystemData['id']), $softwareSystemData);
+                SoftwareSystem::hydrateContainersRelationships($model->getSoftwareSystem($softwareSystemData['id']), $softwareSystemData);
             }
         }
 
