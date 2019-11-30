@@ -64,7 +64,6 @@ $styles->addElementStyle(Tags::PERSON)->shape(Shape::person())->background('#008
 $styles->addElementStyle(Tags::CONTAINER)->background('#6DBFBF');
 $styles->addElementStyle(FILE_SYSTEM_TAG)->shape(Shape::folder());
 
-
 $client = new Client(
     new Credentials((string)\getenv('STRUCTURIZR_API_KEY'), (string)\getenv('STRUCTURIZR_API_SECRET')),
     new UrlMap('https://api.structurizr.com'),

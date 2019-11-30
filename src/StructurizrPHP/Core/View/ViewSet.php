@@ -232,7 +232,7 @@ final class ViewSet
 
     public function toArray() : ?array
     {
-        if (!\count($this->systemContextViews) && !\count($this->systemLandscapeViews) && !\count($this->dynamicViews) && !\count($this->deploymentViews)) {
+        if (!\count($this->systemContextViews) && !\count($this->systemLandscapeViews) && !\count($this->dynamicViews) && !\count($this->deploymentViews) && !\count($this->containerViews)) {
             return null;
         }
 
