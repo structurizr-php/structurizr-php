@@ -65,3 +65,19 @@ $client->put($workspace);
 The view can then be exported to be visualised in a number of different ways; e.g. PlantUML, Structurizr and Graphviz:
 
 ![Views can be exported and visualised in many ways; e.g. PlantUML, Structurizr and Graphviz](/docs/images/getting-started.png)
+
+## More Examples
+
+[Hire in Social - project example](https://github.com/norzechowicz/hire-in-social/blob/master/php/hireinsocial/structurizr/structurizr.php)
+
+[Structurizr Workspace](https://structurizr.com/share/49192)
+
+### System Landscape
+
+![System Landscape](https://structurizr.com/share/49192/images/system-landscape.png)
+![System Landscape Key](https://structurizr.com/share/49192/images/system-landscape-key.png)
+
+### Container
+
+![Container](https://structurizr.com/share/49192/images/Hire%20in%20Social%20-%20detailed%20view.png)
+![Container Key](https://structurizr.com/share/49192/images/Hire%20in%20Social%20-%20detailed%20view-key.png)
