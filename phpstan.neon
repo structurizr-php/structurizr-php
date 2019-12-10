@@ -4,12 +4,12 @@ includes:
     - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
 
 rules:
-    - Localheinz\PHPStan\Rules\Expressions\NoEvalRule
-    - Localheinz\PHPStan\Rules\Files\DeclareStrictTypesRule
+    - Ergebnis\PHPStan\Rules\Expressions\NoEvalRule
+    - Ergebnis\PHPStan\Rules\Files\DeclareStrictTypesRule
 
 services:
     -
-        class: Localheinz\PHPStan\Rules\Classes\FinalRule
+        class: Ergebnis\PHPStan\Rules\Classes\FinalRule
         arguments:
             allowAbstractClasses: true
             classesNotRequiredToBeAbstractOrFinal:
