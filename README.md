@@ -15,7 +15,7 @@ this library is nothing more that simple port of the code that already exists in
 > into minimum stability composer error. 
 
 ```
-composer require struturizr-php/structurizr-php:@dev --dev
+composer require structurizr-php/structurizr-php:@dev --dev
 ```
 
 ### A quick example
