@@ -28,7 +28,7 @@ use Symfony\Component\HttpClient\Psr18Client;
 require __DIR__ . '/../vendor/autoload.php';
 
 $workspace = new Workspace(
-    $id = (string)\getenv('STRUCTURIZR_WORKSPACE_ID'),
+    $id = (string) \getenv('STRUCTURIZR_WORKSPACE_ID'),
     $name = 'Internal / External system communication',
     $description = 'This is a model of software system by structurizr-php/structurizr-php'
 );
@@ -64,6 +64,7 @@ $styles = $workspace->getViews()->getConfiguration()->getStyles();
 
 $styles->addElementStyle(Tags::CONTAINER)->background("#1168bd")->color('#ffffff');
 $styles->addElementStyle(Tags::PERSON)->background("#08427b")->color('#ffffff')->shape(Shape::person());
+$styles->addRelationshipStyle(Tags::RELATIONSHIP)->color('#ff0000');
 
 $client = new Client(
     new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
