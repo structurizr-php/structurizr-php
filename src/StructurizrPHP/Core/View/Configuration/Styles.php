@@ -44,12 +44,26 @@ final class Styles
         return $elementStyle;
     }
 
+    public function addRelationshipStyle(string $tag) : RelationshipStyle
+    {
+        Assertion::keyNotExists($this->elementsStyles, $tag, \sprintf("A relationship style for the tag \"%s\" already exists .", $tag));
+
+        $relationshipStyle = new RelationshipStyle($tag);
+
+        $this->relationshipsStyles[$tag] = $relationshipStyle;
+
+        return $relationshipStyle;
+    }
+
     public function toArray() : array
     {
         return [
             'elements' => \array_values(\array_map(function (ElementStyle $elementStyle) {
                 return $elementStyle->toArray();
             }, $this->elementsStyles)),
+            'relationships' => \array_values(\array_map(function (RelationshipStyle $relationshipStyle) {
+                return $relationshipStyle->toArray();
+            }, $this->relationshipsStyles)),
         ];
     }
 
@@ -60,6 +74,12 @@ final class Styles
         if (isset($stylesData['elements'])) {
             foreach ($stylesData['elements'] as $elementData) {
                 $styles->elementsStyles[$elementData['tag']] = ElementStyle::hydrate($elementData);
+            }
+        }
+
+        if (isset($stylesData['relationships'])) {
+            foreach ($stylesData['relationships'] as $relationshipData) {
+                $styles->relationshipsStyles[$relationshipData['tag']] = RelationshipStyle::hydrate($relationshipData);
             }
         }
 

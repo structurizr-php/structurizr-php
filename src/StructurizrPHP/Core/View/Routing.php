@@ -27,7 +27,7 @@ final class Routing
         return $this->type;
     }
 
-    public static function drirect() : self
+    public static function direct() : self
     {
         return new self('Direct');
     }

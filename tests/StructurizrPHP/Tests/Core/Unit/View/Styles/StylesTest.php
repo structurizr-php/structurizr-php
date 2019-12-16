@@ -16,6 +16,7 @@ namespace StructurizrPHP\Tests\Core\Unit\View\Styles;
 use PHPUnit\Framework\TestCase;
 use StructurizrPHP\Core\View\Configuration\Border;
 use StructurizrPHP\Core\View\Configuration\Styles;
+use StructurizrPHP\Core\View\Routing;
 
 final class StylesTest extends TestCase
 {
@@ -43,6 +44,17 @@ final class StylesTest extends TestCase
 
         $style->setDescription('description');
         $style->setMetadata(true);
+
+        $style = $styles->addRelationshipStyle('TEST3');
+        $style
+            ->thickness(\random_int(1, 100))
+            ->fontSize(\random_int(1, 100))
+            ->width(\random_int(1, 100))
+            ->opacity(\random_int(0, 100))
+            ->setPosition(\random_int(0, 100))
+            ->color("#ffffff")
+            ->dashed(true)
+            ->setRouting(Routing::direct());
 
         $this->assertEquals($styles, Styles::hydrate($styles->toArray()));
     }
