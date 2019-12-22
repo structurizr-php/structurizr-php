@@ -37,6 +37,8 @@ $webApplication = $structurizr->addContainer("structurizr.com", "Provides all of
 $database = $structurizr->addContainer("Database", "Stores information about users, workspaces, etc.", "Relational Database Schema");
 $database->addTags(DATABASE_TAG);
 $webApplication->usesContainer($database, "Reads from and writes to", "JDBC");
+$component = $webApplication->addComponent("System", "Facade", "System Facade");
+$component->setTechnology('php');
 
 $amazonWebServices = $workspace->getModel()->addDeploymentNode("Amazon Web Services", "Live", "us-east-1");
 $pivotalWebServices = $amazonWebServices->addDeploymentNode("Pivotal Web Services", "Live", "Platform as a Service provider.", "Cloud Foundry");

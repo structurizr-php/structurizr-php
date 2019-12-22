@@ -70,7 +70,6 @@ final class Component extends StaticStructureElement
             [
                 'type' => $this->type,
                 'technology' => $this->technology,
-                'parent' => $this->parent->toArray(),
             ],
             parent::toArray()
         );
