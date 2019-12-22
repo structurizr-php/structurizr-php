@@ -8,8 +8,7 @@
         "ext-iconv": "*",
         "beberlei/assert": "^3.2",
         "psr/http-client": "^1.0",
-        "psr/log": "^1.1",
-        "doctrine/instantiator": "^1.2"
+        "psr/log": "^1.1"
     },
     "autoload": {
         "psr-4": {
