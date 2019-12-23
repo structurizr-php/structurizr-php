@@ -163,8 +163,8 @@ $systemLandscapeView->addAllElements();
 $systemLandscapeView->setPaperSize(PaperSize::A5_Landscape());
 
 $systemContextView = $views->createSystemContextView($internetBankingSystem, "SystemContext", "The system context diagram for the Internet Banking System.");
-//$systemContextView->setEnterpriseBoundaryVisible(false);
-//$systemContextView->addNearestNeighbours($internetBankingSystem);
+$systemContextView->setEnterpriseBoundaryVisible(false);
+$systemContextView->addNearestNeighbours($internetBankingSystem);
 $systemContextView->setPaperSize(PaperSize::A5_Landscape());
 
 $containerView = $views->createContainerView($internetBankingSystem, "Containers", "The container diagram for the Internet Banking System.");
@@ -182,6 +182,27 @@ $componentView->addAllComponents();
 $componentView->addSoftwareSystem($mainframeBankingSystem);
 $componentView->addSoftwareSystem($emailSystem);
 $componentView->setPaperSize(PaperSize::A5_Landscape());
+
+//$systemLandscapeView->addAnimation($internetBankingSystem, $customer, $mainframeBankingSystem, $emailSystem);
+//$systemLandscapeView->addAnimation($atm);
+//$systemLandscapeView->addAnimation($customerServiceStaff, $backOfficeStaff);
+
+//$systemContextView->addAnimation($internetBankingSystem);
+//$systemContextView->addAnimation($customer);
+//$systemContextView->addAnimation($mainframeBankingSystem);
+//$systemContextView->addAnimation($emailSystem);
+//
+//$containerView->addAnimation($customer, $mainframeBankingSystem, $emailSystem);
+//$containerView->addAnimation($webApplication);
+//$containerView->addAnimation($singlePageApplication);
+//$containerView->addAnimation($mobileApp);
+//$containerView->addAnimation($apiApplication);
+//$containerView->addAnimation($database);
+//
+//$componentView->addAnimation($singlePageApplication, $mobileApp, $database, $emailSystem, $mainframeBankingSystem);
+//$componentView->addAnimation($signinController, $securityComponent);
+//$componentView->addAnimation($accountsSummaryController, $mainframeBankingSystemFacade);
+//$componentView->addAnimation($resetPasswordController, $emailComponent);
 
 $client = new Client(
     new Credentials((string)\getenv('STRUCTURIZR_API_KEY'), (string)\getenv('STRUCTURIZR_API_SECRET')),

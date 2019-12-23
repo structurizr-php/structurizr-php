@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\Core\View;
 
+use StructurizrPHP\Core\Exception\InvalidArgumentException;
+use StructurizrPHP\Core\Model\Element;
+use StructurizrPHP\Core\Model\Person;
 use StructurizrPHP\Core\Model\SoftwareSystem;
 
 final class SystemContextView extends StaticView
@@ -20,17 +23,34 @@ final class SystemContextView extends StaticView
     /**
      * @var bool
      */
-    private $enterpriseBoundaryVisible = true;
+    private $enterpriseBoundaryVisible;
 
     public function __construct(SoftwareSystem $softwareSystem, string $description, string $key, ViewSet $viewSet)
     {
         parent::__construct($softwareSystem, $description, $key, $viewSet);
+
+        $this->enterpriseBoundaryVisible = true;
     }
 
     public function addAllElements() : void
     {
         $this->addAllSoftwareSystems();
         $this->addAllPeople();
+    }
+
+    public function addNearestNeighbours(Element $element) : void
+    {
+        if ($element instanceof Person || $element instanceof SoftwareSystem) {
+            parent::addNearestTypeNeighbours($element, Person::class);
+            parent::addNearestTypeNeighbours($element, SoftwareSystem::class);
+        } else {
+            throw new InvalidArgumentException("A person or software system must be specified.");
+        }
+    }
+
+    public function setEnterpriseBoundaryVisible(bool $enterpriseBoundaryVisible) : void
+    {
+        $this->enterpriseBoundaryVisible = $enterpriseBoundaryVisible;
     }
 
     public function toArray() : array

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\Core\View;
 
+use StructurizrPHP\Core\Model\Element;
 use StructurizrPHP\Core\Model\Person;
 use StructurizrPHP\Core\Model\Relationship;
 use StructurizrPHP\Core\Model\SoftwareSystem;
@@ -61,4 +62,41 @@ abstract class StaticView extends View
     }
 
     abstract public function addAllElements() : void;
+
+    protected function addNearestTypeNeighbours(Element $element, string $typeOfElement) : void
+    {
+        $this->addElement($element);
+
+        $destinations = \array_map(
+            function (Relationship $relationship) {
+                return $relationship->getDestination();
+            },
+            \array_filter(
+                $this->getModel()->getRelationships(),
+                function (Relationship $relationship) use ($element, $typeOfElement) {
+                    return $relationship->getSource()->equals($element) && \get_class($relationship->getDestination()) === $typeOfElement;
+                }
+            )
+        );
+
+        foreach ($destinations as $destination) {
+            $this->addElement($destination);
+        }
+
+        $sources = \array_map(
+            function (Relationship $relationship) {
+                return $relationship->getSource();
+            },
+            \array_filter(
+                $this->getModel()->getRelationships(),
+                function (Relationship $relationship) use ($element, $typeOfElement) {
+                    return $relationship->getDestination()->equals($element) && \get_class($relationship->getSource()) === $typeOfElement;
+                }
+            )
+        );
+
+        foreach ($sources as $source) {
+            $this->addElement($source);
+        }
+    }
 }
