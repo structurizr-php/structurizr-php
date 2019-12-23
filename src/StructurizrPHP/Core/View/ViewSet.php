@@ -245,7 +245,6 @@ final class ViewSet
             }
         }
 
-        die();
         foreach ($this->deploymentViews as $deploymentView) {
             $sourceDeploymentView = \current(\array_filter(
                 $source->deploymentViews,
@@ -286,6 +285,15 @@ final class ViewSet
             );
         }
 
+        if (\count($this->systemLandscapeViews)) {
+            $data['systemLandscapeViews'] = \array_map(
+                function (SystemLandscapeView $systemLandscapeView) {
+                    return $systemLandscapeView->toArray();
+                },
+                $this->systemLandscapeViews
+            );
+        }
+
         if (\count($this->containerViews)) {
             $data['containerViews'] = \array_map(
                 function (ContainerView $containerView) {
@@ -310,15 +318,6 @@ final class ViewSet
                     return $dynamicView->toArray();
                 },
                 $this->dynamicViews
-            );
-        }
-
-        if (\count($this->systemLandscapeViews)) {
-            $data['systemLandscapeViews'] = \array_map(
-                function (SystemLandscapeView $systemLandscapeView) {
-                    return $systemLandscapeView->toArray();
-                },
-                $this->systemLandscapeViews
             );
         }
 

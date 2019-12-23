@@ -187,7 +187,7 @@ abstract class View
         }
     }
 
-    public function addElement(Element $element, bool $addRelationships) : ElementView
+    public function addElement(Element $element, bool $addRelationships = true) : ElementView
     {
         $elementView = new ElementView($element);
 
