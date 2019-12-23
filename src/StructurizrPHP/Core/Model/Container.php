@@ -58,6 +58,11 @@ final class Container extends StaticStructureElement
         return $this->parent;
     }
 
+    public function getSoftwareSystem() : SoftwareSystem
+    {
+        return $this->parent;
+    }
+
     /**
      * @param string|null $technology
      */
@@ -66,9 +71,9 @@ final class Container extends StaticStructureElement
         $this->technology = $technology;
     }
 
-    public function uses(Container $container, string $description) : Relationship
+    public function uses(Container $container, string $description, ?string $technology = null) : Relationship
     {
-        return $this->getModel()->addRelationship($this, $container, $description);
+        return $this->getModel()->addRelationship($this, $container, $description, $technology);
     }
 
     public function addComponent(string $name, string $type, string $description) : Component
@@ -88,6 +93,26 @@ final class Container extends StaticStructureElement
         ));
 
         return $component ? $component : null;
+    }
+
+    public function getComponent(string $id) : ?Component
+    {
+        $component = \current(\array_filter(
+            $this->components,
+            function (Component $component) use ($id) {
+                return $component->id() === $id;
+            }
+        ));
+
+        return $component ? $component : null;
+    }
+
+    /**
+     * @return Component[]
+     */
+    public function getComponents() : array
+    {
+        return $this->components;
     }
 
     public function add(Component $component) : void

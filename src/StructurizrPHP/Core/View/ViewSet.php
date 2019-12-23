@@ -41,6 +41,16 @@ final class ViewSet
     private $deploymentViews;
 
     /**
+     * @var ContainerView[]
+     */
+    private $containerViews;
+
+    /**
+     * @var ComponentView[]
+     */
+    private $componentViews;
+
+    /**
      * @var Configuration
      */
     private $configuration;
@@ -50,11 +60,6 @@ final class ViewSet
      */
     private $model;
 
-    /**
-     * @var ContainerView[]
-     */
-    private $containerViews;
-
     public function __construct(Model $model)
     {
         $this->systemContextViews = [];
@@ -62,6 +67,7 @@ final class ViewSet
         $this->dynamicViews = [];
         $this->deploymentViews = [];
         $this->containerViews = [];
+        $this->componentViews = [];
         $this->configuration = new Configuration();
         $this->model = $model;
     }
@@ -141,6 +147,24 @@ final class ViewSet
         return $view;
     }
 
+    public function createContainerView(SoftwareSystem $softwareSystem, string $key, string $description) : ContainerView
+    {
+        $view = new ContainerView($softwareSystem, $key, $description, $this);
+
+        $this->containerViews[] = $view;
+
+        return $view;
+    }
+
+    public function createComponentView(Container $container, string $key, string $description) : ComponentView
+    {
+        $view = new ComponentView($container, $key, $description, $this);
+
+        $this->componentViews[] = $view;
+
+        return $view;
+    }
+
     public function createDeploymentView(SoftwareSystem $softwareSystem, string $key, string $description) : DeploymentView
     {
         $view = new DeploymentView($softwareSystem, $description, $key, $this);
@@ -208,6 +232,20 @@ final class ViewSet
             }
         }
 
+        foreach ($this->componentViews as $componentView) {
+            $sourceComponentView = \current(\array_filter(
+                $source->componentViews,
+                function (ComponentView $nextComponentView) use ($componentView) {
+                    return $nextComponentView->keyEquals($componentView);
+                }
+            ));
+
+            if ($sourceComponentView) {
+                $componentView->copyLayoutInformationFrom($sourceComponentView);
+            }
+        }
+
+        die();
         foreach ($this->deploymentViews as $deploymentView) {
             $sourceDeploymentView = \current(\array_filter(
                 $source->deploymentViews,
@@ -222,17 +260,16 @@ final class ViewSet
         }
     }
 
-    public function createContainerView(SoftwareSystem $softwareSystem, string $key, string $description) : ContainerView
-    {
-        $view = new ContainerView($softwareSystem, $key, $description, $this);
-        $this->containerViews[] = $view;
-
-        return $view;
-    }
-
     public function toArray() : ?array
     {
-        if (!\count($this->systemContextViews) && !\count($this->systemLandscapeViews) && !\count($this->dynamicViews) && !\count($this->deploymentViews) && !\count($this->containerViews)) {
+        if (
+            !\count($this->systemContextViews)
+            && !\count($this->systemLandscapeViews)
+            && !\count($this->dynamicViews)
+            && !\count($this->deploymentViews)
+            && !\count($this->containerViews)
+            && !\count($this->componentViews)
+        ) {
             return null;
         }
 
@@ -255,6 +292,15 @@ final class ViewSet
                     return $containerView->toArray();
                 },
                 $this->containerViews
+            );
+        }
+
+        if (\count($this->componentViews)) {
+            $data['componentViews'] = \array_map(
+                function (ComponentView $componentView) {
+                    return $componentView->toArray();
+                },
+                $this->componentViews
             );
         }
 
@@ -316,6 +362,15 @@ final class ViewSet
             );
         }
 
+        if ($viewSetDataModel->hasViews('componentViews')) {
+            $viewSet->componentViews = $viewSetDataModel->map(
+                'componentViews',
+                function (array $viewData) use ($viewSet) {
+                    return ComponentView::hydrate($viewData, $viewSet);
+                }
+            );
+        }
+
         if ($viewSetDataModel->hasViews('systemContextViews')) {
             $viewSet->systemContextViews = $viewSetDataModel->map(
                 'systemContextViews',
@@ -324,7 +379,6 @@ final class ViewSet
                 }
             );
         }
-
 
         if ($viewSetDataModel->hasViews('dynamicViews')) {
             $viewSet->dynamicViews = $viewSetDataModel->map(
@@ -369,7 +423,7 @@ final class ViewSetDataObject
 
     public function hasViews(string $name) : bool
     {
-        Assertion::inArray($name, ['systemLandscapeViews', 'systemContextViews', 'dynamicViews', 'deploymentViews', 'containerViews']);
+        Assertion::inArray($name, ['systemLandscapeViews', 'systemContextViews', 'dynamicViews', 'deploymentViews', 'containerViews', 'componentViews']);
 
         return \array_key_exists($name, $this->viewSetData) && \is_array($this->viewSetData[$name]);
     }

@@ -49,10 +49,11 @@ abstract class Element extends ModelItem
     {
         parent::__construct($id);
         $this->model = $model;
+        $this->name = "";
         $this->relationships = [];
     }
 
-    public function getName() : ?string
+    public function getName() : string
     {
         return $this->name;
     }

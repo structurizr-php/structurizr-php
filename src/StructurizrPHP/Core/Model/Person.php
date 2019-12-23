@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\Core\Model;
 
+use StructurizrPHP\Core\Model\Relationship\InteractionStyle;
+
 final class Person extends StaticStructureElement
 {
     /**
@@ -36,9 +38,14 @@ final class Person extends StaticStructureElement
         $this->location = $location;
     }
 
-    public function uses(Element $softwareSystem, string $description) : Relationship
+    public function uses(Element $softwareSystem, string $description, ?string $technology = null, ?InteractionStyle $interactionStyle = null) : Relationship
     {
-        return $this->getModel()->addRelationship($this, $softwareSystem, $description);
+        return $this->getModel()->addRelationship($this, $softwareSystem, $description, $technology, $interactionStyle);
+    }
+
+    public function interactsWith(Person $destination, string $description, ?string $technology = null, ?InteractionStyle $interactionStyle = null) : Relationship
+    {
+        return $this->getModel()->addRelationship($this, $destination, $description, $technology, $interactionStyle);
     }
 
     public function getParent() : ?Element

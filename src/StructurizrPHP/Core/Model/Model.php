@@ -162,6 +162,19 @@ final class Model
         throw new RuntimeException(\sprintf("Software System with id \"%s\" does not exists.", $id));
     }
 
+    public function getContainer(string $id) : Container
+    {
+        foreach ($this->softwareSystems as $softwareSystem) {
+            foreach ($softwareSystem->getContainers() as $container) {
+                if ($container->id() === $id) {
+                    return $container;
+                }
+            }
+        }
+
+        throw new RuntimeException(\sprintf("Container with id \"%s\" does not exists.", $id));
+    }
+
     public function addRelationship(Element $source, Element $destination, string $description = "", string $technology = null, InteractionStyle $interactionStyle = null) : Relationship
     {
         $relationship = new Relationship(
