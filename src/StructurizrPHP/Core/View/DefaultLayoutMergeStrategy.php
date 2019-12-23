@@ -20,10 +20,9 @@ use StructurizrPHP\Core\Model\Relationship;
  *
  * - Sets the paper size (if not set).
  * - Copies element x,y positions.
- * - Copies relationship vertices. - TODO
+ * - Copies relationship vertices.
  *
- * Elements are matched by the full canonical name. The downside of this approach is that if an element is renamed
- * between versions of a workspace, it won't be possible to find/copy the layout information associated with an element.
+ * Elements are matched by id.
  */
 final class DefaultLayoutMergeStrategy implements LayoutMergeStrategy
 {

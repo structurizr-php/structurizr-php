@@ -64,22 +64,15 @@ final class Component extends StaticStructureElement
         $this->parent = $parent;
     }
 
-//    public function getCanonicalName() : string
-//    {
-//        return $this->parent->getCanonicalName() . self::CANONICAL_NAME_SEPARATOR . $this->formatForCanonicalName($this->getName());
-//    }
-
     public function toArray() : array
     {
-        $data = \array_merge(
+        return \array_merge(
             [
                 'type' => $this->type,
                 'technology' => $this->technology,
             ],
             parent::toArray()
         );
-
-        return $data;
     }
 
     public static function hydrate(array $componentData, Model $model, ?Element $parent) : self
