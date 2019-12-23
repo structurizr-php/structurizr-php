@@ -37,7 +37,7 @@ final class DefaultLayoutMergeStrategy implements LayoutMergeStrategy
             $sourceElementView = \current(\array_filter(
                 $sourceView->getElements(),
                 function (ElementView $elementView) use ($destinationElementView) {
-                    return $elementView->element()->getCanonicalName() === $destinationElementView->element()->getCanonicalName();
+                    return $elementView->element()->id() === $destinationElementView->element()->id();
                 }
             ));
 
