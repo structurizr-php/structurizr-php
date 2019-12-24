@@ -76,9 +76,9 @@ final class Container extends StaticStructureElement
         return $this->getModel()->addRelationship($this, $container, $description, $technology);
     }
 
-    public function addComponent(string $name, string $type, string $description) : Component
+    public function addComponent(string $name, string $type, string $description, ?string $technology = null) : Component
     {
-        return $this->getModel()->addComponentOfType($this, $name, $type, $description);
+        return $this->getModel()->addComponentOfType($this, $name, $type, $description, $technology);
     }
 
     public function getComponentWithName(string $name) : ?Component

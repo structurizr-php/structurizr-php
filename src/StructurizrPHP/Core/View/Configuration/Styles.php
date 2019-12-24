@@ -46,7 +46,7 @@ final class Styles
 
     public function addRelationshipStyle(string $tag) : RelationshipStyle
     {
-        Assertion::keyNotExists($this->elementsStyles, $tag, \sprintf("A relationship style for the tag \"%s\" already exists .", $tag));
+        Assertion::keyNotExists($this->relationshipsStyles, $tag, \sprintf("A relationship style for the tag \"%s\" already exists .", $tag));
 
         $relationshipStyle = new RelationshipStyle($tag);
 

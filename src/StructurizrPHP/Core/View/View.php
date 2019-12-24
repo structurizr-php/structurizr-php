@@ -248,10 +248,6 @@ abstract class View
             ),
         ];
 
-        if ($this->softwareSystem) {
-            $data['softwareSystemId'] = $this->softwareSystem->id();
-        }
-
         return $data;
     }
 

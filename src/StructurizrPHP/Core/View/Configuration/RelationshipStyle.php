@@ -165,19 +165,48 @@ final class RelationshipStyle
         return $this;
     }
 
+    public function position(?int $position) : self
+    {
+        $this->setPosition($position);
+
+        return $this;
+    }
+
     public function toArray() : array
     {
-        $data = [
-            'tag' => $this->tag,
-            'thickness' => $this->thickness ?: null,
-            'fontSize' => $this->fontSize ?: null,
-            'color' => $this->color ?: null,
-            'width' => $this->width ?: null,
-            'dashed' => $this->dashed ?: null,
-            'opacity' => $this->opacity ?: null,
-            'routing' => $this->routing ? $this->routing->type() : null,
-            'position' => $this->position ?: null,
-        ];
+        $data = ['tag' => $this->tag];
+
+        if ($this->thickness) {
+            $data['thickness'] = $this->thickness;
+        }
+
+        if ($this->fontSize) {
+            $data['fontSize'] = $this->fontSize;
+        }
+
+        if ($this->color) {
+            $data['color'] = $this->color;
+        }
+
+        if ($this->width) {
+            $data['width'] = $this->width;
+        }
+
+        if ($this->dashed) {
+            $data['dashed'] = $this->dashed;
+        }
+
+        if ($this->opacity) {
+            $data['opacity'] = $this->opacity;
+        }
+
+        if ($this->routing) {
+            $data['routing'] = $this->routing->type();
+        }
+
+        if ($this->position) {
+            $data['position'] = $this->position;
+        }
 
         return $data;
     }

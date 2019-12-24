@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\Core\Documentation;
 
+use StructurizrPHP\Core\Model\Container;
 use StructurizrPHP\Core\Model\Element;
 use StructurizrPHP\Core\Model\SoftwareSystem;
 use StructurizrPHP\Core\Workspace;
@@ -30,9 +31,19 @@ abstract class DocumentationTemplate
         $this->documentation->setTemplate($this->getMetadata());
     }
 
-    public function addSection(SoftwareSystem $softwareSystem, string $title, Format $format, string $content) : Section
+    public function addSoftwareSystemSection(SoftwareSystem $softwareSystem, string $title, Format $format, string $content) : Section
     {
         return $this->add($softwareSystem, $title, $format, $content);
+    }
+
+    public function addContainerSection(SoftwareSystem $softwareSystem, string $title, Format $format, string $content) : Section
+    {
+        return $this->add($softwareSystem, $title, $format, $content);
+    }
+
+    public function addComponentSection(Container $container, string $title, Format $format, string $content) : Section
+    {
+        return $this->add($container, $title, $format, $content);
     }
 
     private function add(Element $element, string $title, Format $format, string $content) : Section

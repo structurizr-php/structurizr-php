@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace StructurizrPHP\Core\View;
 
 use StructurizrPHP\Core\Exception\InvalidArgumentException;
+use StructurizrPHP\Core\Model\Component;
 use StructurizrPHP\Core\Model\Container;
 use StructurizrPHP\Core\Model\Element;
 use StructurizrPHP\Core\Model\Model;
@@ -76,7 +77,7 @@ final class DynamicView extends View
     {
         $view = new self($container->getModel(), $key, $description, $viewSet, $container);
         $view->softwareSystem = $container->getParent();
-        $view->element = $container->getParent();
+        $view->element = $container;
 
         return $view;
     }
@@ -95,7 +96,7 @@ final class DynamicView extends View
 
     private function checkElement(Element $elementToBeAdded) : void
     {
-        if (!($elementToBeAdded instanceof Person) && !($elementToBeAdded instanceof SoftwareSystem) && !($elementToBeAdded instanceof Container) /*&& !(elementToBeAdded instanceof Component)*/) {
+        if (!($elementToBeAdded instanceof Person) && !($elementToBeAdded instanceof SoftwareSystem) && !($elementToBeAdded instanceof Container) && !($elementToBeAdded instanceof Component)) {
             throw new InvalidArgumentException("Only people, software systems, containers and components can be added to dynamic views.");
         }
 
@@ -112,12 +113,10 @@ final class DynamicView extends View
             if ($elementToBeAdded instanceof Container && !$elementToBeAdded->getParent()->equals($this->element)) {
                 throw new InvalidArgumentException(\sprintf("Only containers that reside inside \"%s\" can be added to this view.", $this->element->getName()));
             }
-            /* TODO: Add with Component
-             *
-            if (elementToBeAdded instanceof Component) {
-                throw new IllegalArgumentException("Components can't be added to a dynamic view when the scope is a software system.");
+
+            if ($elementToBeAdded instanceof Component) {
+                throw new InvalidArgumentException("Components can't be added to a dynamic view when the scope is a software system.");
             }
-            */
         }
 
         // if the scope of this dynamic view is a container, we only want other containers inside the same software system
@@ -131,12 +130,9 @@ final class DynamicView extends View
                 throw new InvalidArgumentException("Only containers that reside inside " . $this->element->getName() . " can be added to this view.");
             }
 
-            /* TODO: Add with Component
-             *
-            if (elementToBeAdded instanceof Component && !elementToBeAdded.getParent().equals(element)) {
-                throw new IllegalArgumentException("Only components that reside inside " + element.getName() + " can be added to this view.");
+            if ($elementToBeAdded instanceof Component && !$elementToBeAdded->getParent()->equals($this->element)) {
+                throw new InvalidArgumentException("Only components that reside inside " . $this->element->getName() . " can be added to this view.");
             }
-            */
         }
 
         if ($this->element === null) {
@@ -150,7 +146,7 @@ final class DynamicView extends View
     {
         return \array_merge(
             [
-                'softwareSystemId' => $this->element instanceof Container ? $this->element->getParent()->id() : $this->element->id(),
+                'elementId' => $this->element->id(),
             ],
             parent::toArray()
         );
@@ -163,7 +159,7 @@ final class DynamicView extends View
             $viewData['description'],
             $viewData['key'],
             $viewSet,
-            isset($viewData['softwareSystemId']) ? $viewSet->getModel()->getElement($viewData['softwareSystemId']) : null
+            isset($viewData['elementId']) ? $viewSet->getModel()->getElement($viewData['elementId']) : null
         );
 
         if (isset($viewData['paperSize'])) {

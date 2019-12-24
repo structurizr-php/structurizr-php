@@ -530,7 +530,7 @@ final class Model
         return $this->relationshipsById;
     }
 
-    public function addComponentOfType(Container $parent, string $name, string $type, string $description) : Component
+    public function addComponentOfType(Container $parent, string $name, string $type, string $description, ?string $technology = null) : Component
     {
         if ($parent->getComponentWithName($name)===null) {
             $component = new Component($this->idGenerator->generateId(), $this);
@@ -539,6 +539,10 @@ final class Model
 
             if (strlen($type)>0) {
                 $component->setType($type);
+            }
+
+            if ($technology) {
+                $component->setTechnology($technology);
             }
 
             $component->setParent($parent);
