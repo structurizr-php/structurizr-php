@@ -58,6 +58,7 @@ final class SystemContextView extends StaticView
         return \array_merge(
             [
                 'enterpriseBoundaryVisible' => $this->enterpriseBoundaryVisible,
+                'softwareSystemId' => $this->softwareSystem->id(),
             ],
             parent::toArray()
         );

@@ -13,13 +13,34 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\Core\Documentation;
 
+use StructurizrPHP\Core\Model\Container;
 use StructurizrPHP\Core\Model\SoftwareSystem;
 
 final class StructurizrDocumentationTemplate extends DocumentationTemplate
 {
     public function addContextSection(SoftwareSystem $softwareSystem, Format $format, string $content) : void
     {
-        $this->addSection($softwareSystem, "Context", $format, $content);
+        $this->addSoftwareSystemSection($softwareSystem, "Context", $format, $content);
+    }
+
+    public function addContainersSection(SoftwareSystem $softwareSystem, Format $format, string $content) : void
+    {
+        $this->addContainerSection($softwareSystem, "Containers", $format, $content);
+    }
+
+    public function addComponentsSection(Container $container, Format $format, string $content) : void
+    {
+        $this->addComponentSection($container, "Components", $format, $content);
+    }
+
+    public function addDevelopmentEnvironmentSection(SoftwareSystem $softwareSystem, Format $format, string $content) : void
+    {
+        $this->addSoftwareSystemSection($softwareSystem, "Development Environment", $format, $content);
+    }
+
+    public function addDeploymentSection(SoftwareSystem $softwareSystem, Format $format, string $content) : void
+    {
+        $this->addSoftwareSystemSection($softwareSystem, "Deployment", $format, $content);
     }
 
     protected function getMetadata() : TemplateMetadata

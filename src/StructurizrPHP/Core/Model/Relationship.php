@@ -146,7 +146,7 @@ final class Relationship extends ModelItem
             $relationshipData['id'],
             $source,
             $model->getElement($relationshipData['destinationId']),
-            $relationshipData['description'],
+            isset($relationshipData['description']) ? (string) $relationshipData['description'] : "",
         );
 
         $relationship->setInteractionStyle(InteractionStyle::hydrate($relationshipData['interactionStyle']));

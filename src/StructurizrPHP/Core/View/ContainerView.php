@@ -42,6 +42,16 @@ final class ContainerView extends StaticView
         $this->addElement($container, $addRelationships);
     }
 
+    public function toArray() : array
+    {
+        return \array_merge(
+            [
+                'softwareSystemId' => $this->softwareSystem->id(),
+            ],
+            parent::toArray()
+        );
+    }
+
     public static function hydrate(array $viewData, ViewSet $viewSet) : self
     {
         $view = new self(

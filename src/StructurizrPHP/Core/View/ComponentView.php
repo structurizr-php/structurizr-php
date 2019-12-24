@@ -59,7 +59,7 @@ final class ComponentView extends StaticView
 
     public function addContainer(Container $container, bool $addRelationships = true) : void
     {
-        if (!$this->container->equals($this->container)) {
+        if (!$this->container->equals($container)) {
             $this->addElement($container, $addRelationships);
         }
     }

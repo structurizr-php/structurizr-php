@@ -94,6 +94,7 @@ final class DeploymentView extends View
         return \array_merge(
             [
                 'environment' => $this->environment,
+                'softwareSystemId' => $this->softwareSystem->id(),
             ],
             parent::toArray()
         );

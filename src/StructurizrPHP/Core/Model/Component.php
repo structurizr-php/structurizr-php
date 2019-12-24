@@ -35,7 +35,7 @@ final class Component extends StaticStructureElement
      */
     public function getTechnology() : string
     {
-        return $this->technology;
+        return $this->technology ? $this->technology : "";
     }
 
     /**

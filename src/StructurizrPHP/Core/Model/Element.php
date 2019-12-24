@@ -96,7 +96,7 @@ abstract class Element extends ModelItem
             }
         }
 
-        throw new RuntimeException(\sprintf("There is no efferent relationship between %s and %s", $this->id(), $element->id()));
+        throw new RuntimeException(\sprintf("There is no efferent relationship between %s[#%s] and %s[#%s]", $this->getName(), $this->id(), $element->getName(), $element->id()));
     }
 
     public function getModel() : Model

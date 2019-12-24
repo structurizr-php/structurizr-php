@@ -17,10 +17,16 @@ use StructurizrPHP\Client\Client;
 use StructurizrPHP\Client\Credentials;
 use StructurizrPHP\Client\Infrastructure\Http\SymfonyRequestFactory;
 use StructurizrPHP\Client\UrlMap;
+use StructurizrPHP\Core\Documentation\Format;
+use StructurizrPHP\Core\Documentation\StructurizrDocumentationTemplate;
+use StructurizrPHP\Core\Model\Component;
 use StructurizrPHP\Core\Model\Enterprise;
 use StructurizrPHP\Core\Model\Location;
 use StructurizrPHP\Core\Model\Properties;
 use StructurizrPHP\Core\Model\Property;
+use StructurizrPHP\Core\Model\Relationship;
+use StructurizrPHP\Core\Model\Tags;
+use StructurizrPHP\Core\View\Configuration\Shape;
 use StructurizrPHP\Core\View\PaperSize;
 use StructurizrPHP\Core\Workspace;
 use Symfony\Component\HttpClient\Psr18Client;
@@ -34,7 +40,7 @@ const MOBILE_APP_TAG = "Mobile App";
 const DATABASE_TAG = "Database";
 const FAILOVER_TAG = "Failover";
 
-$workspace = new Workspace((string)\getenv('STRUCTURIZR_WORKSPACE_ID'), "Big Bank plc", "This is an example workspace to illustrate the key features of Structurizr, based around a fictional online banking system.");
+$workspace = new Workspace((string)getenv('STRUCTURIZR_WORKSPACE_ID'), "Big Bank plc", "This is an example workspace to illustrate the key features of Structurizr, based around a fictional online banking system.");
 $model = $workspace->getModel();
 $views = $workspace->getViews();
 
@@ -90,12 +96,23 @@ $apiApplication->usesSoftwareSystem($emailSystem, "Sends e-mail using", "SMTP");
 // components
 // - for a real-world software system, you would probably want to extract the components using
 // - static analysis/reflection rather than manually specifying them all
-$signinController = $apiApplication->addComponent("Sign In Controller", "Allows users to sign in to the Internet Banking System.", "Spring MVC Rest Controller");
-$accountsSummaryController = $apiApplication->addComponent("Accounts Summary Controller", "Provides customers with a summary of their bank accounts.", "Spring MVC Rest Controller");
-$resetPasswordController = $apiApplication->addComponent("Reset Password Controller", "Allows users to reset their passwords with a single use URL.", "Spring MVC Rest Controller");
-$securityComponent = $apiApplication->addComponent("Security Component", "Provides functionality related to signing in, changing passwords, etc.", "Spring Bean");
-$mainframeBankingSystemFacade = $apiApplication->addComponent("Mainframe Banking System Facade", "A facade onto the mainframe banking system.", "Spring Bean");
-$emailComponent = $apiApplication->addComponent("E-mail Component", "Sends e-mails to users.", "Spring Bean");
+$signinController = $apiApplication->addComponent("Sign In Controller", "Allows users to sign in to the Internet Banking System.", "", "Spring MVC Rest Controller");
+$accountsSummaryController = $apiApplication->addComponent("Accounts Summary Controller", "Provides customers with a summary of their bank accounts.", "", "Spring MVC Rest Controller");
+$resetPasswordController = $apiApplication->addComponent("Reset Password Controller", "Allows users to reset their passwords with a single use URL.", "", "Spring MVC Rest Controller");
+$securityComponent = $apiApplication->addComponent("Security Component", "Provides functionality related to signing in, changing passwords, etc.", "", "Spring Bean");
+$mainframeBankingSystemFacade = $apiApplication->addComponent("Mainframe Banking System Facade", "A facade onto the mainframe banking system.", "", "Spring Bean");
+$emailComponent = $apiApplication->addComponent("E-mail Component", "Sends e-mails to users.", "", "Spring Bean");
+
+$controllers = array_filter(
+    $apiApplication->getComponents(),
+    function (Component $component) {
+        return $component->getTechnology() === "Spring MVC Rest Controller";
+    }
+);
+foreach ($controllers as $controller) {
+    $singlePageApplication->usesComponent($controller, "Makes API calls to", "JSON/HTTPS");
+    $mobileApp->usesComponent($controller, "Makes API calls to", "JSON/HTTPS");
+}
 
 $signinController->usesComponent($securityComponent, "Uses");
 $accountsSummaryController->usesComponent($mainframeBankingSystemFacade, "Uses");
@@ -153,7 +170,18 @@ $secondaryDatabaseServer = $bigBankDataCenter->addDeploymentNode("bigbank-db02",
     ->addDeploymentNode("Oracle - Secondary", "Live", "A secondary, standby database server, used for failover purposes only.", "Oracle 12c");
 $secondaryDatabase = $secondaryDatabaseServer->add($database);
 
-//model.getRelationships().stream().filter(r -> r.getDestination().equals(secondaryDatabase)).forEach(r -> r.addTags(FAILOVER_TAG));
+$relationships = array_filter(
+    $model->getRelationships(),
+    function (Relationship $relationship) use ($secondaryDatabase) {
+        return $relationship->getDestination()->equals($secondaryDatabase);
+    }
+);
+
+/** @var Relationship $relationship */
+foreach ($relationships as $relationship) {
+    $relationship->addTags(FAILOVER_TAG);
+}
+
 $dataReplicationRelationship = $primaryDatabaseServer->usesDeploymentNode($secondaryDatabaseServer, "Replicates data to", "");
 $secondaryDatabase->addTags(FAILOVER_TAG);
 
@@ -204,8 +232,82 @@ $componentView->setPaperSize(PaperSize::A5_Landscape());
 //$componentView->addAnimation($accountsSummaryController, $mainframeBankingSystemFacade);
 //$componentView->addAnimation($resetPasswordController, $emailComponent);
 
+// dynamic diagrams and deployment diagrams are not available with the Free Plan
+$dynamicView = $views->createContainerDynamicView($apiApplication, "SignIn", "Summarises how the sign in feature works in the single-page application.");
+$dynamicView->add($singlePageApplication, "Submits credentials to", $signinController);
+$dynamicView->add($signinController, "Calls isAuthenticated() on", $securityComponent);
+$dynamicView->add($securityComponent, "select * from users where username = ?", $database);
+$dynamicView->setPaperSize(PaperSize::A5_Landscape());
+
+$developmentDeploymentView = $views->createDeploymentView($internetBankingSystem, "DevelopmentDeployment", "An example development deployment scenario for the Internet Banking System.");
+$developmentDeploymentView->setEnvironment("Development");
+$developmentDeploymentView->add($developerLaptop);
+$developmentDeploymentView->setPaperSize(PaperSize::A5_Landscape());
+
+$liveDeploymentView = $views->createDeploymentView($internetBankingSystem, "LiveDeployment", "An example live deployment scenario for the Internet Banking System.");
+$liveDeploymentView->setEnvironment("Live");
+$liveDeploymentView->add($bigBankDataCenter);
+$liveDeploymentView->add($customerMobileDevice);
+$liveDeploymentView->add($customerComputer);
+$liveDeploymentView->addRelationship($dataReplicationRelationship);
+$liveDeploymentView->setPaperSize(PaperSize::A5_Landscape());
+
+$styles = $views->getConfiguration()->getStyles();
+$styles->addElementStyle(Tags::ELEMENT)->color("#ffffff");
+$styles->addElementStyle(Tags::SOFTWARE_SYSTEM)->background("#1168bd");
+$styles->addElementStyle(Tags::CONTAINER)->background("#438dd5");
+$styles->addElementStyle(Tags::COMPONENT)->background("#85bbf0")->color("#000000");
+$styles->addElementStyle(Tags::PERSON)->background("#08427b")->shape(Shape::Person())->fontSize(22);
+$styles->addElementStyle(EXISTING_SYSTEM_TAG)->background("#999999");
+$styles->addElementStyle(BANK_STAFF_TAG)->background("#999999");
+$styles->addElementStyle(WEB_BROWSER_TAG)->shape(Shape::WebBrowser());
+$styles->addElementStyle(MOBILE_APP_TAG)->shape(Shape::MobileDeviceLandscape());
+$styles->addElementStyle(DATABASE_TAG)->shape(Shape::Cylinder());
+$styles->addElementStyle(FAILOVER_TAG)->opacity(25);
+$styles->addRelationshipStyle(FAILOVER_TAG)->opacity(25)->position(70);
+
+$template = new StructurizrDocumentationTemplate($workspace);
+        $template->addContextSection(
+            $internetBankingSystem,
+            Format::markdown(),
+            "Here is some context about the Internet Banking System...\n" .
+            "![](embed:SystemLandscape)\n" .
+            "![](embed:SystemContext)\n" .
+            "### Internet Banking System\n...\n" .
+            "### Mainframe Banking System\n...\n"
+        );
+        $template->addContainersSection(
+            $internetBankingSystem,
+            Format::markdown(),
+            "Here is some information about the containers within the Internet Banking System...\n" .
+            "![](embed:Containers)\n" .
+            "### Web Application\n...\n" .
+            "### Database\n...\n"
+        );
+        $template->addComponentsSection(
+            $webApplication,
+            Format::markdown(),
+            "Here is some information about the API Application...\n" .
+            "![](embed:Components)\n" .
+            "### Sign in process\n" .
+            "Here is some information about the Sign In Controller, including how the sign in process works...\n" .
+            "![](embed:SignIn)"
+        );
+        $template->addDevelopmentEnvironmentSection(
+            $internetBankingSystem,
+            Format::markdown(),
+            "Here is some information about how to set up a development environment for the Internet Banking System...\n" .
+            "image::embed:DevelopmentDeployment[]"
+        );
+        $template->addDeploymentSection(
+            $internetBankingSystem,
+            Format::markdown(),
+            "Here is some information about the live deployment environment for the Internet Banking System...\n" .
+            "image::embed:LiveDeployment[]"
+        );
+
 $client = new Client(
-    new Credentials((string)\getenv('STRUCTURIZR_API_KEY'), (string)\getenv('STRUCTURIZR_API_SECRET')),
+    new Credentials((string)getenv('STRUCTURIZR_API_KEY'), (string)getenv('STRUCTURIZR_API_SECRET')),
     new UrlMap('https://api.structurizr.com'),
     new Psr18Client(),
     new SymfonyRequestFactory(),
