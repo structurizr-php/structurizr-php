@@ -79,4 +79,9 @@ final class SystemContextView extends StaticView
 
         return $view;
     }
+
+    protected function canBeRemoved(Element $element) : bool
+    {
+        return !$this->softwareSystem->equals($element);
+    }
 }

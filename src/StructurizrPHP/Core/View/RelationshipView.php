@@ -70,7 +70,7 @@ final class RelationshipView
         }
     }
 
-    public function getRelationship() : ?Relationship
+    public function getRelationship() : Relationship
     {
         return $this->relationship;
     }
