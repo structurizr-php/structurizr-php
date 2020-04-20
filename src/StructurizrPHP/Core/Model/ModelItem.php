@@ -71,6 +71,11 @@ abstract class ModelItem
         $this->properties = $properties;
     }
 
+    public function equals(self $modelItem) : bool
+    {
+        return $this->id() === $modelItem->id();
+    }
+
     public function toArray() : array
     {
         return [

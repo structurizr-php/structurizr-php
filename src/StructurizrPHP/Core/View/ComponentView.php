@@ -15,6 +15,7 @@ namespace StructurizrPHP\Core\View;
 
 use StructurizrPHP\Core\Model\Component;
 use StructurizrPHP\Core\Model\Container;
+use StructurizrPHP\Core\Model\Element;
 
 final class ComponentView extends StaticView
 {
@@ -96,5 +97,10 @@ final class ComponentView extends StaticView
         parent::hydrateView($view, $viewData);
 
         return $view;
+    }
+
+    protected function canBeRemoved(Element $element) : bool
+    {
+        return true;
     }
 }

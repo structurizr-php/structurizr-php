@@ -123,11 +123,6 @@ abstract class Element extends ModelItem
         $this->description = $description;
     }
 
-    public function equals(self $element) : bool
-    {
-        return $this->id() === $element->id();
-    }
-
     public function hasEfferentRelationshipWith(Element $destination) : bool
     {
         try {

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace StructurizrPHP\Core\View;
 
 use StructurizrPHP\Core\Model\DeploymentNode;
+use StructurizrPHP\Core\Model\Element;
 use StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\Core\Model\Relationship;
 use StructurizrPHP\Core\Model\SoftwareSystem;
@@ -116,5 +117,10 @@ final class DeploymentView extends View
         parent::hydrateView($view, $viewData);
 
         return $view;
+    }
+
+    protected function canBeRemoved(Element $element) : bool
+    {
+        return true;
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace StructurizrPHP\Tests\Core\Unit\View;
 
 use PHPUnit\Framework\TestCase;
+use StructurizrPHP\Core\Exception\InvalidArgumentException;
 use StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\Core\View\SystemContextView;
 use StructurizrPHP\Core\View\ViewSet;
@@ -50,5 +51,45 @@ final class SystemContextViewTest extends TestCase
         $view->addAllElements();
 
         $this->assertEquals($view, SystemContextView::hydrate($view->toArray(), $viewSet));
+    }
+
+    public function test_prevent_remove_root_software_system() : void
+    {
+        $viewSet = new ViewSet(new Model());
+        $softwareSystem = $viewSet->getModel()->addSoftwareSystem('name', 'description');
+        $systemContextView = $viewSet->createSystemContextView($softwareSystem, 'key', 'description');
+
+        $this->expectException(InvalidArgumentException::class);
+        $systemContextView->removeSoftwareSystem($softwareSystem);
+    }
+
+    public function test_remove_software_system_with_relations() : void
+    {
+        $viewSet = new ViewSet(new Model());
+        $softwareSystem = $viewSet->getModel()->addSoftwareSystem('name', 'description');
+        $externalSystem = $viewSet->getModel()->addSoftwareSystem('external', 'description');
+        $softwareSystem->usesSoftwareSystem($externalSystem, 'external use');
+        $systemContextView = $viewSet->createSystemContextView($softwareSystem, 'key', 'description');
+        $systemContextView->addAllSoftwareSystems();
+
+        $systemContextView->removeSoftwareSystem($externalSystem);
+
+        self::assertCount(1, $systemContextView->getElements());
+        self::assertCount(0, $systemContextView->getRelationships());
+    }
+
+    public function test_remove_relation() : void
+    {
+        $viewSet = new ViewSet(new Model());
+        $softwareSystem = $viewSet->getModel()->addSoftwareSystem('name', 'description');
+        $externalSystem = $viewSet->getModel()->addSoftwareSystem('external', 'description');
+        $softwareSystem->usesSoftwareSystem($externalSystem, 'external use');
+        $systemContextView = $viewSet->createSystemContextView($softwareSystem, 'key', 'description');
+        $systemContextView->addAllSoftwareSystems();
+
+        $systemContextView->removeRelationship($softwareSystem->getRelationships()[0]);
+
+        self::assertCount(2, $systemContextView->getElements());
+        self::assertCount(0, $systemContextView->getRelationships());
     }
 }

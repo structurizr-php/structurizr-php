@@ -124,8 +124,7 @@ abstract class View
     public function getRelationshipView(Relationship $relationship) : RelationshipView
     {
         foreach ($this->relationshipsViews as $relationshipView) {
-            $nextRelationship = $relationshipView->getRelationship();
-            if ($nextRelationship && $nextRelationship->id() === $relationship->id()) {
+            if ($relationshipView->getRelationship()->id() === $relationship->id()) {
                 return $relationshipView;
             }
         }
@@ -156,6 +155,18 @@ abstract class View
         }
 
         return null;
+    }
+
+    protected function removeRelationship(Relationship $relationship) : void
+    {
+        $this->relationshipsViews = array_values(
+            array_filter(
+                $this->relationshipsViews,
+                function (RelationshipView $relationshipView) use ($relationship) : bool {
+                    return !$relationshipView->getRelationship()->equals($relationship);
+                }
+            )
+        );
     }
 
     protected function isElementInView(Element $element) : bool
@@ -198,6 +209,22 @@ abstract class View
         $this->elementViews[] = $elementView;
 
         return $elementView;
+    }
+
+    public function removeElement(Element $element) : void
+    {
+        if (!$this->canBeRemoved($element)) {
+            throw new InvalidArgumentException(sprintf('The element named "%s" cannot be removed from this view.', $element->getName()));
+        }
+
+        $this->elementViews = array_values(array_filter($this->elementViews, function (ElementView $elementView) use ($element) : bool {
+            return !$elementView->element()->equals($element);
+        }));
+
+        $this->relationshipsViews = array_values(array_filter($this->relationshipsViews, function (RelationshipView $relationshipView) use ($element) : bool {
+            return !$relationshipView->getRelationship()->getDestination()->equals($element)
+                && !$relationshipView->getRelationship()->getSource()->equals($element);
+        }));
     }
 
     private function addRelationships(Element $element) : void
@@ -290,4 +317,6 @@ abstract class View
             }
         }
     }
+
+    abstract protected function canBeRemoved(Element $element) : bool;
 }

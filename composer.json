@@ -53,13 +53,13 @@
             "phpstan analyse -c phpstan.neon"
         ],
         "phpunit": [
-            "phpunit"
+            "phpunit --colors=always"
         ],
         "test" : [
             "deptrac",
             "php-cs-fixer fix --dry-run",
             "@phpstan",
-            "phpunit"
+            "@phpunit"
         ],
         "cs:fix": [
             "php-cs-fixer fix"

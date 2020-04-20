@@ -25,9 +25,19 @@ abstract class StaticView extends View
         $this->addElement($softwareSystem, $addRelationships);
     }
 
+    public function removeSoftwareSystem(SoftwareSystem $softwareSystem) : void
+    {
+        $this->removeElement($softwareSystem);
+    }
+
     public function addPerson(Person $person, bool $addRelationships = true) : void
     {
         $this->addElement($person, $addRelationships);
+    }
+
+    public function removePerson(Person $person) : void
+    {
+        $this->removeElement($person);
     }
 
     public function addAllSoftwareSystems(bool $addRelationships = true) : void
@@ -59,6 +69,11 @@ abstract class StaticView extends View
     public function addRelationship(Relationship $relationship) : ?RelationshipView
     {
         return parent::addRelationship($relationship);
+    }
+
+    public function removeRelationship(Relationship $relationship) : void
+    {
+        parent::removeRelationship($relationship);
     }
 
     abstract public function addAllElements() : void;

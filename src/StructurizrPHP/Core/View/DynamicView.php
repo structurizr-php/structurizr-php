@@ -196,4 +196,9 @@ final class DynamicView extends View
 
         return $view;
     }
+
+    protected function canBeRemoved(Element $element) : bool
+    {
+        return true;
+    }
 }
