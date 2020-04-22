@@ -1,21 +1,21 @@
 # Structurizr for PHP
 
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.3-8892BF.svg)](https://php.net/)
+[![Latest Stable Version](https://poser.pugx.org/structurizr-php/structurizr-php/version)](https://packagist.org/packages/structurizr-php/structurizr-php)
+![](https://github.com/structurizr-php/structurizr-php/workflows/Tests/badge.svg?branch=master)
+[![Total Downloads](https://poser.pugx.org/structurizr-php/structurizr-php/downloads)](https://packagist.org/packages/structurizr-php/structurizr-php)
+![License](https://img.shields.io/github/license/structurizr-php/structurizr-php)
+
 This repository is a port of [Structirizr for Java](https://github.com/structurizr/java).
 All credits for creating [C4](https://c4model.com/) goes of course to [Simon Brown](https://github.com/simonbrowndotje)
 this library is nothing more that simple port of the code that already exists in other language.  
 
 # How to Use 
 
-> Careful, this port is still under heavy development, API might change over time, it's not recommended for production
-> usage yet. 
-
 ### Installation
 
-> Because package does not have yet stable release you might need to use @dev stability flag to not get
-> into minimum stability composer error. 
-
 ```
-composer require structurizr-php/structurizr-php:@dev --dev
+composer require structurizr-php/structurizr-php
 ```
 
 ### A quick example
@@ -58,6 +58,7 @@ $client = new Client(
     new UrlMap('https://api.structurizr.com'),
     new Psr18Client(),
     new SymfonyRequestFactory(),
+    new Logger('structurizr', [new StreamHandler('php://stdout')])
 );
 $client->put($workspace);
 ```
