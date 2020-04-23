@@ -71,7 +71,7 @@ The view can then be exported to be visualised in a number of different ways; e.
 
 ### Hire in Social 
 
-[Hire in Social - project example](https://github.com/norzechowicz/hire-in-social/blob/master/php/hireinsocial/structurizr/structurizr.php)
+[Hire in Social - project example](https://github.com/itoffers-online/portal/blob/master/php/portal/structurizr/structurizr.php)
 
 [Structurizr Workspace](https://structurizr.com/share/49192)
 
