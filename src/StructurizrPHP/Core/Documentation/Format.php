@@ -13,43 +13,27 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\Core\Documentation;
 
-use StructurizrPHP\Core\Assertion;
+use Thunder\Platenum\Enum\ConstantsEnumTrait;
 
+/**
+ * @method static static markdown();
+ * @method static static asciiDoc();
+ */
 final class Format
 {
-    private const MARKDOWN = 'Markdown';
+    private const markdown = 'Markdown';
 
-    private const ASCII_DOC = 'AsciiDoc';
+    private const asciiDoc = 'AsciiDoc';
 
-    /**
-     * @var string
-     */
-    private $name;
-
-    private function __construct(string $name)
-    {
-        $this->name = $name;
-    }
+    use ConstantsEnumTrait;
 
     public function name() : string
     {
-        return $this->name;
-    }
-
-    public static function markdown() : self
-    {
-        return new self(self::MARKDOWN);
-    }
-
-    public static function asciiDoc() : self
-    {
-        return new self(self::ASCII_DOC);
+        return (string) $this->getValue();
     }
 
     public static function hydrate(string $name) : self
     {
-        Assertion::inArray($name, [self::MARKDOWN, self::ASCII_DOC]);
-
-        return new self($name);
+        return static::fromValue($name);
     }
 }
