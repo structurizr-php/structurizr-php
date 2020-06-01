@@ -6,7 +6,7 @@
 [![Total Downloads](https://poser.pugx.org/structurizr-php/structurizr-php/downloads)](https://packagist.org/packages/structurizr-php/structurizr-php)
 ![License](https://img.shields.io/github/license/structurizr-php/structurizr-php)
 
-This repository is a port of [Structirizr for Java](https://github.com/structurizr/java).
+This repository is a port of [Structurizr for Java](https://github.com/structurizr/java).
 All credits for creating [C4](https://c4model.com/) goes of course to [Simon Brown](https://github.com/simonbrowndotje)
 this library is nothing more that simple port of the code that already exists in other language.  
 
