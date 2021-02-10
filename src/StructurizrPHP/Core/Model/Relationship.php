@@ -149,7 +149,9 @@ final class Relationship extends ModelItem
             isset($relationshipData['description']) ? (string) $relationshipData['description'] : "",
         );
 
-        $relationship->setInteractionStyle(InteractionStyle::hydrate($relationshipData['interactionStyle']));
+        if (isset($relationshipData['interactionStyle'])) {
+            $relationship->setInteractionStyle(InteractionStyle::hydrate($relationshipData['interactionStyle']));
+        }
 
         if (isset($relationshipData['technology'])) {
             $relationship->setTechnology($relationshipData['technology']);
