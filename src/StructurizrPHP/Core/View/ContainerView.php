@@ -57,7 +57,7 @@ final class ContainerView extends StaticView
     {
         $view = new self(
             $viewSet->getModel()->getSoftwareSystem($viewData['softwareSystemId']),
-            $viewData['description'],
+            isset($viewData['description']) ? $viewData['description'] : '',
             $viewData['key'],
             $viewSet
         );

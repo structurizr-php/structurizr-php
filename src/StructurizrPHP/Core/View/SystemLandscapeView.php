@@ -59,7 +59,7 @@ final class SystemLandscapeView extends StaticView
     {
         $view = new SystemLandscapeView(
             $viewSet->getModel(),
-            $viewData['description'],
+            isset($viewData['description']) ? $viewData['description'] : '',
             $viewData['key'],
             $viewSet
         );
