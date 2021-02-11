@@ -54,7 +54,7 @@ final class Tags
     public function toArray() : ?string
     {
         return \count($this->tags)
-                ? \implode(", ", $this->tags)
+                ? \implode(",", $this->tags)
                 : null;
     }
 }
