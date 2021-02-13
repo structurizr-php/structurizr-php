@@ -5,6 +5,7 @@
 /.gitattributes export-ignore
 /.gitignore export-ignore
 /.php_cs export-ignore
+/composer.lock export-ignore
 /depfile.yml export-ignore
 /phpstan.neon export-ignore
 /phpunit.xml.dis export-ignore

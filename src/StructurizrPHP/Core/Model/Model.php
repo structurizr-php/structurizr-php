@@ -575,12 +575,12 @@ final class Model
 
     public function addComponentOfType(Container $parent, string $name, string $type, string $description, ?string $technology = null) : Component
     {
-        if ($parent->getComponentWithName($name)===null) {
+        if ($parent->getComponentWithName($name) === null) {
             $component = new Component($this->idGenerator->generateId(), $this);
             $component->setName($name);
             $component->setDescription($description);
 
-            if (\strlen($type)>0) {
+            if (\strlen($type) > 0) {
                 $component->setType($type);
             }
 
@@ -688,7 +688,7 @@ final class ModelDataObject
             function (array $softwareSystemData) use ($model) {
                 return SoftwareSystem::hydrate($softwareSystemData, $model);
             },
-            isset($this->modelData['softwareSystems']) ? $this->modelData['softwareSystems'] : []
+            $this->modelData['softwareSystems'] ?? []
         );
     }
 
@@ -701,7 +701,7 @@ final class ModelDataObject
             function (array $personData) use ($model) {
                 return Person::hydrate($personData, $model);
             },
-            isset($this->modelData['people']) ? $this->modelData['people'] : []
+            $this->modelData['people'] ?? []
         );
     }
 
@@ -714,7 +714,7 @@ final class ModelDataObject
             function (array $deploymentNodeData) use ($model) {
                 return DeploymentNode::hydrate($deploymentNodeData, $model);
             },
-            isset($this->modelData['deploymentNodes']) ? $this->modelData['deploymentNodes'] : []
+            $this->modelData['deploymentNodes'] ?? []
         );
     }
 }
