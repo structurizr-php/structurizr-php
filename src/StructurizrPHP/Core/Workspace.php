@@ -63,6 +63,24 @@ final class Workspace
         $this->documentation = new Documentation($this->model);
     }
 
+    public static function hydrate(array $workspaceData) : self
+    {
+        $workspace = new self(
+            (string) $workspaceData['id'],
+            $workspaceData['name'],
+            $workspaceData['description']
+        );
+
+        $workspace->model = Model::hydrate((array) $workspaceData['model']);
+        $workspace->viewSet = ViewSet::hydrate((array) $workspaceData['views'], $workspace->model);
+
+        if (isset($workspaceData['documentation'])) {
+            $workspace->documentation = Documentation::hydrate((array) $workspaceData['documentation'], $workspace->model);
+        }
+
+        return $workspace;
+    }
+
     public function id() : string
     {
         return $this->id;
@@ -95,24 +113,6 @@ final class Workspace
         }
 
         return $data;
-    }
-
-    public static function hydrate(array $workspaceData) : self
-    {
-        $workspace = new self(
-            (string) $workspaceData['id'],
-            $workspaceData['name'],
-            $workspaceData['description']
-        );
-
-        $workspace->model = Model::hydrate((array) $workspaceData['model']);
-        $workspace->viewSet = ViewSet::hydrate((array) $workspaceData['views'], $workspace->model);
-
-        if (isset($workspaceData['documentation'])) {
-            $workspace->documentation = Documentation::hydrate((array)$workspaceData['documentation'], $workspace->model);
-        }
-
-        return $workspace;
     }
 
     public function getDocumentation() : Documentation

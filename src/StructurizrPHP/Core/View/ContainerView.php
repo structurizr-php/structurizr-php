@@ -24,6 +24,20 @@ final class ContainerView extends StaticView
         parent::__construct($softwareSystem, $description, $key, $viewSet);
     }
 
+    public static function hydrate(array $viewData, ViewSet $viewSet) : self
+    {
+        $view = new self(
+            $viewSet->getModel()->getSoftwareSystem($viewData['softwareSystemId']),
+            $viewData['description'] ?? '',
+            $viewData['key'],
+            $viewSet
+        );
+
+        parent::hydrateView($view, $viewData);
+
+        return $view;
+    }
+
     public function addAllElements() : void
     {
         $this->addAllSoftwareSystems();
@@ -51,20 +65,6 @@ final class ContainerView extends StaticView
             ],
             parent::toArray()
         );
-    }
-
-    public static function hydrate(array $viewData, ViewSet $viewSet) : self
-    {
-        $view = new self(
-            $viewSet->getModel()->getSoftwareSystem($viewData['softwareSystemId']),
-            isset($viewData['description']) ? $viewData['description'] : '',
-            $viewData['key'],
-            $viewSet
-        );
-
-        parent::hydrateView($view, $viewData);
-
-        return $view;
     }
 
     protected function canBeRemoved(Element $element) : bool

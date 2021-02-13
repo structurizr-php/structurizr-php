@@ -50,6 +50,6 @@ final class Credentials
             $nonce
         );
 
-        return hash_hmac('sha256', $messageDigest, $this->apiSecret);
+        return \hash_hmac('sha256', $messageDigest, $this->apiSecret);
     }
 }

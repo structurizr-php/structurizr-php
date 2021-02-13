@@ -21,14 +21,19 @@ class SequenceCounter
     private $sequence;
 
     /**
-     * @var SequenceCounter|null
+     * @var null|SequenceCounter
      */
     private $parent;
 
-    public function __construct(?SequenceCounter $parent = null)
+    public function __construct(?self $parent = null)
     {
         $this->parent = $parent;
         $this->sequence = 0;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->sequence;
     }
 
     public function increment() : void
@@ -36,7 +41,7 @@ class SequenceCounter
         $this->sequence++;
     }
 
-    public function getParent() : ?SequenceCounter
+    public function getParent() : ?self
     {
         return $this->parent;
     }
@@ -49,10 +54,5 @@ class SequenceCounter
     public function setSequence(int $sequence) : void
     {
         $this->sequence = $sequence;
-    }
-
-    public function __toString()
-    {
-        return (string) $this->sequence;
     }
 }

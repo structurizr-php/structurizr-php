@@ -30,6 +30,24 @@ final class Person extends StaticStructureElement
         $this->setTags(new Tags(Tags::ELEMENT, Tags::PERSON));
     }
 
+    public static function hydrate(array $personData, Model $model) : self
+    {
+        $person = new self(
+            $personData['id'],
+            $model
+        );
+
+        $model->idGenerator()->found($person->id());
+
+        if (isset($personData['location'])) {
+            $person->setLocation(Location::hydrate($personData['location']));
+        }
+
+        parent::hydrateElement($person, $personData);
+
+        return $person;
+    }
+
     /**
      * @param Location $location
      */
@@ -43,7 +61,7 @@ final class Person extends StaticStructureElement
         return $this->getModel()->addRelationship($this, $softwareSystem, $description, $technology, $interactionStyle);
     }
 
-    public function interactsWith(Person $destination, string $description, ?string $technology = null, ?InteractionStyle $interactionStyle = null) : Relationship
+    public function interactsWith(self $destination, string $description, ?string $technology = null, ?InteractionStyle $interactionStyle = null) : Relationship
     {
         return $this->getModel()->addRelationship($this, $destination, $description, $technology, $interactionStyle);
     }
@@ -61,23 +79,5 @@ final class Person extends StaticStructureElement
             ],
             parent::toArray()
         );
-    }
-
-    public static function hydrate(array $personData, Model $model) : self
-    {
-        $person = new self(
-            $personData['id'],
-            $model
-        );
-
-        $model->idGenerator()->found($person->id());
-
-        if (isset($personData['location'])) {
-            $person->setLocation(Location::hydrate($personData['location']));
-        }
-
-        parent::hydrateElement($person, $personData);
-
-        return $person;
     }
 }

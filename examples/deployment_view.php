@@ -26,7 +26,7 @@ use Symfony\Component\HttpClient\Psr18Client;
 require __DIR__ . '/../vendor/autoload.php';
 
 $workspace = new Workspace(
-    $id = (string)\getenv('STRUCTURIZR_WORKSPACE_ID'),
+    $id = (string) \getenv('STRUCTURIZR_WORKSPACE_ID'),
     $name = 'Getting Started',
     $description = 'This is a model of my software system. by structurizr-php/structurizr-php'
 );
@@ -56,8 +56,8 @@ $appSubnet->add($php);
 $appGatewaySubnet = $vnet->addDeploymentNode('subnet01', 'prod', 'AppGateway Subnet', 'subnet_app_gw_01', 1);
 $appGatewaySubnet->add($appGateway);
 
-$appGatewayAppRelationship = $appGatewaySubnet->usesDeploymentNode($appSubnet, "Send requests", "port: 443");
-$appDBRelationship = $appSubnet->usesDeploymentNode($subnetDb, "Reads data", 'port: 5432');
+$appGatewayAppRelationship = $appGatewaySubnet->usesDeploymentNode($appSubnet, 'Send requests', 'port: 443');
+$appDBRelationship = $appSubnet->usesDeploymentNode($subnetDb, 'Reads data', 'port: 5432');
 
 $deploymentView = $workspace->getViews()->createDeploymentView($softwareSystem, 'deployment', 'An example of a System Deployment diagram.');
 $deploymentView->addAllDeploymentNodes();
@@ -71,8 +71,8 @@ $workspace->getViews()->getConfiguration()->getStyles()->addElementStyle('DATABA
 
 $workspace->getViews()->getConfiguration()->getStyles()->addElementStyle('PHP')
     ->shape(Shape::hexagon())
-    ->background("#787CB5")
-    ->color("#ffffff");
+    ->background('#787CB5')
+    ->color('#ffffff');
 
 $client = new Client(
     new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
@@ -80,7 +80,7 @@ $client = new Client(
     new Psr18Client(),
     new SymfonyRequestFactory(),
     // Logger can be replaced with new NullLogger()
-    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . basename(__FILE__) . '.log', Logger::DEBUG))
+    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . \basename(__FILE__) . '.log', Logger::DEBUG))
 );
 
 $client->put($workspace);

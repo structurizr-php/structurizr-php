@@ -75,6 +75,19 @@ final class Decision
         $this->content = $content;
     }
 
+    public static function hydrate(array $decisionData, Element $element) : self
+    {
+        return new self(
+            $element,
+            $decisionData['id'],
+            new \DateTimeImmutable($decisionData['date']),
+            $decisionData['title'],
+            DecisionStatus::hydrate($decisionData['status']),
+            Format::hydrate($decisionData['format']),
+            $decisionData['content'],
+        );
+    }
+
     /**
      * @return string
      */
@@ -202,22 +215,9 @@ final class Decision
             'id' => $this->id,
             'date' => $this->date->format(\DateTime::ATOM),
             'title' => $this->title,
-            'status' => (string)$this->status,
+            'status' => (string) $this->status,
             'content' => $this->content,
             'format' => $this->format->name(),
         ];
-    }
-
-    public static function hydrate(array $decisionData, Element $element) : self
-    {
-        return new self(
-            $element,
-            $decisionData['id'],
-            new \DateTimeImmutable($decisionData['date']),
-            $decisionData['title'],
-            DecisionStatus::hydrate($decisionData['status']),
-            Format::hydrate($decisionData['format']),
-            $decisionData['content'],
-        );
     }
 }

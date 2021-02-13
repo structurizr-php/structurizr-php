@@ -18,12 +18,12 @@ use StructurizrPHP\Core\Assertion;
 final class Branding
 {
     /**
-     * @var string|null
+     * @var null|string
      */
     private $logo;
 
     /**
-     * @var Font|null
+     * @var null|Font
      */
     private $font;
 
@@ -34,6 +34,21 @@ final class Branding
         }
 
         $this->font = $font;
+    }
+
+    public static function hydrate(array $brandingData) : self
+    {
+        $branding = new self();
+
+        if (isset($brandingData['logo'])) {
+            $branding->setLogo($brandingData['logo']);
+        }
+
+        if (isset($brandingData['font'])) {
+            $branding->font = Font::hydrate($brandingData['font']);
+        }
+
+        return $branding;
     }
 
     public function isEmpty() : bool
@@ -60,20 +75,5 @@ final class Branding
         }
 
         return $data;
-    }
-
-    public static function hydrate(array $brandingData) : self
-    {
-        $branding = new self();
-
-        if (isset($brandingData['logo'])) {
-            $branding->setLogo($brandingData['logo']);
-        }
-
-        if (isset($brandingData['font'])) {
-            $branding->font = Font::hydrate($brandingData['font']);
-        }
-
-        return $branding;
     }
 }

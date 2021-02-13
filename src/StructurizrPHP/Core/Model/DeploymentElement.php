@@ -22,6 +22,13 @@ abstract class DeploymentElement extends Element
      */
     private $environment = self::DEFAULT_DEPLOYMENT_ENVIRONMENT;
 
+    public static function hydrateDeploymentElement(self $element, array $elementData) : void
+    {
+        $element->setEnvironment($elementData['environment']);
+
+        parent::hydrateElement($element, $elementData);
+    }
+
     public function getEnvironment() : string
     {
         return $this->environment;
@@ -30,13 +37,6 @@ abstract class DeploymentElement extends Element
     public function setEnvironment(string $environment) : void
     {
         $this->environment = $environment;
-    }
-
-    public static function hydrateDeploymentElement(DeploymentElement $element, array $elementData) : void
-    {
-        $element->setEnvironment($elementData['environment']);
-
-        parent::hydrateElement($element, $elementData);
     }
 
     public function toArray() : array

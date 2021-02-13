@@ -21,7 +21,8 @@ interface RequestFactory
      * @param string $uri
      * @param string $method
      * @param array<mixed> $headers
-     * @param string|null $body
+     * @param null|string $body
+     *
      * @return RequestInterface
      */
     public function create(string $uri, string $method, array $headers, ?string $body) : RequestInterface;

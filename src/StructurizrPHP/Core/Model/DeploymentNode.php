@@ -18,7 +18,7 @@ use StructurizrPHP\Core\Model\Relationship\InteractionStyle;
 /**
  * <p>
  *   Represents a deployment node, which is something like:
- * </p>
+ * </p>.
  *
  * <ul>
  *     <li>Physical infrastructure (e.g. a physical server or device)</li>
@@ -33,12 +33,12 @@ use StructurizrPHP\Core\Model\Relationship\InteractionStyle;
 final class DeploymentNode extends DeploymentElement
 {
     /**
-     * @var DeploymentNode|null
+     * @var null|DeploymentNode
      */
     private $parent;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $technology;
 
@@ -65,6 +65,69 @@ final class DeploymentNode extends DeploymentElement
         $this->containerInstances = [];
     }
 
+    public static function hydrate(array $deploymentNodeData, Model $model) : self
+    {
+        $deploymentNode = new self($deploymentNodeData['id'], $model);
+        $deploymentNode->instances = $deploymentNodeData['instances'];
+        $deploymentNode->setName($deploymentNodeData['name']);
+
+        if (isset($deploymentNodeData['parent'])) {
+            $element = $model->getElement($deploymentNodeData['parent']);
+            $deploymentNode->parent = ($element instanceof self) ? $element : null;
+        }
+
+        if (isset($deploymentNodeData['technology'])) {
+            $deploymentNode->technology = $deploymentNodeData['technology'];
+        }
+
+        if (isset($deploymentNodeData['children'])) {
+            if (\is_array($deploymentNodeData['children'])) {
+                foreach ($deploymentNodeData['children'] as $childData) {
+                    $deploymentNode->children[] = self::hydrate($childData, $model);
+                }
+            }
+        }
+
+        if (isset($deploymentNodeData['containerInstances'])) {
+            if (\is_array($deploymentNodeData['containerInstances'])) {
+                foreach ($deploymentNodeData['containerInstances'] as $containerInstanceData) {
+                    $deploymentNode->containerInstances[] = ContainerInstance::hydrate($containerInstanceData, $model);
+                }
+            }
+        }
+
+        parent::hydrateDeploymentElement($deploymentNode, $deploymentNodeData);
+
+        return $deploymentNode;
+    }
+
+    public static function hydrateContainerInstancesRelationships(self $deploymentNode, array $deploymentNodeData) : void
+    {
+        if (isset($deploymentNodeData['containerInstances']) && \is_array($deploymentNodeData['containerInstances'])) {
+            foreach ($deploymentNode->containerInstances as $containerInstance) {
+                foreach ($deploymentNodeData['containerInstances'] as $containerInstanceData) {
+                    if ($containerInstanceData['id'] === $containerInstance->id()) {
+                        parent::hydrateRelationships($containerInstance, $containerInstanceData);
+                    }
+                }
+            }
+        }
+    }
+
+    public static function hydrateChildrenRelationships(self $deploymentNode, array $deploymentNodeData) : void
+    {
+        foreach ($deploymentNode->children as $child) {
+            foreach ($deploymentNodeData['children'] as $childData) {
+                if ($childData['id'] === $child->id()) {
+                    parent::hydrateRelationships($child, $childData);
+                    self::hydrateContainerInstancesRelationships($child, $childData);
+
+                    self::hydrateChildrenRelationships($child, $childData);
+                }
+            }
+        }
+    }
+
     public function setInstances(int $instances) : void
     {
         $this->instances = $instances;
@@ -75,7 +138,7 @@ final class DeploymentNode extends DeploymentElement
         $this->technology = $technology;
     }
 
-    public function setParent(DeploymentNode $parent) : void
+    public function setParent(self $parent) : void
     {
         $this->parent = $parent;
     }
@@ -119,8 +182,8 @@ final class DeploymentNode extends DeploymentElement
     }
 
     public function usesDeploymentNode(
-        DeploymentNode $deploymentNode,
-        string $description = "Uses",
+        self $deploymentNode,
+        string $description = 'Uses',
         string $technology = null,
         InteractionStyle $interactionStyle = null
     ) : Relationship {
@@ -147,7 +210,7 @@ final class DeploymentNode extends DeploymentElement
 
         if (\count($this->children)) {
             $data['children'] = \array_map(
-                function (DeploymentNode $child) {
+                function (self $child) {
                     return $child->toArray();
                 },
                 $this->children
@@ -184,71 +247,8 @@ final class DeploymentNode extends DeploymentElement
     {
         if ($this->parent !== null) {
             return $this->parent->getCanonicalName() . self::CANONICAL_NAME_SEPARATOR . parent::formatForCanonicalName($this->getName());
-        } else {
-            return self::CANONICAL_NAME_SEPARATOR . "Deployment" . self::CANONICAL_NAME_SEPARATOR . parent::formatForCanonicalName($this->getEnvironment()) . self::CANONICAL_NAME_SEPARATOR . parent::formatForCanonicalName($this->getName());
-        }
-    }
-
-    public static function hydrate(array $deploymentNodeData, Model $model) : self
-    {
-        $deploymentNode = new self($deploymentNodeData['id'], $model);
-        $deploymentNode->instances = $deploymentNodeData['instances'];
-        $deploymentNode->setName($deploymentNodeData['name']);
-
-        if (isset($deploymentNodeData['parent'])) {
-            $element = $model->getElement($deploymentNodeData['parent']);
-            $deploymentNode->parent = ($element instanceof DeploymentNode) ? $element : null;
         }
 
-        if (isset($deploymentNodeData['technology'])) {
-            $deploymentNode->technology = $deploymentNodeData['technology'];
-        }
-
-        if (isset($deploymentNodeData['children'])) {
-            if (\is_array($deploymentNodeData['children'])) {
-                foreach ($deploymentNodeData['children'] as $childData) {
-                    $deploymentNode->children[] = self::hydrate($childData, $model);
-                }
-            }
-        }
-
-        if (isset($deploymentNodeData['containerInstances'])) {
-            if (\is_array($deploymentNodeData['containerInstances'])) {
-                foreach ($deploymentNodeData['containerInstances'] as $containerInstanceData) {
-                    $deploymentNode->containerInstances[] = ContainerInstance::hydrate($containerInstanceData, $model);
-                }
-            }
-        }
-
-        parent::hydrateDeploymentElement($deploymentNode, $deploymentNodeData);
-
-        return $deploymentNode;
-    }
-
-    public static function hydrateContainerInstancesRelationships(DeploymentNode $deploymentNode, array $deploymentNodeData) : void
-    {
-        if (isset($deploymentNodeData['containerInstances']) && \is_array($deploymentNodeData['containerInstances'])) {
-            foreach ($deploymentNode->containerInstances as $containerInstance) {
-                foreach ($deploymentNodeData['containerInstances'] as $containerInstanceData) {
-                    if ($containerInstanceData['id'] === $containerInstance->id()) {
-                        parent::hydrateRelationships($containerInstance, $containerInstanceData);
-                    }
-                }
-            }
-        }
-    }
-
-    public static function hydrateChildrenRelationships(DeploymentNode $deploymentNode, array $deploymentNodeData) : void
-    {
-        foreach ($deploymentNode->children as $child) {
-            foreach ($deploymentNodeData['children'] as $childData) {
-                if ($childData['id'] === $child->id()) {
-                    parent::hydrateRelationships($child, $childData);
-                    self::hydrateContainerInstancesRelationships($child, $childData);
-
-                    self::hydrateChildrenRelationships($child, $childData);
-                }
-            }
-        }
+        return self::CANONICAL_NAME_SEPARATOR . 'Deployment' . self::CANONICAL_NAME_SEPARATOR . parent::formatForCanonicalName($this->getEnvironment()) . self::CANONICAL_NAME_SEPARATOR . parent::formatForCanonicalName($this->getName());
     }
 }

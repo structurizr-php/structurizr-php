@@ -31,11 +31,6 @@ final class Format
         $this->name = $name;
     }
 
-    public function name() : string
-    {
-        return $this->name;
-    }
-
     public static function markdown() : self
     {
         return new self(self::MARKDOWN);
@@ -51,5 +46,10 @@ final class Format
         Assertion::inArray($name, [self::MARKDOWN, self::ASCII_DOC]);
 
         return new self($name);
+    }
+
+    public function name() : string
+    {
+        return $this->name;
     }
 }

@@ -22,17 +22,17 @@ final class RelationshipView
     private const END_OF_LINE = 100;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $description;
 
     /**
-     * @var int|null
+     * @var null|int
      */
     private $position;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $order;
 
@@ -42,7 +42,7 @@ final class RelationshipView
     private $vertices;
 
     /**
-     * @var Routing|null
+     * @var null|Routing
      */
     private $routing;
 
@@ -55,6 +55,38 @@ final class RelationshipView
     {
         $this->relationship = $relationship;
         $this->vertices = [];
+    }
+
+    public static function hydrate(Relationship $relationship, array $viewData) : self
+    {
+        $view = new self($relationship);
+
+        if (isset($viewData['description'])) {
+            $view->setDescription($viewData['description']);
+        }
+
+        if (isset($viewData['order'])) {
+            $view->setOrder((string) $viewData['order']);
+        }
+
+        if (isset($viewData['position'])) {
+            $view->setPosition($viewData['position']);
+        }
+
+        if (isset($viewData['routing'])) {
+            $view->setRouting(Routing::hydrate($viewData['routing']));
+        }
+
+        if (isset($viewData['vertices'])) {
+            $view->setVertices(...\array_map(
+                function (array $vertexData) {
+                    return Vertex::hydrate($vertexData);
+                },
+                $viewData['vertices']
+            ));
+        }
+
+        return $view;
     }
 
     public function setPosition(?int $position) : void
@@ -104,52 +136,20 @@ final class RelationshipView
     }
 
     /**
-     * @param Routing|null $routing
+     * @param null|Routing $routing
      */
     public function setRouting(?Routing $routing) : void
     {
         $this->routing = $routing;
     }
 
-    public function copyLayoutInformationFrom(?RelationshipView $source) : void
+    public function copyLayoutInformationFrom(?self $source) : void
     {
         if ($source !== null) {
             $this->setVertices(...$source->vertices);
             $this->setPosition($source->position);
             $this->setRouting($source->routing);
         }
-    }
-
-    public static function hydrate(Relationship $relationship, array $viewData) : self
-    {
-        $view = new self($relationship);
-
-        if (isset($viewData['description'])) {
-            $view->setDescription($viewData['description']);
-        }
-
-        if (isset($viewData['order'])) {
-            $view->setOrder((string) $viewData['order']);
-        }
-
-        if (isset($viewData['position'])) {
-            $view->setPosition($viewData['position']);
-        }
-
-        if (isset($viewData['routing'])) {
-            $view->setRouting(Routing::hydrate($viewData['routing']));
-        }
-
-        if (isset($viewData['vertices'])) {
-            $view->setVertices(...\array_map(
-                function (array $vertexData) {
-                    return Vertex::hydrate($vertexData);
-                },
-                $viewData['vertices']
-            ));
-        }
-
-        return $view;
     }
 
     public function toArray() : array
@@ -163,6 +163,7 @@ final class RelationshipView
                 $this->vertices
             ),
         ];
+
         if ($this->order) {
             $data['order'] = $this->order;
         }

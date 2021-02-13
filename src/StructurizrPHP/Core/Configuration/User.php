@@ -53,6 +53,7 @@ final class User
 
     /**
      * @param User $user
+     *
      * @return bool
      */
     public function equals(self $user) : bool

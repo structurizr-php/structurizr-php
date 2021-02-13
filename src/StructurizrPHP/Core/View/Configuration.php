@@ -23,7 +23,7 @@ final class Configuration
     private $styles;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $lastSavedView;
 
@@ -33,6 +33,22 @@ final class Configuration
     {
         $this->styles = new Styles();
         $this->branding = new Branding();
+    }
+
+    public static function hydrate(array $configurationData) : self
+    {
+        $configuration = new self();
+        $configuration->styles = Styles::hydrate($configurationData['styles']);
+
+        if (isset($configurationData['branding'])) {
+            $configuration->branding = Branding::hydrate($configurationData['branding']);
+        }
+
+        if (isset($configurationData['lastSavedView'])) {
+            $configuration->lastSavedView = $configurationData['lastSavedView'];
+        }
+
+        return $configuration;
     }
 
     public function getStyles() : Styles
@@ -57,22 +73,6 @@ final class Configuration
         }
 
         return $data;
-    }
-
-    public static function hydrate(array $configurationData) : self
-    {
-        $configuration = new self();
-        $configuration->styles = Styles::hydrate($configurationData['styles']);
-
-        if (isset($configurationData['branding'])) {
-            $configuration->branding = Branding::hydrate($configurationData['branding']);
-        }
-
-        if (isset($configurationData['lastSavedView'])) {
-            $configuration->lastSavedView = $configurationData['lastSavedView'];
-        }
-
-        return $configuration;
     }
 
     public function getBranding() : Branding

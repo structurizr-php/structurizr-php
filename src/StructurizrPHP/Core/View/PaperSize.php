@@ -25,11 +25,6 @@ final class PaperSize
         $this->size = $size;
     }
 
-    public function size() : string
-    {
-        return $this->size;
-    }
-
     public static function A6_Portrait() : self
     {
         return new self('A6_Portrait');
@@ -115,5 +110,10 @@ final class PaperSize
         // Todo: Add size validation
 
         return new self($size);
+    }
+
+    public function size() : string
+    {
+        return $this->size;
     }
 }

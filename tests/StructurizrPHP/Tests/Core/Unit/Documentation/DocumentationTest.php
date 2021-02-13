@@ -47,7 +47,7 @@ final class DocumentationTest extends AbstractWorkspaceTestBase
     {
         try {
             $softwareSystem = $this->model->addSoftwareSystem('Software System', 'Description');
-            $workspace = new Workspace("2", 'test', 'test');
+            $workspace = new Workspace('2', 'test', 'test');
             $workspace->getDocumentation()->addSection($softwareSystem, 'Title', Format::markdown(), 'Content');
             $this->fail();
         } catch (InvalidArgumentException $iae) {

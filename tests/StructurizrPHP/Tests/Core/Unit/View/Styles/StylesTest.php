@@ -52,7 +52,7 @@ final class StylesTest extends TestCase
             ->width(\random_int(1, 100))
             ->opacity(\random_int(0, 100))
             ->setPosition(\random_int(0, 100))
-            ->color("#ffffff")
+            ->color('#ffffff')
             ->dashed(true)
             ->setRouting(Routing::direct());
 

@@ -62,8 +62,8 @@ $containerView->addPerson($person);
 
 $styles = $workspace->getViews()->getConfiguration()->getStyles();
 
-$styles->addElementStyle(Tags::CONTAINER)->background("#1168bd")->color('#ffffff');
-$styles->addElementStyle(Tags::PERSON)->background("#08427b")->color('#ffffff')->shape(Shape::person());
+$styles->addElementStyle(Tags::CONTAINER)->background('#1168bd')->color('#ffffff');
+$styles->addElementStyle(Tags::PERSON)->background('#08427b')->color('#ffffff')->shape(Shape::person());
 $styles->addRelationshipStyle(Tags::RELATIONSHIP)->color('#ff0000');
 
 $client = new Client(
@@ -72,6 +72,6 @@ $client = new Client(
     new Psr18Client(),
     new SymfonyRequestFactory(),
     // Logger can be replaced with new NullLogger()
-    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . basename(__FILE__) . '.log', Logger::DEBUG))
+    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . \basename(__FILE__) . '.log', Logger::DEBUG))
 );
 $client->put($workspace);

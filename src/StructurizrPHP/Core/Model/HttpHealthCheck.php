@@ -28,21 +28,21 @@ final class HttpHealthCheck
     private $url;
 
     /**
-     * The polling interval, in seconds
+     * The polling interval, in seconds.
      *
      * @var int
      */
     private $interval;
 
     /**
-     * The timeout after which a health check is deemed as failed, in milliseconds
+     * The timeout after which a health check is deemed as failed, in milliseconds.
      *
      * @var int
      */
     private $timeout;
 
     /**
-     * The headers that should be sent in the HTTP request
+     * The headers that should be sent in the HTTP request.
      *
      * @var array<string, string>
      */
@@ -55,6 +55,22 @@ final class HttpHealthCheck
         $this->interval = $interval;
         $this->timeout = $timeout;
         $this->headers = [];
+    }
+
+    public static function hydrate(array $healthCheckData) : self
+    {
+        $healthCheck = new self(
+            $healthCheckData['name'],
+            $healthCheckData['url'],
+            (int) $healthCheckData['interval'],
+            (int) $healthCheckData['timeout'],
+        );
+
+        if (isset($healthCheckData['headers'])) {
+            $healthCheck->setHeaders($healthCheckData['headers']);
+        }
+
+        return $healthCheck;
     }
 
     public function name() : string
@@ -134,21 +150,5 @@ final class HttpHealthCheck
         }
 
         return $data;
-    }
-
-    public static function hydrate(array $healthCheckData) : self
-    {
-        $healthCheck = new self(
-            $healthCheckData['name'],
-            $healthCheckData['url'],
-            (int) $healthCheckData['interval'],
-            (int) $healthCheckData['timeout'],
-        );
-
-        if (isset($healthCheckData['headers'])) {
-            $healthCheck->setHeaders($healthCheckData['headers']);
-        }
-
-        return $healthCheck;
     }
 }

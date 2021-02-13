@@ -46,22 +46,18 @@
         }
     ],
     "scripts": {
-        "deptrac": [
-            "deptrac"
-        ],
-        "phpstan": [
-            "phpstan analyse -c phpstan.neon"
-        ],
         "phpunit": [
             "phpunit --colors=always"
         ],
-        "test" : [
+        "static:analyze": [
             "deptrac",
             "php-cs-fixer fix --dry-run",
-            "@phpstan",
+            "phpstan analyse -c phpstan.neon"
+        ],
+        "test" : [
             "@phpunit"
         ],
-        "cs:fix": [
+        "cs:php:fix": [
             "php-cs-fixer fix"
         ]
     }

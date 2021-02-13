@@ -45,7 +45,7 @@ abstract class StaticView extends View
         $model = $this->getModel();
 
         if (null === $model) {
-            return ;
+            return;
         }
 
         foreach ($model->softwareSystems() as $softwareSystem) {
@@ -58,7 +58,7 @@ abstract class StaticView extends View
         $model = $this->getModel();
 
         if (null === $model) {
-            return ;
+            return;
         }
 
         foreach ($model->people() as $person) {

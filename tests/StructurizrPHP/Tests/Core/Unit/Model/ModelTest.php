@@ -224,7 +224,7 @@ final class ModelTest extends AbstractWorkspaceTestBase
         $bb = $b->addContainer('BB', '', '');
         $bbb = $bb->addComponent('BBB', '', '');
 
-        $a -> usesComponent($bbb, 'Uses');
+        $a->usesComponent($bbb, 'Uses');
         $this->assertCount(1, $this->model->getRelationships());
         $this->assertTrue($a->hasEfferentRelationshipWith($bbb));
 

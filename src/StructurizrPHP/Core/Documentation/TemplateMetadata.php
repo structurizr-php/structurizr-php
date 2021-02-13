@@ -37,6 +37,15 @@ final class TemplateMetadata
         $this->url = $url;
     }
 
+    public static function hydrate(array $templateData) : self
+    {
+        return new self(
+            $templateData['name'],
+            $templateData['author'],
+            $templateData['url'],
+        );
+    }
+
     /**
      * @return string
      */
@@ -92,14 +101,5 @@ final class TemplateMetadata
             'author' => $this->author,
             'url' => $this->url,
         ];
-    }
-
-    public static function hydrate(array $templateData) : self
-    {
-        return new self(
-            $templateData['name'],
-            $templateData['author'],
-            $templateData['url'],
-        );
     }
 }

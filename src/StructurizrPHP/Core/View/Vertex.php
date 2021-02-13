@@ -31,6 +31,11 @@ final class Vertex
         $this->y = $y;
     }
 
+    public static function hydrate(array $vertexData) : self
+    {
+        return new self((int) $vertexData['x'], (int) $vertexData['y']);
+    }
+
     public function x() : int
     {
         return $this->x;
@@ -63,10 +68,5 @@ final class Vertex
             'x' => $this->x,
             'y' => $this->y,
         ];
-    }
-
-    public static function hydrate(array $vertexData) : self
-    {
-        return new self((int) $vertexData['x'], (int) $vertexData['y']);
     }
 }

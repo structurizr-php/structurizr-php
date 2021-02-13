@@ -32,6 +32,22 @@ final class SystemContextView extends StaticView
         $this->enterpriseBoundaryVisible = true;
     }
 
+    public static function hydrate(array $viewData, ViewSet $viewSet) : self
+    {
+        $view = new self(
+            $viewSet->getModel()->getSoftwareSystem($viewData['softwareSystemId']),
+            $viewData['description'],
+            $viewData['key'],
+            $viewSet
+        );
+
+        $view->enterpriseBoundaryVisible = $viewData['enterpriseBoundaryVisible'];
+
+        parent::hydrateView($view, $viewData);
+
+        return $view;
+    }
+
     public function addAllElements() : void
     {
         $this->addAllSoftwareSystems();
@@ -44,7 +60,7 @@ final class SystemContextView extends StaticView
             parent::addNearestTypeNeighbours($element, Person::class);
             parent::addNearestTypeNeighbours($element, SoftwareSystem::class);
         } else {
-            throw new InvalidArgumentException("A person or software system must be specified.");
+            throw new InvalidArgumentException('A person or software system must be specified.');
         }
     }
 
@@ -62,22 +78,6 @@ final class SystemContextView extends StaticView
             ],
             parent::toArray()
         );
-    }
-
-    public static function hydrate(array $viewData, ViewSet $viewSet) : self
-    {
-        $view = new self(
-            $viewSet->getModel()->getSoftwareSystem($viewData['softwareSystemId']),
-            $viewData['description'],
-            $viewData['key'],
-            $viewSet
-        );
-
-        $view->enterpriseBoundaryVisible = $viewData['enterpriseBoundaryVisible'];
-
-        parent::hydrateView($view, $viewData);
-
-        return $view;
     }
 
     protected function canBeRemoved(Element $element) : bool

@@ -22,11 +22,6 @@ final class Routing
         $this->type = $type;
     }
 
-    public function type() : string
-    {
-        return $this->type;
-    }
-
     public static function direct() : self
     {
         return new self('Direct');
@@ -40,5 +35,10 @@ final class Routing
     public static function hydrate(string $type) : self
     {
         return new self($type);
+    }
+
+    public function type() : string
+    {
+        return $this->type;
     }
 }

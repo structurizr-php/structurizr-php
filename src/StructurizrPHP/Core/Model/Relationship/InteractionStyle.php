@@ -24,11 +24,6 @@ final class InteractionStyle
         $this->style = $type;
     }
 
-    public function style() : string
-    {
-        return $this->style;
-    }
-
     public static function synchronous() : self
     {
         return new self('Synchronous');
@@ -44,5 +39,10 @@ final class InteractionStyle
         Assertion::inArray($style, ['Synchronous', 'Asynchronous']);
 
         return new self($style);
+    }
+
+    public function style() : string
+    {
+        return $this->style;
     }
 }

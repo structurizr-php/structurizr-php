@@ -37,7 +37,7 @@ class AbstractWorkspaceTestBase extends TestCase
 
     protected function setUp() : void
     {
-        $this->workspace = new Workspace("1", "Name", "Description");
+        $this->workspace = new Workspace('1', 'Name', 'Description');
         $this->model = $this->workspace->getModel();
         $this->views = $this->workspace->getViews();
     }

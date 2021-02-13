@@ -24,7 +24,7 @@ use Symfony\Component\HttpClient\Psr18Client;
 require __DIR__ . '/../vendor/autoload.php';
 
 $workspace = new Workspace(
-    $id = (string)\getenv('STRUCTURIZR_WORKSPACE_ID'),
+    $id = (string) \getenv('STRUCTURIZR_WORKSPACE_ID'),
     $name = 'Getting Started',
     $description = 'This is a model of my software system. by structurizr-php/structurizr-php'
 );
@@ -35,7 +35,7 @@ $client = new Client(
     new Psr18Client(),
     new SymfonyRequestFactory(),
     // Logger can be replaced with new NullLogger()
-    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . basename(__FILE__) . '.log', Logger::DEBUG))
+    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . \basename(__FILE__) . '.log', Logger::DEBUG))
 );
 $client->setMergeRemote(false);
 $client->put($workspace);

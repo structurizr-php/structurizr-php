@@ -34,9 +34,20 @@ final class SystemLandscapeView extends StaticView
         $this->model = $model;
     }
 
-    protected function getModel() : ?Model
+    public static function hydrate(array $viewData, ViewSet $viewSet) : self
     {
-        return $this->model;
+        $view = new self(
+            $viewSet->getModel(),
+            $viewData['description'],
+            $viewData['key'],
+            $viewSet
+        );
+
+        $view->enterpriseBoundaryVisible = $viewData['enterpriseBoundaryVisible'];
+
+        parent::hydrateView($view, $viewData);
+
+        return $view;
     }
 
     public function addAllElements() : void
@@ -55,20 +66,9 @@ final class SystemLandscapeView extends StaticView
         );
     }
 
-    public static function hydrate(array $viewData, ViewSet $viewSet) : self
+    protected function getModel() : ?Model
     {
-        $view = new SystemLandscapeView(
-            $viewSet->getModel(),
-            isset($viewData['description']) ? $viewData['description'] : '',
-            $viewData['key'],
-            $viewSet
-        );
-
-        $view->enterpriseBoundaryVisible = $viewData['enterpriseBoundaryVisible'];
-
-        parent::hydrateView($view, $viewData);
-
-        return $view;
+        return $this->model;
     }
 
     protected function canBeRemoved(Element $element) : bool

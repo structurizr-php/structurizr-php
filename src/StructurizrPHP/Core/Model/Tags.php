@@ -15,23 +15,23 @@ namespace StructurizrPHP\Core\Model;
 
 final class Tags
 {
-    public const ELEMENT = "Element";
+    public const ELEMENT = 'Element';
 
-    public const PERSON = "Person";
+    public const PERSON = 'Person';
 
-    public const SOFTWARE_SYSTEM = "Software System";
+    public const SOFTWARE_SYSTEM = 'Software System';
 
-    public const SYNCHRONOUS = "Synchronous";
+    public const SYNCHRONOUS = 'Synchronous';
 
-    public const ASYNCHRONOUS = "Asynchronous";
+    public const ASYNCHRONOUS = 'Asynchronous';
 
-    public const CONTAINER = "Container";
+    public const CONTAINER = 'Container';
 
-    public const COMPONENT = "Component";
+    public const COMPONENT = 'Component';
 
-    public const RELATIONSHIP = "Relationship";
+    public const RELATIONSHIP = 'Relationship';
 
-    public const CONTAINER_INSTANCE = "Container Instance";
+    public const CONTAINER_INSTANCE = 'Container Instance';
 
     /**
      * @var string[]
@@ -48,13 +48,13 @@ final class Tags
 
     public function add(string $tag) : void
     {
-        $this->tags [] = $tag;
+        $this->tags[] = $tag;
     }
 
     public function toArray() : ?string
     {
         return \count($this->tags)
-                ? \implode(", ", $this->tags)
+                ? \implode(', ', $this->tags)
                 : null;
     }
 }

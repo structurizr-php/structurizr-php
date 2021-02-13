@@ -54,17 +54,6 @@ final class AutomaticLayout
         $this->vertices = $vertices;
     }
 
-    public function toArray() : array
-    {
-        return [
-            'rankDirection' => $this->rankDirection->direction(),
-            'rankSeparation' => $this->rankSeparation,
-            'nodeSeparation' => $this->nodeSeparation,
-            'edgeSeparation' => $this->edgeSeparation,
-            'vertices' => $this->vertices,
-        ];
-    }
-
     public static function hydrate(array $automaticLayoutData) : self
     {
         return new self(
@@ -74,5 +63,16 @@ final class AutomaticLayout
             (int) $automaticLayoutData['edgeSeparation'],
             $automaticLayoutData['vertices'],
         );
+    }
+
+    public function toArray() : array
+    {
+        return [
+            'rankDirection' => $this->rankDirection->direction(),
+            'rankSeparation' => $this->rankSeparation,
+            'nodeSeparation' => $this->nodeSeparation,
+            'edgeSeparation' => $this->edgeSeparation,
+            'vertices' => $this->vertices,
+        ];
     }
 }
