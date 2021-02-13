@@ -53,6 +53,17 @@ final class Section
         $this->content = $content;
     }
 
+    public static function hydrate(array $sectionData, Element $element, Format $format) : self
+    {
+        return new self(
+            $element,
+            $sectionData['title'],
+            $sectionData['order'],
+            $format,
+            $sectionData['content'],
+        );
+    }
+
     public function getElement() : Element
     {
         return $this->element;
@@ -108,7 +119,7 @@ final class Section
         return $this->element->id();
     }
 
-    public function equals(Section $object) : bool
+    public function equals(self $object) : bool
     {
         if ($this === $object) {
             return true;
@@ -120,47 +131,37 @@ final class Section
     public function hashCode() : int
     {
         $result = $this->str_hashcode($this->getElementId());
-        $result = 31 * $result + $this->str_hashcode($this->getTitle());
 
-        return $result;
-    }
-
-    private function str_hashcode(string $s) : int
-    {
-        $hash = 0;
-        $len = mb_strlen($s, 'UTF-8');
-        if ($len === 0) {
-            return $hash;
-        }
-        for ($i = 0; $i < $len; $i++) {
-            $c = mb_substr($s, $i, 1, 'UTF-8');
-            $cc = unpack('V', (string) iconv('UTF-8', 'UCS-4LE', $c))[1];
-            $hash = (($hash << 5) - $hash) + $cc;
-            $hash &= $hash; // 16bit > 32bit
-        }
-
-        return $hash;
+        return 31 * $result + $this->str_hashcode($this->getTitle());
     }
 
     public function toArray() : array
     {
         return [
-            "elementId" => $this->element->id(),
-            "title" => $this->title,
-            "order" => $this->order,
-            "format" => $this->format->name(),
-            "content" => $this->content,
+            'elementId' => $this->element->id(),
+            'title' => $this->title,
+            'order' => $this->order,
+            'format' => $this->format->name(),
+            'content' => $this->content,
         ];
     }
 
-    public static function hydrate(array $sectionData, Element $element, Format $format) : self
+    private function str_hashcode(string $s) : int
     {
-        return new self(
-            $element,
-            $sectionData['title'],
-            $sectionData['order'],
-            $format,
-            $sectionData['content'],
-        );
+        $hash = 0;
+        $len = \mb_strlen($s, 'UTF-8');
+
+        if ($len === 0) {
+            return $hash;
+        }
+
+        for ($i = 0; $i < $len; $i++) {
+            $c = \mb_substr($s, $i, 1, 'UTF-8');
+            $cc = \unpack('V', (string) \iconv('UTF-8', 'UCS-4LE', $c))[1];
+            $hash = (($hash << 5) - $hash) + $cc;
+            $hash &= $hash; // 16bit > 32bit
+        }
+
+        return $hash;
     }
 }

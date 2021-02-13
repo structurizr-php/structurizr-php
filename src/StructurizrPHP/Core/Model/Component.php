@@ -30,12 +30,33 @@ final class Component extends StaticStructureElement
      */
     private $type;
 
+    public static function hydrate(array $componentData, Model $model, ?Element $parent) : self
+    {
+        $component = new self($componentData['id'], $model);
+
+        if ($parent instanceof Element) {
+            $component->setParent($parent);
+        }
+
+        if (isset($componentData['technology'])) {
+            $component->setTechnology($componentData['technology']);
+        }
+
+        if (isset($componentData['type'])) {
+            $component->setType($componentData['type']);
+        }
+
+        $model->addElementToInternalStructures($component);
+
+        return $component;
+    }
+
     /**
      * @return string
      */
     public function getTechnology() : string
     {
-        return $this->technology ? $this->technology : "";
+        return $this->technology ? $this->technology : '';
     }
 
     /**
@@ -73,24 +94,5 @@ final class Component extends StaticStructureElement
             ],
             parent::toArray()
         );
-    }
-
-    public static function hydrate(array $componentData, Model $model, ?Element $parent) : self
-    {
-        $component = new self($componentData['id'], $model);
-        if ($parent instanceof Element) {
-            $component->setParent($parent);
-        }
-
-        if (isset($componentData['technology'])) {
-            $component->setTechnology($componentData['technology']);
-        }
-        if (isset($componentData['type'])) {
-            $component->setType($componentData['type']);
-        }
-
-        $model->addElementToInternalStructures($component);
-
-        return $component;
     }
 }

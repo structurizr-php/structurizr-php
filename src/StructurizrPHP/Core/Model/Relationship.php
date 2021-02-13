@@ -33,7 +33,7 @@ final class Relationship extends ModelItem
     private $description;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $technology;
 
@@ -43,7 +43,7 @@ final class Relationship extends ModelItem
     private $interactionStyle;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $linkedRelationshipId;
 
@@ -67,6 +67,34 @@ final class Relationship extends ModelItem
         }
 
         $this->addTags(Tags::RELATIONSHIP);
+    }
+
+    public static function hydrate(array $relationshipData, Element $source, Model $model) : self
+    {
+        $relationship = new self(
+            $relationshipData['id'],
+            $source,
+            $model->getElement($relationshipData['destinationId']),
+            isset($relationshipData['description']) ? (string) $relationshipData['description'] : '',
+        );
+
+        if (isset($relationshipData['interactionStyle'])) {
+            $relationship->setInteractionStyle(InteractionStyle::hydrate($relationshipData['interactionStyle']));
+        }
+
+        if (isset($relationshipData['technology'])) {
+            $relationship->setTechnology($relationshipData['technology']);
+        }
+
+        if (isset($relationshipData['linkedRelationshipId'])) {
+            $relationship->linkedRelationshipId = $relationshipData['linkedRelationshipId'];
+        }
+
+        parent::hydrateModelItem($relationship, $relationshipData, $model);
+
+        $model->addRelationshipToInternalStructures($relationship);
+
+        return $relationship;
     }
 
     /**
@@ -138,33 +166,5 @@ final class Relationship extends ModelItem
         }
 
         return $data;
-    }
-
-    public static function hydrate(array $relationshipData, Element $source, Model $model) : self
-    {
-        $relationship = new Relationship(
-            $relationshipData['id'],
-            $source,
-            $model->getElement($relationshipData['destinationId']),
-            isset($relationshipData['description']) ? (string) $relationshipData['description'] : "",
-        );
-
-        if (isset($relationshipData['interactionStyle'])) {
-            $relationship->setInteractionStyle(InteractionStyle::hydrate($relationshipData['interactionStyle']));
-        }
-
-        if (isset($relationshipData['technology'])) {
-            $relationship->setTechnology($relationshipData['technology']);
-        }
-
-        if (isset($relationshipData['linkedRelationshipId'])) {
-            $relationship->linkedRelationshipId = $relationshipData['linkedRelationshipId'];
-        }
-
-        parent::hydrateModelItem($relationship, $relationshipData, $model);
-
-        $model->addRelationshipToInternalStructures($relationship);
-
-        return $relationship;
     }
 }

@@ -37,22 +37,22 @@ final class ElementStyle
     private $height;
 
     /**
-     * @var int|null
+     * @var null|int
      */
     private $opacity;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $color;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $background;
 
     /**
-     * @var int|null
+     * @var null|int
      */
     private $fontSize;
 
@@ -62,7 +62,7 @@ final class ElementStyle
     private $border;
 
     /**
-     * @var Shape|null
+     * @var null|Shape
      */
     private $shape;
 
@@ -72,12 +72,12 @@ final class ElementStyle
     private $metadata;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $icon;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $description;
 
@@ -88,6 +88,53 @@ final class ElementStyle
         $this->height = self::DEFAULT_HEIGHT;
         $this->border = Border::solid();
         $this->metadata = true;
+    }
+
+    public static function hydrate(array $elementData) : self
+    {
+        $element = new self($elementData['tag']);
+
+        if (isset($elementData['width'])) {
+            $element->width = (int) $elementData['width'];
+        }
+
+        if (isset($elementData['height'])) {
+            $element->height = (int) $elementData['height'];
+        }
+
+        if (isset($elementData['background'])) {
+            $element->background = (string) $elementData['background'];
+        }
+
+        if (isset($elementData['color'])) {
+            $element->color = (string) $elementData['color'];
+        }
+
+        if (isset($elementData['fontSize'])) {
+            $element->fontSize = (int) $elementData['fontSize'];
+        }
+
+        if (isset($elementData['border'])) {
+            $element->border = Border::hydrate($elementData['border']);
+        }
+
+        if (isset($elementData['metadata'])) {
+            $element->metadata = (bool) $elementData['metadata'];
+        }
+
+        if (isset($elementData['icon'])) {
+            $element->icon = $elementData['icon'];
+        }
+
+        if (isset($elementData['description'])) {
+            $element->description = $elementData['description'];
+        }
+
+        if (isset($elementData['shape'])) {
+            $element->shape = Shape::hydrate($elementData['shape']);
+        }
+
+        return $element;
     }
 
     public function shape(Shape $shape) : self
@@ -219,52 +266,5 @@ final class ElementStyle
         }
 
         return $data;
-    }
-
-    public static function hydrate(array $elementData) : self
-    {
-        $element = new self($elementData['tag']);
-
-        if (isset($elementData['width'])) {
-            $element->width = (int) $elementData['width'];
-        }
-
-        if (isset($elementData['height'])) {
-            $element->height = (int) $elementData['height'];
-        }
-
-        if (isset($elementData['background'])) {
-            $element->background = (string) $elementData['background'];
-        }
-
-        if (isset($elementData['color'])) {
-            $element->color = (string) $elementData['color'];
-        }
-
-        if (isset($elementData['fontSize'])) {
-            $element->fontSize = (int) $elementData['fontSize'];
-        }
-
-        if (isset($elementData['border'])) {
-            $element->border = Border::hydrate($elementData['border']);
-        }
-
-        if (isset($elementData['metadata'])) {
-            $element->metadata = (bool) $elementData['metadata'];
-        }
-
-        if (isset($elementData['icon'])) {
-            $element->icon = $elementData['icon'];
-        }
-
-        if (isset($elementData['description'])) {
-            $element->description = $elementData['description'];
-        }
-
-        if (isset($elementData['shape'])) {
-            $element->shape = Shape::hydrate($elementData['shape']);
-        }
-
-        return $element;
     }
 }

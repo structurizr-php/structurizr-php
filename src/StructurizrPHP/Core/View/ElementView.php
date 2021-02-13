@@ -23,18 +23,31 @@ final class ElementView
     private $element;
 
     /**
-     * @var int|null
+     * @var null|int
      */
     private $x;
 
     /**
-     * @var int|null
+     * @var null|int
      */
     private $y;
 
     public function __construct(Element $element)
     {
         $this->element = $element;
+    }
+
+    public static function hydrate(array $elementViewData, Element $element) : self
+    {
+        $elementView = new self($element);
+
+        if (\array_key_exists('x', $elementViewData) && \array_key_exists('y', $elementViewData)) {
+            $elementView
+                ->setX((int) $elementViewData['x'])
+                ->setY((int) $elementViewData['y']);
+        }
+
+        return $elementView;
     }
 
     public function element() : Element
@@ -66,7 +79,7 @@ final class ElementView
         return $this->y;
     }
 
-    public function copyLayoutInformationFrom(ElementView $source) : void
+    public function copyLayoutInformationFrom(self $source) : void
     {
         $this->setX($source->getX());
         $this->setY($source->getY());
@@ -79,18 +92,5 @@ final class ElementView
             'x' => $this->x,
             'y' => $this->y,
         ];
-    }
-
-    public static function hydrate(array $elementViewData, Element $element) : self
-    {
-        $elementView = new self($element);
-
-        if (\array_key_exists('x', $elementViewData) && \array_key_exists('y', $elementViewData)) {
-            $elementView
-                ->setX((int)$elementViewData['x'])
-                ->setY((int)$elementViewData['y']);
-        }
-
-        return $elementView;
     }
 }

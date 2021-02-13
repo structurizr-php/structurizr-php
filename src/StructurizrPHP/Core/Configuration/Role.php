@@ -25,11 +25,6 @@ final class Role
         $this->name = $name;
     }
 
-    public function name() : string
-    {
-        return $this->name;
-    }
-
     public static function readWrite() : self
     {
         return new self('ReadWrite');
@@ -38,6 +33,11 @@ final class Role
     public static function readOnly() : self
     {
         return new self('ReadOnly');
+    }
+
+    public function name() : string
+    {
+        return $this->name;
     }
 
     public function toString() : string

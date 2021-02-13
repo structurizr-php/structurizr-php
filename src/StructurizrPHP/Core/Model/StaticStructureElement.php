@@ -19,7 +19,7 @@ abstract class StaticStructureElement extends Element
 {
     public function usesSoftwareSystem(
         SoftwareSystem $softwareSystem,
-        string $description = "Uses",
+        string $description = 'Uses',
         string $technology = null,
         InteractionStyle $interactionStyle = null
     ) : Relationship {
@@ -34,7 +34,7 @@ abstract class StaticStructureElement extends Element
 
     public function usesContainer(
         Container $container,
-        string $description = "Uses",
+        string $description = 'Uses',
         string $technology = null,
         InteractionStyle $interactionStyle = null
     ) : Relationship {
@@ -49,7 +49,7 @@ abstract class StaticStructureElement extends Element
 
     public function usesComponent(
         Component $container,
-        string $description = "Uses",
+        string $description = 'Uses',
         string $technology = null,
         InteractionStyle $interactionStyle = null
     ) : Relationship {

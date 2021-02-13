@@ -22,11 +22,6 @@ final class RankDirection
         $this->direction = $direction;
     }
 
-    public function direction() : string
-    {
-        return $this->direction;
-    }
-
     public static function topBottom() : self
     {
         return new self('TopBottom');
@@ -50,5 +45,10 @@ final class RankDirection
     public static function hydrate(string $direction) : self
     {
         return new self($direction);
+    }
+
+    public function direction() : string
+    {
+        return $this->direction;
     }
 }

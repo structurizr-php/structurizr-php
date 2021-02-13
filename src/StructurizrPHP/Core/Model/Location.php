@@ -24,11 +24,6 @@ final class Location
         $this->type = $type;
     }
 
-    public function type() : string
-    {
-        return $this->type;
-    }
-
     public static function external() : self
     {
         return new self('External');
@@ -49,5 +44,10 @@ final class Location
         Assertion::inArray($type, ['External', 'Internal', 'Unspecified']);
 
         return new self($type);
+    }
+
+    public function type() : string
+    {
+        return $this->type;
     }
 }

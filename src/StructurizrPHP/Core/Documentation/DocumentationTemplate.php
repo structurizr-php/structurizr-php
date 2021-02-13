@@ -46,10 +46,10 @@ abstract class DocumentationTemplate
         return $this->add($container, $title, $format, $content);
     }
 
+    abstract protected function getMetadata() : TemplateMetadata;
+
     private function add(Element $element, string $title, Format $format, string $content) : Section
     {
         return $this->documentation->addSection($element, $title, $format, $content);
     }
-
-    abstract protected function getMetadata() : TemplateMetadata;
 }

@@ -22,11 +22,6 @@ final class Border
         $this->type = $type;
     }
 
-    public function type() : string
-    {
-        return $this->type;
-    }
-
     public static function solid() : self
     {
         return new self('Solid');
@@ -40,5 +35,10 @@ final class Border
     public static function hydrate(string $type) : self
     {
         return new self($type);
+    }
+
+    public function type() : string
+    {
+        return $this->type;
     }
 }

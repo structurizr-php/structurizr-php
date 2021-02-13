@@ -45,7 +45,7 @@ final class SequenceNumber
         $parentSequence = $this->counter->getParent();
 
         if (!$parentSequence) {
-            throw new RuntimeException("Parallel Sequence never started");
+            throw new RuntimeException('Parallel Sequence never started');
         }
 
         if ($endAllParallelSequencesAndContinueNumbering) {

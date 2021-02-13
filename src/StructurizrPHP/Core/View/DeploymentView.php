@@ -27,7 +27,7 @@ final class DeploymentView extends View
     private $model;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $environment;
 
@@ -36,6 +36,24 @@ final class DeploymentView extends View
         parent::__construct($softwareSystem, $description, $key, $viewSet);
 
         $this->model = $softwareSystem->getModel();
+    }
+
+    public static function hydrate(array $viewData, ViewSet $viewSet) : self
+    {
+        $view = new self(
+            $viewSet->getModel()->getSoftwareSystem($viewData['softwareSystemId']),
+            $viewData['description'],
+            $viewData['key'],
+            $viewSet
+        );
+
+        if (isset($viewData['environment'])) {
+            $view->environment = $viewData['environment'];
+        }
+
+        parent::hydrateView($view, $viewData);
+
+        return $view;
     }
 
     public function setEnvironment(?string $environment) : void
@@ -67,9 +85,26 @@ final class DeploymentView extends View
         return parent::addRelationship($relationship);
     }
 
+    public function toArray() : array
+    {
+        return \array_merge(
+            [
+                'environment' => $this->environment,
+                'softwareSystemId' => $this->softwareSystem->id(),
+            ],
+            parent::toArray()
+        );
+    }
+
+    protected function canBeRemoved(Element $element) : bool
+    {
+        return true;
+    }
+
     private function addContainerInstancesAndDeploymentNodes(DeploymentNode $deploymentNode, bool $addRelationships) : bool
     {
         $hasContainers = false;
+
         foreach ($deploymentNode->getContainerInstances() as $containerInstance) {
             $container = $containerInstance->getContainer();
 
@@ -88,39 +123,5 @@ final class DeploymentView extends View
         }
 
         return $hasContainers;
-    }
-
-    public function toArray() : array
-    {
-        return \array_merge(
-            [
-                'environment' => $this->environment,
-                'softwareSystemId' => $this->softwareSystem->id(),
-            ],
-            parent::toArray()
-        );
-    }
-
-    public static function hydrate(array $viewData, ViewSet $viewSet) : self
-    {
-        $view = new self(
-            $viewSet->getModel()->getSoftwareSystem($viewData['softwareSystemId']),
-            $viewData['description'],
-            $viewData['key'],
-            $viewSet
-        );
-
-        if (isset($viewData['environment'])) {
-            $view->environment = $viewData['environment'];
-        }
-
-        parent::hydrateView($view, $viewData);
-
-        return $view;
-    }
-
-    protected function canBeRemoved(Element $element) : bool
-    {
-        return true;
     }
 }

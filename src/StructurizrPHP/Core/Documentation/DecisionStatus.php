@@ -34,11 +34,6 @@ final class DecisionStatus
         $this->name = $name;
     }
 
-    public function __toString() : string
-    {
-        return $this->name;
-    }
-
     public static function proposed() : self
     {
         return new self(self::PROPOSED);
@@ -69,5 +64,10 @@ final class DecisionStatus
         Assertion::inArray($status, [self::PROPOSED, self::ACCEPTED, self::SUPERSEDED, self::DEPRECATED, self::REJECTED]);
 
         return new self($status);
+    }
+
+    public function __toString() : string
+    {
+        return $this->name;
     }
 }

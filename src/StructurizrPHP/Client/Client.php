@@ -72,7 +72,7 @@ final class Client
      * Specifies whether the layout of diagrams from a remote workspace should be retained when putting
      * a new version of the workspace.
      *
-     * @param bool $mergeFromRemote   true if layout information should be merged from the remote workspace, false otherwise
+     * @param bool $mergeFromRemote true if layout information should be merged from the remote workspace, false otherwise
      */
     public function setMergeRemote(bool $mergeFromRemote) : void
     {
@@ -83,6 +83,7 @@ final class Client
     {
         if ($this->mergeFromRemote) {
             $remoteWorkspace = $this->get($workspace->id());
+
             if ($remoteWorkspace !== null) {
                 $workspace->getViews()->copyLayoutInformationFrom($remoteWorkspace->getViews());
                 $workspace->getViews()->getConfiguration()->copyConfigurationFrom($remoteWorkspace->getViews()->getConfiguration());
@@ -124,7 +125,7 @@ final class Client
                     'body' => $content,
                 ]);
 
-                return ;
+                return;
             }
 
             if ($response->getStatusCode() !== 200) {
@@ -162,7 +163,7 @@ final class Client
                         'Nonce' => $nonce,
                         'User-Agent' => self::AGENT_NAME,
                         'Content-Type' => 'application/json; charset=UTF-8',
-                        'Content-MD5' => \base64_encode("d41d8cd98f00b204e9800998ecf8427e"),
+                        'Content-MD5' => \base64_encode('d41d8cd98f00b204e9800998ecf8427e'),
                     ],
                     null
                 )
@@ -185,7 +186,7 @@ final class Client
                     'body' => $content,
                 ]);
 
-                throw new Exception(\sprintf("Invalid API responses, expected 200, got %d", $response->getStatusCode()));
+                throw new Exception(\sprintf('Invalid API responses, expected 200, got %d', $response->getStatusCode()));
             }
 
             $workspaceDefinition = (array) \json_decode(

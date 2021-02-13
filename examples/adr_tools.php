@@ -29,7 +29,7 @@ const FILE_SYSTEM_TAG = 'File System';
 
 // https://github.com/globtec/phpadr - ADR Tool for PHP
 
-$workspace = new Workspace((string)\getenv('STRUCTURIZR_WORKSPACE_ID'), 'adr-tools', 'A description of the adr-tools command line utility.');
+$workspace = new Workspace((string) \getenv('STRUCTURIZR_WORKSPACE_ID'), 'adr-tools', 'A description of the adr-tools command line utility.');
 $model = $workspace->getModel();
 
 $user = $model->addPerson('User', 'Somebody on a software development team.');
@@ -65,11 +65,11 @@ $styles->addElementStyle(Tags::CONTAINER)->background('#6DBFBF');
 $styles->addElementStyle(FILE_SYSTEM_TAG)->shape(Shape::folder());
 
 $client = new Client(
-    new Credentials((string)\getenv('STRUCTURIZR_API_KEY'), (string)\getenv('STRUCTURIZR_API_SECRET')),
+    new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
     new UrlMap('https://api.structurizr.com'),
     new Psr18Client(),
     new SymfonyRequestFactory(),
     // Logger can be replaced with new NullLogger()
-    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . basename(__FILE__) . '.log', Logger::DEBUG))
+    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . \basename(__FILE__) . '.log', Logger::DEBUG))
 );
 $client->put($workspace);

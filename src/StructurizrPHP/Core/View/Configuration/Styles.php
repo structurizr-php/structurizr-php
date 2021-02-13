@@ -33,9 +33,28 @@ final class Styles
         $this->relationshipsStyles = [];
     }
 
+    public static function hydrate(array $stylesData) : self
+    {
+        $styles = new self();
+
+        if (isset($stylesData['elements'])) {
+            foreach ($stylesData['elements'] as $elementData) {
+                $styles->elementsStyles[$elementData['tag']] = ElementStyle::hydrate($elementData);
+            }
+        }
+
+        if (isset($stylesData['relationships'])) {
+            foreach ($stylesData['relationships'] as $relationshipData) {
+                $styles->relationshipsStyles[$relationshipData['tag']] = RelationshipStyle::hydrate($relationshipData);
+            }
+        }
+
+        return $styles;
+    }
+
     public function addElementStyle(string $tag) : ElementStyle
     {
-        Assertion::keyNotExists($this->elementsStyles, $tag, \sprintf("An element style for the tag \"%s\" already exists .", $tag));
+        Assertion::keyNotExists($this->elementsStyles, $tag, \sprintf('An element style for the tag "%s" already exists .', $tag));
 
         $elementStyle = new ElementStyle($tag);
 
@@ -46,7 +65,7 @@ final class Styles
 
     public function addRelationshipStyle(string $tag) : RelationshipStyle
     {
-        Assertion::keyNotExists($this->relationshipsStyles, $tag, \sprintf("A relationship style for the tag \"%s\" already exists .", $tag));
+        Assertion::keyNotExists($this->relationshipsStyles, $tag, \sprintf('A relationship style for the tag "%s" already exists .', $tag));
 
         $relationshipStyle = new RelationshipStyle($tag);
 
@@ -65,24 +84,5 @@ final class Styles
                 return $relationshipStyle->toArray();
             }, $this->relationshipsStyles)),
         ];
-    }
-
-    public static function hydrate(array $stylesData) : self
-    {
-        $styles = new self();
-
-        if (isset($stylesData['elements'])) {
-            foreach ($stylesData['elements'] as $elementData) {
-                $styles->elementsStyles[$elementData['tag']] = ElementStyle::hydrate($elementData);
-            }
-        }
-
-        if (isset($stylesData['relationships'])) {
-            foreach ($stylesData['relationships'] as $relationshipData) {
-                $styles->relationshipsStyles[$relationshipData['tag']] = RelationshipStyle::hydrate($relationshipData);
-            }
-        }
-
-        return $styles;
     }
 }

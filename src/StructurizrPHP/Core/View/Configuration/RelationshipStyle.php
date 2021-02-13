@@ -25,69 +25,108 @@ final class RelationshipStyle
     /**
      * @var string
      *
-     * The name of the tag to which this style applies.
+     * The name of the tag to which this style applies
      */
     private $tag;
 
     /**
-     * @var int|null
+     * @var null|int
      *
-     * The thickness of the line, in pixels.
+     * The thickness of the line, in pixels
      */
     private $thickness;
 
     /**
-     * @var string|null
+     * @var null|string
      *
      * The colour of the line, as a HTML hex value (e.g. #123456).
      */
     private $color;
 
     /**
-     * @var int|null
+     * @var null|int
      *
-     * The font size of the annotation, in pixels.
+     * The font size of the annotation, in pixels
      */
     private $fontSize;
 
     /**
-     * @var int|null
+     * @var null|int
      *
-     * The width of the annotation, in pixels.
+     * The width of the annotation, in pixels
      */
     private $width;
 
     /**
      * @var bool
      *
-     * Whether the line should be dashed or not.
+     * Whether the line should be dashed or not
      */
     private $dashed;
 
     /**
-     * @var Routing|null
+     * @var null|routing
      *
-     * The routing algorithm used when rendering lines.
+     * The routing algorithm used when rendering lines
      */
     private $routing;
 
     /**
-     * @var int|null
+     * @var null|int
      *
-     * The position of the annotation along the line; 0 (start) to 100 (end).
+     * The position of the annotation along the line; 0 (start) to 100 (end)
      */
     private $position;
 
     /**
-     * @var int|null
+     * @var null|int
      *
-     * The opacity of the line/text; 0 to 100.
+     * The opacity of the line/text; 0 to 100
      */
     private $opacity;
 
     public function __construct(string $tag)
     {
         $this->tag = $tag;
+    }
+
+    public static function hydrate(array $relationshipData) : self
+    {
+        $relationship = new self($relationshipData['tag']);
+
+        if (isset($relationshipData['thickness'])) {
+            $relationship->thickness = (int) $relationshipData['thickness'];
+        }
+
+        if (isset($relationshipData['fontSize'])) {
+            $relationship->fontSize = (int) $relationshipData['fontSize'];
+        }
+
+        if (isset($relationshipData['color'])) {
+            $relationship->color = (string) $relationshipData['color'];
+        }
+
+        if (isset($relationshipData['width'])) {
+            $relationship->width = (int) $relationshipData['width'];
+        }
+
+        if (isset($relationshipData['dashed'])) {
+            $relationship->dashed = (bool) $relationshipData['dashed'];
+        }
+
+        if (isset($relationshipData['opacity'])) {
+            $relationship->opacity = (int) $relationshipData['opacity'];
+        }
+
+        if (isset($relationshipData['routing'])) {
+            $relationship->routing = Routing::hydrate($relationshipData['routing']);
+        }
+
+        if (isset($relationshipData['position'])) {
+            $relationship->position = (int) $relationshipData['position'];
+        }
+
+        return $relationship;
     }
 
     public function thickness(int $thickness) : self
@@ -103,7 +142,7 @@ final class RelationshipStyle
     {
         Assertion::hexColorCode($color);
 
-        $this->color = strtolower($color);
+        $this->color = \strtolower($color);
 
         return $this;
     }
@@ -209,44 +248,5 @@ final class RelationshipStyle
         }
 
         return $data;
-    }
-
-    public static function hydrate(array $relationshipData) : self
-    {
-        $relationship = new self($relationshipData['tag']);
-
-        if (isset($relationshipData['thickness'])) {
-            $relationship->thickness = (int) $relationshipData['thickness'];
-        }
-
-        if (isset($relationshipData['fontSize'])) {
-            $relationship->fontSize = (int) $relationshipData['fontSize'];
-        }
-
-        if (isset($relationshipData['color'])) {
-            $relationship->color = (string) $relationshipData['color'];
-        }
-
-        if (isset($relationshipData['width'])) {
-            $relationship->width = (int) $relationshipData['width'];
-        }
-
-        if (isset($relationshipData['dashed'])) {
-            $relationship->dashed = (bool) $relationshipData['dashed'];
-        }
-
-        if (isset($relationshipData['opacity'])) {
-            $relationship->opacity = (int) $relationshipData['opacity'];
-        }
-
-        if (isset($relationshipData['routing'])) {
-            $relationship->routing = Routing::hydrate($relationshipData['routing']);
-        }
-
-        if (isset($relationshipData['position'])) {
-            $relationship->position = (int) $relationshipData['position'];
-        }
-
-        return $relationship;
     }
 }

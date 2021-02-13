@@ -47,6 +47,21 @@ final class Documentation
         $this->decisions = [];
     }
 
+    public static function hydrate(?array $documentationData, Model $model) : self
+    {
+        $documentation = new self($model);
+
+        $documentationDataModel = new DocumentationDataObject($documentationData);
+        $documentation->sections = $documentationDataModel->hydrateSections($model);
+        $documentation->decisions = $documentationDataModel->hydrateDecisions($model);
+
+        if ($documentationDataModel->templateExist()) {
+            $documentation->template = $documentationDataModel->hydrateTemplate();
+        }
+
+        return $documentation;
+    }
+
     public function addSection(Element $element, string $title, Format $format, string $content) : Section
     {
         Assertion::notEmpty($title);
@@ -54,7 +69,7 @@ final class Documentation
 
         if (!$this->model->contains($element)) {
             throw new InvalidArgumentException(
-                sprintf("The element named %s does not exist in the model associated with this documentation.", $element->getName())
+                \sprintf('The element named %s does not exist in the model associated with this documentation.', $element->getName())
             );
         }
 
@@ -70,32 +85,6 @@ final class Documentation
         $this->sections[] = $section;
 
         return $section;
-    }
-
-    private function checkSectionIsUnique(Element $element = null, string $title = null) : void
-    {
-        if ($element === null) {
-            foreach ($this->sections as $section) {
-                if ($title === $section->getTitle()) {
-                    throw new InvalidArgumentException(
-                        sprintf("A section with a title of %s already exists for this workspace.", $title)
-                    );
-                }
-            }
-        } else {
-            foreach ($this->sections as $section) {
-                if ($title === $section->getTitle()) {
-                    throw new InvalidArgumentException(
-                        sprintf("A section with a title of %s already exists for the element named %s.", $title, $element->getName())
-                    );
-                }
-            }
-        }
-    }
-
-    private function calculateOrder() : int
-    {
-        return count($this->sections) + 1;
     }
 
     public function setTemplate(TemplateMetadata $template) : void
@@ -131,26 +120,38 @@ final class Documentation
         return $data;
     }
 
-    public static function hydrate(?array $documentationData, Model $model) : Documentation
-    {
-        $documentation = new self($model);
-
-        $documentationDataModel = new DocumentationDataObject($documentationData);
-        $documentation->sections = $documentationDataModel->hydrateSections($model);
-        $documentation->decisions = $documentationDataModel->hydrateDecisions($model);
-        if ($documentationDataModel->templateExist()) {
-            $documentation->template = $documentationDataModel->hydrateTemplate();
-        }
-
-        return $documentation;
-    }
-
     public function addDecision(SoftwareSystem $softwareSystem, string $id, \DateTimeImmutable $date, string $title, DecisionStatus $status, Format $format, string $content) : Decision
     {
         $decision = new Decision($softwareSystem, $id, $date, $title, $status, $format, $content);
         $this->decisions[] = $decision;
 
         return $decision;
+    }
+
+    private function checkSectionIsUnique(Element $element = null, string $title = null) : void
+    {
+        if ($element === null) {
+            foreach ($this->sections as $section) {
+                if ($title === $section->getTitle()) {
+                    throw new InvalidArgumentException(
+                        \sprintf('A section with a title of %s already exists for this workspace.', $title)
+                    );
+                }
+            }
+        } else {
+            foreach ($this->sections as $section) {
+                if ($title === $section->getTitle()) {
+                    throw new InvalidArgumentException(
+                        \sprintf('A section with a title of %s already exists for the element named %s.', $title, $element->getName())
+                    );
+                }
+            }
+        }
+    }
+
+    private function calculateOrder() : int
+    {
+        return \count($this->sections) + 1;
     }
 }
 
@@ -168,6 +169,7 @@ final class DocumentationDataObject
 
     /**
      * @param Model $model
+     *
      * @return Section[]
      */
     public function hydrateSections(Model $model) : array
@@ -196,6 +198,7 @@ final class DocumentationDataObject
 
     /**
      * @param Model $model
+     *
      * @return Decision[]
      */
     public function hydrateDecisions(Model $model) : array

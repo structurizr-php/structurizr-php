@@ -18,7 +18,12 @@ use StructurizrPHP\Core\Exception\RuntimeException;
 
 abstract class Element extends ModelItem
 {
-    protected const CANONICAL_NAME_SEPARATOR = "/";
+    protected const CANONICAL_NAME_SEPARATOR = '/';
+
+    /**
+     * @var Relationship[]
+     */
+    protected $relationships;
 
     /**
      * @var Model
@@ -26,31 +31,67 @@ abstract class Element extends ModelItem
     private $model;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $name;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $description;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $url;
-
-    /**
-     * @var Relationship[]
-     */
-    protected $relationships;
 
     public function __construct(string $id, Model $model)
     {
         parent::__construct($id);
         $this->model = $model;
-        $this->name = "";
+        $this->name = '';
         $this->relationships = [];
+    }
+
+    public static function hydrateElement(self $element, array $elementData) : void
+    {
+        $element->model->addElementToInternalStructures($element);
+
+        if (isset($elementData['url'])) {
+            $element->url = $elementData['url'];
+        }
+
+        if (isset($elementData['name'])) {
+            $element->name = $elementData['name'];
+        }
+
+        if (isset($elementData['description'])) {
+            $element->description = $elementData['description'];
+        }
+
+        parent::hydrateModelItem($element, $elementData, $element->model);
+    }
+
+    public static function hydrateRelationships(self $element, array $elementData) : void
+    {
+        if (isset($elementData['relationships'])) {
+            if (\is_array($elementData['relationships'])) {
+                foreach ($elementData['relationships'] as $relationshipData) {
+                    $relationship = Relationship::hydrate($relationshipData, $element, $element->getModel());
+                    $element->relationships[] = $relationship;
+                }
+            }
+        }
+
+        // sort relationships by ID
+        if (isset($elementData['relationships'])) {
+            \usort(
+                $elementData['relationships'],
+                function (array $relationshipA, array $relationshipB) {
+                    return (int) $relationshipA['id'] > (int) $relationshipB['id'] ? 1 : 0;
+                }
+            );
+        }
     }
 
     public function getName() : string
@@ -58,16 +99,11 @@ abstract class Element extends ModelItem
         return $this->name;
     }
 
-    abstract public function getParent() : ?Element;
+    abstract public function getParent() : ?self;
 
     public function getCanonicalName() : string
     {
         return $this->formatForCanonicalName($this->name);
-    }
-
-    protected function formatForCanonicalName(string $name) : string
-    {
-        return \mb_strtolower(\str_replace(self::CANONICAL_NAME_SEPARATOR, "", $name));
     }
 
     public function description() : ?string
@@ -88,7 +124,7 @@ abstract class Element extends ModelItem
         return $this->relationships;
     }
 
-    public function getEfferentRelationshipWith(Element $element) : Relationship
+    public function getEfferentRelationshipWith(self $element) : Relationship
     {
         foreach ($this->relationships as $relationship) {
             if ($relationship->getDestination()->equals($element)) {
@@ -96,7 +132,7 @@ abstract class Element extends ModelItem
             }
         }
 
-        throw new RuntimeException(\sprintf("There is no efferent relationship between %s[#%s] and %s[#%s]", $this->getName(), $this->id(), $element->getName(), $element->id()));
+        throw new RuntimeException(\sprintf('There is no efferent relationship between %s[#%s] and %s[#%s]', $this->getName(), $this->id(), $element->getName(), $element->id()));
     }
 
     public function getModel() : Model
@@ -123,7 +159,7 @@ abstract class Element extends ModelItem
         $this->description = $description;
     }
 
-    public function hasEfferentRelationshipWith(Element $destination) : bool
+    public function hasEfferentRelationshipWith(self $destination) : bool
     {
         try {
             return $this->getEfferentRelationshipWith($destination) !== null;
@@ -132,7 +168,7 @@ abstract class Element extends ModelItem
         }
     }
 
-    public function equalTo(Element $element) : bool
+    public function equalTo(self $element) : bool
     {
         return $this->id() === $element->id();
     }
@@ -165,44 +201,8 @@ abstract class Element extends ModelItem
         return $data;
     }
 
-    public static function hydrateElement(Element $element, array $elementData) : void
+    protected function formatForCanonicalName(string $name) : string
     {
-        $element->model->addElementToInternalStructures($element);
-
-        if (isset($elementData['url'])) {
-            $element->url = $elementData['url'];
-        }
-
-        if (isset($elementData['name'])) {
-            $element->name = $elementData['name'];
-        }
-
-        if (isset($elementData['description'])) {
-            $element->description = $elementData['description'];
-        }
-
-        parent::hydrateModelItem($element, $elementData, $element->model);
-    }
-
-    public static function hydrateRelationships(Element $element, array $elementData) : void
-    {
-        if (isset($elementData['relationships'])) {
-            if (\is_array($elementData['relationships'])) {
-                foreach ($elementData['relationships'] as $relationshipData) {
-                    $relationship = Relationship::hydrate($relationshipData, $element, $element->getModel());
-                    $element->relationships[] = $relationship;
-                }
-            }
-        }
-
-        // sort relationships by ID
-        if (isset($elementData['relationships'])) {
-            \usort(
-                $elementData['relationships'],
-                function (array $relationshipA, array $relationshipB) {
-                    return (int)$relationshipA['id'] > (int)$relationshipB['id'] ? 1 : 0;
-                }
-            );
-        }
+        return \mb_strtolower(\str_replace(self::CANONICAL_NAME_SEPARATOR, '', $name));
     }
 }

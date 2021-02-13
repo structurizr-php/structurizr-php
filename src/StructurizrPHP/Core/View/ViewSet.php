@@ -72,6 +72,75 @@ final class ViewSet
         $this->model = $model;
     }
 
+    public static function hydrate(?array $viewSetData, Model $model) : self
+    {
+        $viewSet = new self($model);
+
+        if (!$viewSetData) {
+            return $viewSet;
+        }
+
+        $viewSetDataModel = new ViewSetDataObject($viewSetData);
+
+        if ($viewSetDataModel->hasViews('systemLandscapeViews')) {
+            $viewSet->systemLandscapeViews = $viewSetDataModel->map(
+                'systemLandscapeViews',
+                function (array $viewData) use ($viewSet) {
+                    return SystemLandscapeView::hydrate($viewData, $viewSet);
+                }
+            );
+        }
+
+        if ($viewSetDataModel->hasViews('containerViews')) {
+            $viewSet->containerViews = $viewSetDataModel->map(
+                'containerViews',
+                function (array $viewData) use ($viewSet) {
+                    return ContainerView::hydrate($viewData, $viewSet);
+                }
+            );
+        }
+
+        if ($viewSetDataModel->hasViews('componentViews')) {
+            $viewSet->componentViews = $viewSetDataModel->map(
+                'componentViews',
+                function (array $viewData) use ($viewSet) {
+                    return ComponentView::hydrate($viewData, $viewSet);
+                }
+            );
+        }
+
+        if ($viewSetDataModel->hasViews('systemContextViews')) {
+            $viewSet->systemContextViews = $viewSetDataModel->map(
+                'systemContextViews',
+                function (array $viewData) use ($viewSet) {
+                    return SystemContextView::hydrate($viewData, $viewSet);
+                }
+            );
+        }
+
+        if ($viewSetDataModel->hasViews('dynamicViews')) {
+            $viewSet->dynamicViews = $viewSetDataModel->map(
+                'dynamicViews',
+                function (array $viewData) use ($viewSet) {
+                    return DynamicView::hydrate($viewData, $viewSet);
+                }
+            );
+        }
+
+        if ($viewSetDataModel->hasViews('deploymentViews')) {
+            $viewSet->deploymentViews = $viewSetDataModel->map(
+                'deploymentViews',
+                function (array $viewData) use ($viewSet) {
+                    return DeploymentView::hydrate($viewData, $viewSet);
+                }
+            );
+        }
+
+        $viewSet->configuration = Configuration::hydrate($viewSetData['configuration']);
+
+        return $viewSet;
+    }
+
     public function getModel() : Model
     {
         return $this->model;
@@ -103,14 +172,14 @@ final class ViewSet
             $this
         );
 
-        $this->systemLandscapeViews [] = $view;
+        $this->systemLandscapeViews[] = $view;
 
         return $view;
     }
 
     /**
      * Creates a dynamic view, where the scope is the specified software system. The following
-     * elements can be added to the resulting view:
+     * elements can be added to the resulting view:.
      *
      * <ul>
      * <li>People</li>
@@ -129,7 +198,7 @@ final class ViewSet
 
     /**
      * Creates a dynamic view, where the scope is the specified container. The following
-     * elements can be added to the resulting view:
+     * elements can be added to the resulting view:.
      *
      * <ul>
      * <li>People</li>
@@ -178,7 +247,7 @@ final class ViewSet
         return $this->configuration;
     }
 
-    public function copyLayoutInformationFrom(ViewSet $source) : void
+    public function copyLayoutInformationFrom(self $source) : void
     {
         foreach ($this->systemContextViews as $contextView) {
             $sourceSystemContextView = \current(\array_filter(
@@ -331,75 +400,6 @@ final class ViewSet
         }
 
         return $data;
-    }
-
-    public static function hydrate(?array $viewSetData, Model $model) : self
-    {
-        $viewSet = new self($model);
-
-        if (!$viewSetData) {
-            return $viewSet;
-        }
-
-        $viewSetDataModel = new ViewSetDataObject($viewSetData);
-
-        if ($viewSetDataModel->hasViews('systemLandscapeViews')) {
-            $viewSet->systemLandscapeViews = $viewSetDataModel->map(
-                'systemLandscapeViews',
-                function (array $viewData) use ($viewSet) {
-                    return SystemLandscapeView::hydrate($viewData, $viewSet);
-                }
-            );
-        }
-
-        if ($viewSetDataModel->hasViews('containerViews')) {
-            $viewSet->containerViews = $viewSetDataModel->map(
-                'containerViews',
-                function (array $viewData) use ($viewSet) {
-                    return ContainerView::hydrate($viewData, $viewSet);
-                }
-            );
-        }
-
-        if ($viewSetDataModel->hasViews('componentViews')) {
-            $viewSet->componentViews = $viewSetDataModel->map(
-                'componentViews',
-                function (array $viewData) use ($viewSet) {
-                    return ComponentView::hydrate($viewData, $viewSet);
-                }
-            );
-        }
-
-        if ($viewSetDataModel->hasViews('systemContextViews')) {
-            $viewSet->systemContextViews = $viewSetDataModel->map(
-                'systemContextViews',
-                function (array $viewData) use ($viewSet) {
-                    return SystemContextView::hydrate($viewData, $viewSet);
-                }
-            );
-        }
-
-        if ($viewSetDataModel->hasViews('dynamicViews')) {
-            $viewSet->dynamicViews = $viewSetDataModel->map(
-                'dynamicViews',
-                function (array $viewData) use ($viewSet) {
-                    return DynamicView::hydrate($viewData, $viewSet);
-                }
-            );
-        }
-
-        if ($viewSetDataModel->hasViews('deploymentViews')) {
-            $viewSet->deploymentViews = $viewSetDataModel->map(
-                'deploymentViews',
-                function (array $viewData) use ($viewSet) {
-                    return DeploymentView::hydrate($viewData, $viewSet);
-                }
-            );
-        }
-
-        $viewSet->configuration = Configuration::hydrate($viewSetData['configuration']);
-
-        return $viewSet;
     }
 }
 

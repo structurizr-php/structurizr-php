@@ -39,75 +39,6 @@ final class SoftwareSystem extends StaticStructureElement
         $this->setTags(new Tags(Tags::ELEMENT, Tags::SOFTWARE_SYSTEM));
     }
 
-    public function getParent() : ?Element
-    {
-        return null;
-    }
-
-    public function add(Container $container) : void
-    {
-        $this->containers[] = $container;
-    }
-
-    /**
-     * @return Container[]
-     */
-    public function getContainers() : array
-    {
-        return $this->containers;
-    }
-
-    public function getContainer(string $id) : Container
-    {
-        foreach ($this->containers as $container) {
-            if ($container->id() === $id) {
-                return $container;
-            }
-        }
-
-        throw new InvalidArgumentException(\sprintf("Continer with id %s does not exists", $id));
-    }
-
-    public function addContainer(string $name, string $description, string $technology) : Container
-    {
-        return $this->getModel()->addContainer($this, $name, $description, $technology);
-    }
-
-    public function findContainerWithName(string $containerName) : ?Container
-    {
-        foreach ($this->containers as $container) {
-            if ($container->getName() === $containerName) {
-                return $container;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param Location $location
-     */
-    public function setLocation(Location $location) : void
-    {
-        $this->location = $location;
-    }
-
-    public function toArray() : array
-    {
-        return \array_merge(
-            [
-                'location' => $this->location->type(),
-                'containers' => \array_map(
-                    function (Container $container) {
-                        return $container->toArray();
-                    },
-                    $this->containers
-                ),
-            ],
-            parent::toArray()
-        );
-    }
-
     public static function hydrate(array $softwareSystemData, Model $model) : self
     {
         $softwareSystem = new self(
@@ -150,5 +81,74 @@ final class SoftwareSystem extends StaticStructureElement
                 }
             }
         }
+    }
+
+    public function getParent() : ?Element
+    {
+        return null;
+    }
+
+    public function add(Container $container) : void
+    {
+        $this->containers[] = $container;
+    }
+
+    /**
+     * @return Container[]
+     */
+    public function getContainers() : array
+    {
+        return $this->containers;
+    }
+
+    public function getContainer(string $id) : Container
+    {
+        foreach ($this->containers as $container) {
+            if ($container->id() === $id) {
+                return $container;
+            }
+        }
+
+        throw new InvalidArgumentException(\sprintf('Continer with id %s does not exists', $id));
+    }
+
+    public function addContainer(string $name, string $description, string $technology) : Container
+    {
+        return $this->getModel()->addContainer($this, $name, $description, $technology);
+    }
+
+    public function findContainerWithName(string $containerName) : ?Container
+    {
+        foreach ($this->containers as $container) {
+            if ($container->getName() === $containerName) {
+                return $container;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param Location $location
+     */
+    public function setLocation(Location $location) : void
+    {
+        $this->location = $location;
+    }
+
+    public function toArray() : array
+    {
+        return \array_merge(
+            [
+                'location' => $this->location->type(),
+                'containers' => \array_map(
+                    function (Container $container) {
+                        return $container->toArray();
+                    },
+                    $this->containers
+                ),
+            ],
+            parent::toArray()
+        );
     }
 }

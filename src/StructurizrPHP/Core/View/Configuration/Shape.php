@@ -22,11 +22,6 @@ final class Shape
         $this->name = $name;
     }
 
-    public function name() : string
-    {
-        return $this->name;
-    }
-
     public static function person() : self
     {
         return new self('Person');
@@ -95,5 +90,10 @@ final class Shape
     public static function hydrate(string $name) : self
     {
         return new self($name);
+    }
+
+    public function name() : string
+    {
+        return $this->name;
     }
 }

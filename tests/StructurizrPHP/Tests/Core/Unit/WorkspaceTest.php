@@ -27,20 +27,20 @@ final class WorkspaceTest extends TestCase
     public function test_hydraing_workspace() : void
     {
         $workspace = new Workspace(
-            "1",
-            "name",
-            "description"
+            '1',
+            'name',
+            'description'
         );
 
-        $this->assertEquals($workspace, Workspace::hydrate($workspace->toArray("test")));
+        $this->assertEquals($workspace, Workspace::hydrate($workspace->toArray('test')));
     }
 
     public function test_hydraing_with_relationships_and_views() : void
     {
         $workspace = new Workspace(
-            "1",
-            "name",
-            "description"
+            '1',
+            'name',
+            'description'
         );
 
         $person = $workspace->getModel()->addPerson('person', 'test');
@@ -54,7 +54,6 @@ final class WorkspaceTest extends TestCase
         $landscapeView = $workspace->getViews()->createSystemContextView($system, 'landscale', 'landscapeview');
         $landscapeView->addElement($person, true)->setY(100)->setX(200);
 
-
         $template = new StructurizrDocumentationTemplate($workspace);
         $template->addContextSection($system, Format::markdown(), 'Here is some context about the software system...\n\n![](embed:SystemContext)');
 
@@ -64,16 +63,16 @@ final class WorkspaceTest extends TestCase
         $workspace->getViews()->getConfiguration()->getStyles()->addElementStyle(Tags::PERSON)
             ->shape(Shape::person());
 
-        $this->assertEquals($workspace, Workspace::hydrate($workspace->toArray("test")));
+        $this->assertEquals($workspace, Workspace::hydrate($workspace->toArray('test')));
     }
 
     public function test_hydraing_adr_case() : void
     {
         $FILE_SYSTEM_TAG = 'File System';
         $workspace = new Workspace(
-            "1",
-            "name",
-            "description"
+            '1',
+            'name',
+            'description'
         );
 
         $model = $workspace->getModel();
@@ -108,7 +107,7 @@ final class WorkspaceTest extends TestCase
         $styles->addElementStyle(Tags::PERSON)->shape(Shape::person())->background('#008282')->color('#ffffff');
         $styles->addElementStyle(Tags::CONTAINER)->background('#6DBFBF');
         $styles->addElementStyle($FILE_SYSTEM_TAG)->shape(Shape::folder());
-        /**/
-        $this->assertEquals($workspace, Workspace::hydrate($workspace->toArray("test")));
+
+        $this->assertEquals($workspace, Workspace::hydrate($workspace->toArray('test')));
     }
 }

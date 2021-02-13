@@ -16,7 +16,7 @@ namespace StructurizrPHP\Core\View;
 use StructurizrPHP\Core\Model\Relationship;
 
 /**
- * A default implementation of a LayoutMergeStrategy that:
+ * A default implementation of a LayoutMergeStrategy that:.
  *
  * - Sets the paper size (if not set).
  * - Copies element x,y positions.
@@ -56,7 +56,7 @@ final class DefaultLayoutMergeStrategy implements LayoutMergeStrategy
         }
     }
 
-    protected function findRelationshipViewByRelationship(View $view, Relationship $relationship) : ?RelationshipView
+    private function findRelationshipViewByRelationship(View $view, Relationship $relationship) : ?RelationshipView
     {
         foreach ($view->getRelationships() as $rv) {
             if (
@@ -71,7 +71,7 @@ final class DefaultLayoutMergeStrategy implements LayoutMergeStrategy
         return null;
     }
 
-    protected function findRelationshipViewByRelationshipView(View $view, RelationshipView $relationshipView) : ?RelationshipView
+    private function findRelationshipViewByRelationshipView(View $view, RelationshipView $relationshipView) : ?RelationshipView
     {
         foreach ($view->getRelationships() as $rv) {
             if (

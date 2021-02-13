@@ -26,7 +26,7 @@ final class Container extends StaticStructureElement
     private $parent;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $technology;
 
@@ -42,6 +42,30 @@ final class Container extends StaticStructureElement
         $this->components = [];
     }
 
+    public static function hydrate(array $containerData, SoftwareSystem $parent, Model $model) : self
+    {
+        $container = new self($containerData['id'], $parent, $model);
+
+        if (isset($containerData['technology'])) {
+            $container->setTechnology($containerData['technology']);
+        }
+
+        if (isset($containerData['components'])) {
+            foreach ($containerData['components'] as $componentData) {
+                $component = Component::hydrate(
+                    $componentData,
+                    $model,
+                    $container
+                );
+
+                $container->components[] = $component;
+            }
+        }
+        parent::hydrateElement($container, $containerData);
+
+        return $container;
+    }
+
     /**
      * @param SoftwareSystem $parent
      */
@@ -51,7 +75,7 @@ final class Container extends StaticStructureElement
     }
 
     /**
-     * @return Element|SoftwareSystem|null
+     * @return null|Element|SoftwareSystem
      */
     public function getParent() : ?Element
     {
@@ -64,14 +88,14 @@ final class Container extends StaticStructureElement
     }
 
     /**
-     * @param string|null $technology
+     * @param null|string $technology
      */
     public function setTechnology(?string $technology) : void
     {
         $this->technology = $technology;
     }
 
-    public function uses(Container $container, string $description, ?string $technology = null) : Relationship
+    public function uses(self $container, string $description, ?string $technology = null) : Relationship
     {
         return $this->getModel()->addRelationship($this, $container, $description, $technology);
     }
@@ -142,29 +166,5 @@ final class Container extends StaticStructureElement
         }
 
         return $data;
-    }
-
-    public static function hydrate(array $containerData, SoftwareSystem $parent, Model $model) : self
-    {
-        $container = new self($containerData['id'], $parent, $model);
-
-        if (isset($containerData['technology'])) {
-            $container->setTechnology($containerData['technology']);
-        }
-
-        if (isset($containerData['components'])) {
-            foreach ($containerData['components'] as $componentData) {
-                $component = Component::hydrate(
-                    $componentData,
-                    $model,
-                    $container
-                );
-
-                $container->components[] = $component;
-            }
-        }
-        parent::hydrateElement($container, $containerData);
-
-        return $container;
     }
 }

@@ -31,6 +31,20 @@ final class ComponentView extends StaticView
         $this->container = $container;
     }
 
+    public static function hydrate(array $viewData, ViewSet $viewSet) : self
+    {
+        $view = new self(
+            $viewSet->getModel()->getContainer($viewData['containerId']),
+            $viewData['description'],
+            $viewData['key'],
+            $viewSet
+        );
+
+        parent::hydrateView($view, $viewData);
+
+        return $view;
+    }
+
     public function getContainer() : Container
     {
         return $this->container;
@@ -83,20 +97,6 @@ final class ComponentView extends StaticView
                 'containerId' => $this->container->id(),
             ]
         );
-    }
-
-    public static function hydrate(array $viewData, ViewSet $viewSet) : self
-    {
-        $view = new self(
-            $viewSet->getModel()->getContainer($viewData['containerId']),
-            $viewData['description'],
-            $viewData['key'],
-            $viewSet
-        );
-
-        parent::hydrateView($view, $viewData);
-
-        return $view;
     }
 
     protected function canBeRemoved(Element $element) : bool

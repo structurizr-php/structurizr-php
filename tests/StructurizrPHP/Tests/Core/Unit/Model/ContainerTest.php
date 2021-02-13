@@ -23,7 +23,7 @@ final class ContainerTest extends TestCase
     {
         $model = new Model();
         $software = $model->addSoftwareSystem('software', 'description');
-        $container = new Container("1", $software, $model);
+        $container = new Container('1', $software, $model);
         $container->setParent($software);
 
         $this->assertEquals($container, Container::hydrate($container->toArray(), $software, $model));
@@ -33,7 +33,7 @@ final class ContainerTest extends TestCase
     {
         $model = new Model();
         $software = $model->addSoftwareSystem('software', 'description');
-        $container = new Container("1", $software, $model);
+        $container = new Container('1', $software, $model);
 
         $component = $container->addComponent('test', 'test', 'test');
 
