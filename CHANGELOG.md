@@ -1,6 +1,7 @@
-## [Unreleased] - 2021-02-13
+## [Unreleased] - 2021-02-15
 
 ### Changed
+- [#49](https://github.com/structurizr-php/structurizr-php/pull/49) - **Update Tags.php** - [@smalot](https://github.com/smalot)
 - [7c29b5](https://github.com/structurizr-php/structurizr-php/commit/7c29b5f31b1f64a01a44118807b3a4a52b881cf8) - **Adde integration with aeon-php/automation** - [@norberttech](https://github.com/norberttech)
 - [#50](https://github.com/structurizr-php/structurizr-php/pull/50) - **github actions** - [@norberttech](https://github.com/norberttech)
 - [#43](https://github.com/structurizr-php/structurizr-php/pull/43) - **Avoid exception on missing parameters** - [@smalot](https://github.com/smalot)
