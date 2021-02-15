@@ -48,7 +48,7 @@ abstract class ModelItem
         $modelItem->id = $modelItemData['id'];
 
         if (isset($modelItemData['tags'])) {
-            $modelItem->tags = new Tags(...\explode(', ', $modelItemData['tags']));
+            $modelItem->tags = new Tags(...\explode(',', $modelItemData['tags']));
         }
 
         if (isset($modelItemData['properties'])) {
