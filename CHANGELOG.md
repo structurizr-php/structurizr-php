@@ -1,4 +1,4 @@
-## [Unreleased] - 2021-02-15
+## [Unreleased] - 2021-02-19
 
 ### Changed
 - [#48](https://github.com/structurizr-php/structurizr-php/pull/48) - **Update RelationshipStyle.php** - [@smalot](https://github.com/smalot)
