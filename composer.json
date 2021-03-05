@@ -25,7 +25,7 @@
         "nyholm/psr7": "^1.2",
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpunit/phpunit": "^8.4",
-        "symfony/var-dumper": "^4.3",
+        "symfony/var-dumper": "^4.3 || ^5.0",
         "phpstan/phpstan": "^0.11.19",
         "phpstan/phpstan-phpunit": "^0.11.2",
         "thecodingmachine/phpstan-strict-rules": "^0.11.2",
