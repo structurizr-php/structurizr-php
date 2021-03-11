@@ -218,7 +218,7 @@ final class ViewSet
 
     public function createContainerView(SoftwareSystem $softwareSystem, string $key, string $description) : ContainerView
     {
-        $view = new ContainerView($softwareSystem, $key, $description, $this);
+        $view = new ContainerView($softwareSystem, $description, $key, $this);
 
         $this->containerViews[] = $view;
 
