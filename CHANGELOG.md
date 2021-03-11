@@ -9,6 +9,7 @@
 - [bbfd3c](https://github.com/structurizr-php/structurizr-php/commit/bbfd3c372055ebc9f6f7d5e4cd6efba458bd616c) - **Update CHANGELOG.md** - [@norberttech](https://github.com/norberttech)
 
 ### Fixed
+- [#62](https://github.com/structurizr-php/structurizr-php/pull/62) - **Fix ViewSet calling ContainerView::__construct incorrectly.** - [@tdgroot](https://github.com/tdgroot)
 - [#41](https://github.com/structurizr-php/structurizr-php/pull/41) - **a typo** - [@marclaporte](https://github.com/marclaporte)
 - [#40](https://github.com/structurizr-php/structurizr-php/pull/40) - **extensions-php composer.json dependency name** - [@thunderer](https://github.com/thunderer)
 - [#38](https://github.com/structurizr-php/structurizr-php/pull/38) - **link to Hire in Social portal in README** - [@ZielinskiLukasz](https://github.com/ZielinskiLukasz)
