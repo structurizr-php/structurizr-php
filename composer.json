@@ -31,7 +31,7 @@
         "thecodingmachine/phpstan-strict-rules": "^0.11.2",
         "ergebnis/phpstan-rules": "^0.14.0",
         "monolog/monolog": "^2.0",
-        "sensiolabs-de/deptrac-shim": "^0.6.0",
+        "sensiolabs-de/deptrac-shim": "^0.6.0 || ^0.12.0",
         "structurizr-php/extensions-php": "@dev"
     },
     "suggest": {
