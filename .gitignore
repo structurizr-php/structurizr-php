@@ -2,3 +2,5 @@
 vendor
 examples/var/logs/*
 !examples/var/logs/.gitkeep
+
+/.idea
