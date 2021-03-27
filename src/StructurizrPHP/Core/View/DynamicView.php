@@ -166,13 +166,12 @@ final class DynamicView extends View
             return;
         }
 
+        // if the scope of this dynamic view is a software system, we only want:
+        //  - containers
+        //  - other software systems
         if ($this->element instanceof SoftwareSystem) {
             if ($elementToBeAdded->equals($this->element)) {
                 throw new InvalidArgumentException($elementToBeAdded->getName() . ' is already the scope of this view and cannot be added to it.');
-            }
-
-            if ($elementToBeAdded instanceof Container && !$elementToBeAdded->getParent()->equals($this->element)) {
-                throw new InvalidArgumentException(\sprintf('Only containers that reside inside "%s" can be added to this view.', $this->element->getName()));
             }
 
             if ($elementToBeAdded instanceof Component) {
@@ -180,19 +179,12 @@ final class DynamicView extends View
             }
         }
 
-        // if the scope of this dynamic view is a container, we only want other containers inside the same software system
-        // and other components inside the container
+        // if the scope of this dynamic view is a container, we only want:
+        //  - other containers
+        //  - components
         if ($this->element instanceof Container) {
             if ($elementToBeAdded->equals($this->element) || $elementToBeAdded->equals($this->element->getParent())) {
                 throw new InvalidArgumentException($elementToBeAdded->getName() . ' is already the scope of this view and cannot be added to it.');
-            }
-
-            if ($elementToBeAdded instanceof Container && !$elementToBeAdded->getParent()->equals($this->element->getParent())) {
-                throw new InvalidArgumentException('Only containers that reside inside ' . $this->element->getName() . ' can be added to this view.');
-            }
-
-            if ($elementToBeAdded instanceof Component && !$elementToBeAdded->getParent()->equals($this->element)) {
-                throw new InvalidArgumentException('Only components that reside inside ' . $this->element->getName() . ' can be added to this view.');
             }
         }
 
