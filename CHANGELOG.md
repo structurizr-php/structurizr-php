@@ -1,4 +1,4 @@
-## [Unreleased] - 2021-03-24
+## [Unreleased] - 2021-03-27
 
 ### Changed
 - [#48](https://github.com/structurizr-php/structurizr-php/pull/48) - **Update RelationshipStyle.php** - [@smalot](https://github.com/smalot)
@@ -15,6 +15,7 @@
 - [#38](https://github.com/structurizr-php/structurizr-php/pull/38) - **link to Hire in Social portal in README** - [@ZielinskiLukasz](https://github.com/ZielinskiLukasz)
 
 ### Removed
+- [#67](https://github.com/structurizr-php/structurizr-php/pull/67) - **Removes the restrictions related to adding containers/components outside the scoped software system/container** - [@alleknalle](https://github.com/alleknalle)
 - [4c479a](https://github.com/structurizr-php/structurizr-php/commit/4c479ae8009ca66130bd7fc7aa85ea950737fa73) - **references to master branch** - [@norberttech](https://github.com/norberttech)
 
 ## [0.1.0] - 2020-04-22
