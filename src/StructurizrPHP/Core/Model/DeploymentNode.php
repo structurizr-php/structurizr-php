@@ -57,12 +57,18 @@ final class DeploymentNode extends DeploymentElement
      */
     private $containerInstances;
 
+    /**
+     * @var InfrastructureNode[]
+     */
+    private $infrastructureNodes;
+
     public function __construct(string $id, Model $model)
     {
         parent::__construct($id, $model);
         $this->instances = 1;
         $this->children = [];
         $this->containerInstances = [];
+        $this->infrastructureNodes = [];
     }
 
     public static function hydrate(array $deploymentNodeData, Model $model) : self
@@ -96,9 +102,30 @@ final class DeploymentNode extends DeploymentElement
             }
         }
 
+        if (isset($deploymentNodeData['infrastructureNodes'])) {
+            if (\is_array($deploymentNodeData['infrastructureNodes'])) {
+                foreach ($deploymentNodeData['infrastructureNodes'] as $infrastructureNodeData) {
+                    $deploymentNode->infrastructureNodes[] = InfrastructureNode::hydrate($infrastructureNodeData, $model);
+                }
+            }
+        }
+
         parent::hydrateDeploymentElement($deploymentNode, $deploymentNodeData);
 
         return $deploymentNode;
+    }
+
+    public static function hydrateInfrastructureNodesRelationships(self $deploymentNode, array $deploymentNodeData) : void
+    {
+        if (isset($deploymentNodeData['infrastructureNodes']) && \is_array($deploymentNodeData['infrastructureNodes'])) {
+            foreach ($deploymentNode->infrastructureNodes as $infrastructureNode) {
+                foreach ($deploymentNodeData['infrastructureNodes'] as $infraStructureNodeData) {
+                    if ($infraStructureNodeData['id'] === $infrastructureNode->id()) {
+                        parent::hydrateRelationships($infrastructureNode, $infraStructureNodeData);
+                    }
+                }
+            }
+        }
     }
 
     public static function hydrateContainerInstancesRelationships(self $deploymentNode, array $deploymentNodeData) : void
@@ -120,6 +147,9 @@ final class DeploymentNode extends DeploymentElement
             foreach ($deploymentNodeData['children'] as $childData) {
                 if ($childData['id'] === $child->id()) {
                     parent::hydrateRelationships($child, $childData);
+
+                    self::hydrateInfrastructureNodesRelationships($child, $childData);
+
                     self::hydrateContainerInstancesRelationships($child, $childData);
 
                     self::hydrateChildrenRelationships($child, $childData);
@@ -157,6 +187,14 @@ final class DeploymentNode extends DeploymentElement
     }
 
     /**
+     * @return InfrastructureNode[]
+     */
+    public function getInfrastructureNodes() : array
+    {
+        return $this->infrastructureNodes;
+    }
+
+    /**
      * @return self[]
      */
     public function getChildren() : array
@@ -170,6 +208,15 @@ final class DeploymentNode extends DeploymentElement
         $this->children[] = $deploymentNode;
 
         return $deploymentNode;
+    }
+
+    public function addInfrastructureNode(string $name, ?string $environment = null, ?string $description = null, ?string $technology = null, ?Properties $properties = null) : InfrastructureNode
+    {
+        $infrastructureNode = $this->getModel()->addInfrastructureNode($this, $name, $environment, $description, $technology, $properties);
+
+        $this->infrastructureNodes[] = $infrastructureNode;
+
+        return $infrastructureNode;
     }
 
     public function add(Container $container, bool $replicateContainerRelationships = true) : ContainerInstance
@@ -223,6 +270,15 @@ final class DeploymentNode extends DeploymentElement
                     return $containerInstance->toArray();
                 },
                 $this->containerInstances
+            );
+        }
+
+        if (\count($this->infrastructureNodes)) {
+            $data['infrastructureNodes'] = \array_map(
+                function (InfrastructureNode $infrastructureNode) {
+                    return $infrastructureNode->toArray();
+                },
+                $this->infrastructureNodes
             );
         }
 

@@ -38,6 +38,11 @@ final class DynamicView extends View
      */
     private $sequenceNumber;
 
+    /**
+     * @var bool
+     */
+    private $externalBoundariesVisible = false;
+
     public function __construct(Model $model, string $key, string $description, ViewSet $viewSet, ?Element $element = null)
     {
         if ($element instanceof Container) {
@@ -120,6 +125,10 @@ final class DynamicView extends View
             $view->automaticLayout = AutomaticLayout::hydrate($viewData['automaticLayout']);
         }
 
+        if (isset($viewData['externalBoundariesVisible']) && is_bool($viewData['externalBoundariesVisible'])) {
+            $view->externalBoundariesVisible = $viewData['externalBoundariesVisible'];
+        }
+
         return $view;
     }
 
@@ -140,6 +149,7 @@ final class DynamicView extends View
         return \array_merge(
             [
                 'elementId' => $this->element->id(),
+                'externalBoundariesVisible' => $this->getExternalBoundariesVisible()
             ],
             parent::toArray()
         );
@@ -153,6 +163,16 @@ final class DynamicView extends View
     protected function canBeRemoved(Element $element) : bool
     {
         return true;
+    }
+
+    public function getExternalBoundariesVisible(): bool
+    {
+        return $this->externalBoundariesVisible;
+    }
+
+    public function setExternalBoundariesVisible(bool $externalBoundariesVisible): void
+    {
+        $this->externalBoundariesVisible = $externalBoundariesVisible;
     }
 
     private function checkElement(Element $elementToBeAdded) : void
