@@ -11,7 +11,7 @@ use StructurizrPHP\Core\Model\Properties;
 use StructurizrPHP\Core\Model\Property;
 use StructurizrPHP\Core\Model\Tags;
 
-class InfrastructureNodeTest extends TestCase
+final class InfrastructureNodeTest extends TestCase
 {
     public function test_hydrating_infrastructure_node() : void
     {
