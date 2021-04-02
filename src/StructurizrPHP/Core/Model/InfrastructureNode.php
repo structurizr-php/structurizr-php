@@ -58,27 +58,23 @@ final class InfrastructureNode extends DeploymentElement
         return $infrastructureNode;
     }
 
-    public function setTechnology(?string $technology): void
+    public function setTechnology(?string $technology) : void
     {
         $this->technology = $technology;
     }
 
-    public function setParent(DeploymentNode $parent): void
+    public function setParent(DeploymentNode $parent) : void
     {
         $this->parent = $parent;
     }
 
-    public function getParent(): ?Element
+    public function getParent() : ?Element
     {
         return $this->parent;
     }
 
-    public function usesDeploymentElement(
-        DeploymentElement $deploymentElement,
-        string $description = 'Uses',
-        string $technology = null,
-        InteractionStyle $interactionStyle = null
-    ) : Relationship {
+    public function usesDeploymentElement(DeploymentElement $deploymentElement, string $description = 'Uses', string $technology = null, InteractionStyle $interactionStyle = null) : Relationship
+    {
         return $this->getModel()->addRelationship(
             $this,
             $deploymentElement,

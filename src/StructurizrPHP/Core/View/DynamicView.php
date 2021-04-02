@@ -165,12 +165,12 @@ final class DynamicView extends View
         return true;
     }
 
-    public function getExternalBoundariesVisible(): bool
+    public function getExternalBoundariesVisible() : bool
     {
         return $this->externalBoundariesVisible;
     }
 
-    public function setExternalBoundariesVisible(bool $externalBoundariesVisible): void
+    public function setExternalBoundariesVisible(bool $externalBoundariesVisible) : void
     {
         $this->externalBoundariesVisible = $externalBoundariesVisible;
     }

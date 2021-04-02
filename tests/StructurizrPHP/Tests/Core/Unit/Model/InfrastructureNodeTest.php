@@ -13,7 +13,7 @@ use StructurizrPHP\Core\Model\Tags;
 
 class InfrastructureNodeTest extends TestCase
 {
-    public function test_hydrating_infrastructure_node(): void
+    public function test_hydrating_infrastructure_node() : void
     {
         $node = new InfrastructureNode('1', $model = new Model());
         $node->setEnvironment('prod');

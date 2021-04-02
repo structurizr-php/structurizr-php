@@ -25,17 +25,13 @@ abstract class StaticStructureElementInstance extends DeploymentElement
     /**
      * @return HttpHealthCheck[]
      */
-    public function getHealthChecks(): array
+    public function getHealthChecks() : array
     {
         return $this->healthChecks;
     }
 
-    public function addHealthCheck(
-        string $name,
-        string $url,
-        ?int $interval = null,
-        ?int $timeout = null
-    ): HttpHealthCheck {
+    public function addHealthCheck(string $name, string $url, ?int $interval = null, ?int $timeout = null) : HttpHealthCheck
+    {
         $healthCheck = new HttpHealthCheck(
             $name,
             $url,
@@ -48,12 +44,8 @@ abstract class StaticStructureElementInstance extends DeploymentElement
         return $healthCheck;
     }
 
-    public function usesInfrastructureNode(
-        InfrastructureNode $infrastructureNode,
-        string $description = 'Uses',
-        string $technology = null,
-        InteractionStyle $interactionStyle = null
-    ): Relationship {
+    public function usesInfrastructureNode(InfrastructureNode $infrastructureNode, string $description = 'Uses', string $technology = null, InteractionStyle $interactionStyle = null) : Relationship
+    {
         return $this->getModel()->addRelationship(
             $this,
             $infrastructureNode,

@@ -23,13 +23,8 @@ final class ContainerInstance extends StaticStructureElementInstance
      */
     private $container;
 
-    public function __construct(
-        Container $container,
-        int $instanceId,
-        string $environment,
-        string $id,
-        Model $model
-    ) {
+    public function __construct(Container $container, int $instanceId, string $environment, string $id, Model $model)
+    {
         parent::__construct($id, $model);
         $this->setEnvironment($environment);
         $this->container = $container;
@@ -38,10 +33,8 @@ final class ContainerInstance extends StaticStructureElementInstance
         $this->addTags(Tags::CONTAINER_INSTANCE);
     }
 
-    public static function hydrate(
-        array $containerInstanceData,
-        Model $model
-    ): self {
+    public static function hydrate(array $containerInstanceData, Model $model) : self
+    {
         $element = $model->getElement($containerInstanceData['containerId']);
 
         $instance = new self(
@@ -67,22 +60,22 @@ final class ContainerInstance extends StaticStructureElementInstance
         return $instance;
     }
 
-    public function getContainer(): Container
+    public function getContainer() : Container
     {
         return $this->container;
     }
 
-    public function getParent(): ?Element
+    public function getParent() : ?Element
     {
         return $this->container->getParent();
     }
 
-    public function getCanonicalName(): string
+    public function getCanonicalName() : string
     {
         return $this->container->getCanonicalName() . '[' . $this->instanceId . ']';
     }
 
-    public function toArray(): array
+    public function toArray() : array
     {
         $data = \array_merge(
             [
