@@ -99,10 +99,6 @@ final class InfrastructureNode extends DeploymentElement
             $data['technology'] = $this->technology;
         }
 
-        if ($this->parent) {
-            $data['parent'] = $this->parent->id();
-        }
-
         return $data;
     }
 

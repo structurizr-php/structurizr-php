@@ -59,6 +59,10 @@
         ],
         "cs:php:fix": [
             "php-cs-fixer fix"
+        ],
+        "pre-commit": [
+            "@static:analyze",
+            "@test"
         ]
     }
 }
