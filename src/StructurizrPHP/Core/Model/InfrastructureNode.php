@@ -39,15 +39,24 @@ final class InfrastructureNode extends DeploymentElement
      */
     private $technology;
 
+    public function __construct(DeploymentNode $parent, string $id, Model $model)
+    {
+        parent::__construct($id, $model);
+        $this->setEnvironment($parent->getEnvironment());
+        $this->parent = $parent;
+        $this->addTags(Tags::INFRASTRUCTURE_NODE);
+    }
+
     public static function hydrate(array $infrastructureNodeData, Model $model) : self
     {
-        $infrastructureNode = new self($infrastructureNodeData['id'], $model);
-        $infrastructureNode->setName($infrastructureNodeData['name']);
+        $element = $model->getElement($infrastructureNodeData['parent']);
 
-        if (isset($infrastructureNodeData['parent'])) {
-            $element = $model->getElement($infrastructureNodeData['parent']);
-            $infrastructureNode->parent = ($element instanceof DeploymentNode) ? $element : null;
-        }
+        $infrastructureNode = new self(
+            $element instanceof DeploymentNode ? $element : null,
+            $infrastructureNodeData['id'],
+            $model
+        );
+        $infrastructureNode->setName($infrastructureNodeData['name']);
 
         if (isset($infrastructureNodeData['technology'])) {
             $infrastructureNode->technology = $infrastructureNodeData['technology'];
@@ -63,12 +72,7 @@ final class InfrastructureNode extends DeploymentElement
         $this->technology = $technology;
     }
 
-    public function setParent(DeploymentNode $parent) : void
-    {
-        $this->parent = $parent;
-    }
-
-    public function getParent() : ?Element
+    public function getParent() : Element
     {
         return $this->parent;
     }
@@ -90,7 +94,7 @@ final class InfrastructureNode extends DeploymentElement
             [
                 'id' => $this->id(),
                 'name' => $this->getName(),
-                'environment' => $this->getEnvironment(),
+                'parent' => $this->getParent()->id(),
             ],
             parent::toArray()
         );
@@ -104,10 +108,6 @@ final class InfrastructureNode extends DeploymentElement
 
     public function getCanonicalName() : string
     {
-        if ($this->parent !== null) {
-            return $this->parent->getCanonicalName() . self::CANONICAL_NAME_SEPARATOR . parent::formatForCanonicalName($this->getName());
-        }
-
-        return self::CANONICAL_NAME_SEPARATOR . 'Infrastructure' . self::CANONICAL_NAME_SEPARATOR . parent::formatForCanonicalName($this->getEnvironment()) . self::CANONICAL_NAME_SEPARATOR . parent::formatForCanonicalName($this->getName());
+        return $this->parent->getCanonicalName() . self::CANONICAL_NAME_SEPARATOR . 'Infrastructure' . self::CANONICAL_NAME_SEPARATOR . parent::formatForCanonicalName($this->getEnvironment()) . self::CANONICAL_NAME_SEPARATOR . parent::formatForCanonicalName($this->getName());
     }
 }

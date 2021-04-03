@@ -210,9 +210,9 @@ final class DeploymentNode extends DeploymentElement
         return $deploymentNode;
     }
 
-    public function addInfrastructureNode(string $name, ?string $environment = null, ?string $description = null, ?string $technology = null, ?Properties $properties = null) : InfrastructureNode
+    public function addInfrastructureNode(string $name, ?string $description = null, ?string $technology = null, ?Properties $properties = null) : InfrastructureNode
     {
-        $infrastructureNode = $this->getModel()->addInfrastructureNode($this, $name, $environment, $description, $technology, $properties);
+        $infrastructureNode = $this->getModel()->addInfrastructureNode($this, $name, $description, $technology, $properties);
 
         $this->infrastructureNodes[] = $infrastructureNode;
 

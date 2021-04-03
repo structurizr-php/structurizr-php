@@ -446,16 +446,14 @@ final class Model
         return $deploymentNode;
     }
 
-    public function addInfrastructureNode(DeploymentNode $parent, string $name, ?string $environment = null, ?string $description = null, ?string $technology = null, ?Properties $properties = null) : InfrastructureNode
+    public function addInfrastructureNode(DeploymentNode $parent, string $name, ?string $description = null, ?string $technology = null, ?Properties $properties = null) : InfrastructureNode
     {
         Assertion::notEmpty($name);
 
-        $infrastructureNode = new InfrastructureNode($this->idGenerator->generateId(), $this);
+        $infrastructureNode = new InfrastructureNode($parent, $this->idGenerator->generateId(), $this);
         $infrastructureNode->setName($name);
-        $infrastructureNode->setEnvironment($environment ? $environment : DeploymentNode::DEFAULT_DEPLOYMENT_ENVIRONMENT);
         $infrastructureNode->setTechnology($technology);
         $infrastructureNode->setDescription($description);
-        $infrastructureNode->setParent($parent);
 
         if ($properties !== null) {
             $infrastructureNode->setProperties($properties);

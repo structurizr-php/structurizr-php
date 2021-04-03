@@ -15,8 +15,10 @@ final class InfrastructureNodeTest extends TestCase
 {
     public function test_hydrating_infrastructure_node() : void
     {
-        $node = new InfrastructureNode('1', $model = new Model());
-        $node->setEnvironment('prod');
+        $model = new Model();
+        $deploymentNode = $model->addDeploymentNode('node');
+
+        $node = new InfrastructureNode($deploymentNode, '1', $model);
         $node->setDescription('test');
         $node->setTechnology('vm');
         $node->setProperties(new Properties(new Property('test', 'test')));
