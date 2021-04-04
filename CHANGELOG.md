@@ -1,4 +1,4 @@
-## [Unreleased] - 2021-04-04
+## [0.2.0] - 2021-04-04
 
 ### Added
 - [#70](https://github.com/structurizr-php/structurizr-php/pull/70) - **Added support for Infrastructure Node. Based on JAVA SDK: https://github.com/structurizr/java/blob/master/structurizr-core/src/com/structurizr/model/InfrastructureNode.java** - [@alleknalle](https://github.com/alleknalle)
