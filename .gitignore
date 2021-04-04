@@ -2,8 +2,3 @@
 vendor
 examples/var/logs/*
 !examples/var/logs/.gitkeep
-
-/.idea
-
-/docker
-/docker-compose.yml
