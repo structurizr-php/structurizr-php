@@ -60,7 +60,7 @@
         "cs:php:fix": [
             "php-cs-fixer fix"
         ],
-        "pre-commit": [
+        "build": [
             "@static:analyze",
             "@test"
         ]
