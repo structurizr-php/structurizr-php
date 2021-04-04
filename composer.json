@@ -59,6 +59,10 @@
         ],
         "cs:php:fix": [
             "php-cs-fixer fix"
+        ],
+        "build": [
+            "@static:analyze",
+            "@test"
         ]
     }
 }

@@ -446,6 +446,22 @@ final class Model
         return $deploymentNode;
     }
 
+    public function addInfrastructureNode(DeploymentNode $parent, string $name, ?string $description = null, ?string $technology = null, ?Properties $properties = null) : InfrastructureNode
+    {
+        Assertion::notEmpty($name);
+
+        $infrastructureNode = new InfrastructureNode($parent, $this->idGenerator->generateId(), $this);
+        $infrastructureNode->setName($name);
+        $infrastructureNode->setTechnology($technology);
+        $infrastructureNode->setDescription($description);
+
+        if ($properties !== null) {
+            $infrastructureNode->setProperties($properties);
+        }
+
+        return $infrastructureNode;
+    }
+
     public function addElementToInternalStructures(Element $element) : void
     {
         if (\array_key_exists($element->id(), $this->elementsById) || \array_key_exists($element->id(), $this->relationshipsById)) {

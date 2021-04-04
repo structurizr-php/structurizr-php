@@ -16,26 +16,12 @@ namespace StructurizrPHP\Core\Model;
 /**
  * Represents a deployment instance of a {@link Container}, which can be added to a {@link DeploymentNode}.
  */
-final class ContainerInstance extends DeploymentElement
+final class ContainerInstance extends StaticStructureElementInstance
 {
-    private const DEFAULT_HEALTH_CHECK_INTERVAL_IN_SECONDS = 60;
-
-    private const DEFAULT_HEALTH_CHECK_TIMEOUT_IN_MILLISECONDS = 0;
-
     /**
      * @var Container
      */
     private $container;
-
-    /**
-     * @var int
-     */
-    private $instanceId;
-
-    /**
-     * @var HttpHealthCheck[]
-     */
-    private $healthChecks;
 
     public function __construct(Container $container, int $instanceId, string $environment, string $id, Model $model)
     {
@@ -62,7 +48,9 @@ final class ContainerInstance extends DeploymentElement
         if (isset($containerInstanceData['healthChecks'])) {
             if (\is_array($containerInstanceData['healthChecks'])) {
                 foreach ($containerInstanceData['healthChecks'] as $healthCheckData) {
-                    $instance->healthChecks[] = HttpHealthCheck::hydrate($healthCheckData);
+                    $instance->healthChecks[] = HttpHealthCheck::hydrate(
+                        $healthCheckData
+                    );
                 }
             }
         }
@@ -85,28 +73,6 @@ final class ContainerInstance extends DeploymentElement
     public function getCanonicalName() : string
     {
         return $this->container->getCanonicalName() . '[' . $this->instanceId . ']';
-    }
-
-    /**
-     * @return HttpHealthCheck[]
-     */
-    public function getHealthChecks() : array
-    {
-        return $this->healthChecks;
-    }
-
-    public function addHealthCheck(string $name, string $url, ?int $interval = null, ?int $timeout = null) : HttpHealthCheck
-    {
-        $healthCheck = new HttpHealthCheck(
-            $name,
-            $url,
-            $interval ? $interval : self::DEFAULT_HEALTH_CHECK_INTERVAL_IN_SECONDS,
-            $timeout ? $timeout : self::DEFAULT_HEALTH_CHECK_TIMEOUT_IN_MILLISECONDS
-        );
-
-        $this->healthChecks[] = $healthCheck;
-
-        return $healthCheck;
     }
 
     public function toArray() : array

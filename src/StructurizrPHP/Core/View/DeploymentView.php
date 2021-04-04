@@ -70,7 +70,7 @@ final class DeploymentView extends View
 
     public function add(DeploymentNode $deploymentNode, bool $addRelationships = true) : void
     {
-        if ($this->addContainerInstancesAndDeploymentNodes($deploymentNode, $addRelationships)) {
+        if ($this->addContainerInstancesAndDeploymentNodesAndInfrastructureNodes($deploymentNode, $addRelationships)) {
             $parent = $deploymentNode->getParent();
 
             while ($parent !== null) {
@@ -101,27 +101,32 @@ final class DeploymentView extends View
         return true;
     }
 
-    private function addContainerInstancesAndDeploymentNodes(DeploymentNode $deploymentNode, bool $addRelationships) : bool
+    private function addContainerInstancesAndDeploymentNodesAndInfrastructureNodes(DeploymentNode $deploymentNode, bool $addRelationships) : bool
     {
-        $hasContainers = false;
+        $hasContainersOrInfrastructureNodes = false;
 
         foreach ($deploymentNode->getContainerInstances() as $containerInstance) {
             $container = $containerInstance->getContainer();
 
             if ($this->softwareSystem === null || $container->getParent()->equals($this->softwareSystem)) {
                 $this->addElement($containerInstance, $addRelationships);
-                $hasContainers = true;
+                $hasContainersOrInfrastructureNodes = true;
             }
         }
 
-        foreach ($deploymentNode->getChildren() as $child) {
-            $hasContainers = (bool) ($hasContainers | $this->addContainerInstancesAndDeploymentNodes($child, $addRelationships));
+        foreach ($deploymentNode->getInfrastructureNodes() as $infrastructureNode) {
+            $this->addElement($infrastructureNode, $addRelationships);
+            $hasContainersOrInfrastructureNodes = true;
         }
 
-        if ($hasContainers) {
+        foreach ($deploymentNode->getChildren() as $child) {
+            $hasContainersOrInfrastructureNodes = (bool) ($hasContainersOrInfrastructureNodes | $this->addContainerInstancesAndDeploymentNodesAndInfrastructureNodes($child, $addRelationships));
+        }
+
+        if ($hasContainersOrInfrastructureNodes) {
             $this->addElement($deploymentNode, $addRelationships);
         }
 
-        return $hasContainers;
+        return $hasContainersOrInfrastructureNodes;
     }
 }
