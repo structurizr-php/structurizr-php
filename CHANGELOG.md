@@ -1,4 +1,9 @@
-## [Unreleased] - 2021-03-29
+## [Unreleased] - 2021-04-04
+
+### Added
+- [#70](https://github.com/structurizr-php/structurizr-php/pull/70) - **Added support for Infrastructure Node. Based on JAVA SDK: https://github.com/structurizr/java/blob/master/structurizr-core/src/com/structurizr/model/InfrastructureNode.java** - [@alleknalle](https://github.com/alleknalle)
+- [#70](https://github.com/structurizr-php/structurizr-php/pull/70) - **Added StaticStructureElementInstance for future support for SoftwareSystemInstance** - [@alleknalle](https://github.com/alleknalle)
+- [#70](https://github.com/structurizr-php/structurizr-php/pull/70) - **Added support for showing external boundaries in DeploymentViews. Based on JAVA SDK: https://github.com/structurizr/java/commit/d21943609be36d5e34e89c67fb74c4ab16f143fe** - [@alleknalle](https://github.com/alleknalle)
 
 ### Changed
 - [#48](https://github.com/structurizr-php/structurizr-php/pull/48) - **Update RelationshipStyle.php** - [@smalot](https://github.com/smalot)
@@ -9,6 +14,7 @@
 - [bbfd3c](https://github.com/structurizr-php/structurizr-php/commit/bbfd3c372055ebc9f6f7d5e4cd6efba458bd616c) - **Update CHANGELOG.md** - [@norberttech](https://github.com/norberttech)
 
 ### Fixed
+- [#70](https://github.com/structurizr-php/structurizr-php/pull/70) - **Fixed typo for DEFAULT_DEPLOYMENT_ENVIRONMENT in DeploymentElement** - [@alleknalle](https://github.com/alleknalle)
 - [#62](https://github.com/structurizr-php/structurizr-php/pull/62) - **Fix ViewSet calling ContainerView::__construct incorrectly.** - [@tdgroot](https://github.com/tdgroot)
 - [#41](https://github.com/structurizr-php/structurizr-php/pull/41) - **a typo** - [@marclaporte](https://github.com/marclaporte)
 - [#40](https://github.com/structurizr-php/structurizr-php/pull/40) - **extensions-php composer.json dependency name** - [@thunderer](https://github.com/thunderer)
