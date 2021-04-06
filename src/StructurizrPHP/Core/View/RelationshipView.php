@@ -51,6 +51,11 @@ final class RelationshipView
      */
     private $relationship;
 
+    /**
+     * @var bool
+     */
+    private $response = false;
+
     public function __construct(Relationship $relationship)
     {
         $this->relationship = $relationship;
@@ -84,6 +89,10 @@ final class RelationshipView
                 },
                 $viewData['vertices']
             ));
+        }
+
+        if (isset($viewData['response'])) {
+            $view->setResponse($viewData['response']);
         }
 
         return $view;
@@ -143,12 +152,18 @@ final class RelationshipView
         $this->routing = $routing;
     }
 
+    public function setResponse(bool $response) : void
+    {
+        $this->response = $response;
+    }
+
     public function copyLayoutInformationFrom(?self $source) : void
     {
         if ($source !== null) {
             $this->setVertices(...$source->vertices);
             $this->setPosition($source->position);
             $this->setRouting($source->routing);
+            $this->setResponse($source->response);
         }
     }
 
@@ -162,6 +177,7 @@ final class RelationshipView
                 },
                 $this->vertices
             ),
+            'response' => $this->response,
         ];
 
         if ($this->order) {

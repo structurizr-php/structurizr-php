@@ -140,6 +140,21 @@ abstract class View
         $this->title = $title;
     }
 
+    public function getTitle() : ?string
+    {
+        return $this->title;
+    }
+
+    public function getDescription() : string
+    {
+        return $this->description;
+    }
+
+    public function getKey() : string
+    {
+        return $this->key;
+    }
+
     /**
      * @return ElementView[]
      */
@@ -188,13 +203,25 @@ abstract class View
 
     public function addElement(Element $element, bool $addRelationships = true) : ElementView
     {
-        $elementView = new ElementView($element);
+        $elementExists = false;
+
+        if ($this->isElementInView($element)) {
+            $elementExists = true;
+        }
+
+        if ($elementExists === true) {
+            $elementView = $this->getElementViewByElement($element);
+        } else {
+            $elementView = new ElementView($element);
+        }
 
         if ($addRelationships) {
             $this->addRelationships($element);
         }
 
-        $this->elementViews[] = $elementView;
+        if ($elementExists !== true) {
+            $this->elementViews[] = $elementView;
+        }
 
         return $elementView;
     }
@@ -252,7 +279,7 @@ abstract class View
         return $this->softwareSystem ? $this->softwareSystem->getModel() : null;
     }
 
-    protected function addRelationshipWithDescription(Relationship $relationship, string $description, string $order) : RelationshipView
+    protected function addRelationshipWithDescription(Relationship $relationship, string $description, string $order, bool $response = false) : RelationshipView
     {
         $relationshipView = $this->addRelationship($relationship);
 
@@ -262,6 +289,7 @@ abstract class View
 
         $relationshipView->setDescription($description);
         $relationshipView->setOrder($order);
+        $relationshipView->setResponse($response);
 
         return $relationshipView;
     }
@@ -300,6 +328,22 @@ abstract class View
         );
     }
 
+    protected function getElementViewByElement(Element $element) : ?ElementView
+    {
+        $elementViews = \array_filter(
+            $this->elementViews,
+            function (ElementView $ev) use ($element) {
+                return $ev->element()->equals($element);
+            }
+        );
+
+        if (empty($elementViews)) {
+            return null;
+        }
+
+        return \array_pop($elementViews);
+    }
+
     abstract protected function canBeRemoved(Element $element) : bool;
 
     private function addRelationships(Element $element) : void
@@ -307,7 +351,11 @@ abstract class View
         foreach ($element->getRelationships() as $relationship) {
             foreach ($this->elementViews as $e) {
                 if ($e->element()->equals($relationship->getDestination())) {
-                    $this->relationshipsViews[] = new RelationshipView($relationship);
+                    try {
+                        $this->getRelationshipView($relationship);
+                    } catch (RuntimeException $e) {
+                        $this->relationshipsViews[] = new RelationshipView($relationship);
+                    }
                 }
             }
         }
@@ -315,7 +363,11 @@ abstract class View
         foreach ($this->elementViews as $e) {
             foreach ($e->element()->getRelationships() as $r) {
                 if ($r->getDestination()->equals($element)) {
-                    $this->relationshipsViews[] = new RelationshipView($r);
+                    try {
+                        $this->getRelationshipView($r);
+                    } catch (RuntimeException $e) {
+                        $this->relationshipsViews[] = new RelationshipView($r);
+                    }
                 }
             }
         }
