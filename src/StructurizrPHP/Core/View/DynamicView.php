@@ -132,7 +132,7 @@ final class DynamicView extends View
         return $view;
     }
 
-    public function add(Element $source, string $description, Element $destination) : RelationshipView
+    public function add(Element $source, string $description, Element $destination, bool $response = false) : RelationshipView
     {
         $this->checkElement($source);
         $this->checkElement($destination);
@@ -141,7 +141,7 @@ final class DynamicView extends View
         $this->addElement($source, false);
         $this->addElement($destination, false);
 
-        return $this->addRelationshipWithDescription($relationship, $description, $this->sequenceNumber->getNext());
+        return $this->addRelationshipWithDescription($relationship, $description, $this->sequenceNumber->getNext(), $response);
     }
 
     public function toArray() : array

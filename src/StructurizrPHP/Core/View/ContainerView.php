@@ -15,6 +15,7 @@ namespace StructurizrPHP\Core\View;
 
 use StructurizrPHP\Core\Model\Container;
 use StructurizrPHP\Core\Model\Element;
+use StructurizrPHP\Core\Model\Person;
 use StructurizrPHP\Core\Model\SoftwareSystem;
 
 final class ContainerView extends StaticView
@@ -55,6 +56,15 @@ final class ContainerView extends StaticView
     public function addContainer(Container $container, bool $addRelationships = true) : void
     {
         $this->addElement($container, $addRelationships);
+    }
+
+    public function addAllNearestNeighbours() : void
+    {
+        foreach ($this->softwareSystem->getContainers() as $container) {
+            $this->addNearestTypeNeighbours($container, Person::class);
+            $this->addNearestTypeNeighbours($container, SoftwareSystem::class);
+            $this->addNearestTypeNeighbours($container, Container::class);
+        }
     }
 
     public function toArray() : array

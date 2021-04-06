@@ -16,6 +16,8 @@ namespace StructurizrPHP\Core\View;
 use StructurizrPHP\Core\Model\Component;
 use StructurizrPHP\Core\Model\Container;
 use StructurizrPHP\Core\Model\Element;
+use StructurizrPHP\Core\Model\Person;
+use StructurizrPHP\Core\Model\SoftwareSystem;
 
 final class ComponentView extends StaticView
 {
@@ -23,6 +25,12 @@ final class ComponentView extends StaticView
      * @var Container
      */
     private $container;
+
+    /**
+     * @var bool
+     *           TODO : documentation states this should do something, but I can't find the correct use-case
+     */
+    private $externalContainersBoundariesVisible = true;
 
     public function __construct(Container $container, string $key, string $description, ViewSet $viewSet)
     {
@@ -39,6 +47,8 @@ final class ComponentView extends StaticView
             $viewData['key'],
             $viewSet
         );
+
+        $view->externalContainersBoundariesVisible = $viewData['externalContainersBoundariesVisible'];
 
         parent::hydrateView($view, $viewData);
 
@@ -84,9 +94,25 @@ final class ComponentView extends StaticView
         $this->addElement($component, $addRelationships);
     }
 
+    public function addAllNearestNeighbours() : void
+    {
+        foreach ($this->container->getComponents() as $component) {
+            $this->addNearestTypeNeighbours($component, Person::class);
+            $this->addNearestTypeNeighbours($component, SoftwareSystem::class);
+            $this->addNearestTypeNeighbours($component, Container::class);
+            $this->addNearestTypeNeighbours($component, Component::class);
+        }
+    }
+
     public function getContainerId() : string
     {
         return $this->container->id();
+    }
+
+    public function setExternalContainersBoundariesVisible(
+        bool $externalContainersBoundariesVisible
+    ) : void {
+        $this->externalContainersBoundariesVisible = $externalContainersBoundariesVisible;
     }
 
     public function toArray() : array
@@ -95,6 +121,7 @@ final class ComponentView extends StaticView
             parent::toArray(),
             [
                 'containerId' => $this->container->id(),
+                'externalContainersBoundariesVisible' => $this->externalContainersBoundariesVisible,
             ]
         );
     }
