@@ -15,7 +15,7 @@ namespace StructurizrPHP\Core\Model;
 
 abstract class DeploymentElement extends Element
 {
-    public const DEFAULT_DEPLOYMENT_ENVIRONMENT = 'Deafault';
+    public const DEFAULT_DEPLOYMENT_ENVIRONMENT = 'Default';
 
     /**
      * @var string

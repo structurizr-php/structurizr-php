@@ -33,6 +33,8 @@ final class Tags
 
     public const CONTAINER_INSTANCE = 'Container Instance';
 
+    public const INFRASTRUCTURE_NODE = 'Infrastructure Node';
+
     /**
      * @var string[]
      */
