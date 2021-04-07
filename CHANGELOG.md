@@ -1,4 +1,4 @@
-## [Unreleased] - 2021-04-06
+## [Unreleased] - 2021-04-07
 
 ### Added
 - [#72](https://github.com/structurizr-php/structurizr-php/pull/72) - **Added support for externalContainerBoundariesVisible for ComponentView** - [@alleknalle](https://github.com/alleknalle)
@@ -9,6 +9,9 @@
 
 ### Changed
 - [#72](https://github.com/structurizr-php/structurizr-php/pull/72) - **Only add Elements and Relationships to View if they don't already exist to keep the JSON clean** - [@alleknalle](https://github.com/alleknalle)
+
+### Fixed
+- [#74](https://github.com/structurizr-php/structurizr-php/pull/74) - **External boundaries in ComponentView was not working as expected** - [@alleknalle](https://github.com/alleknalle)
 
 ## [0.2.0] - 2021-04-04
 
