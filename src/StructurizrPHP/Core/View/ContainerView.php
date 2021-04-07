@@ -20,17 +20,23 @@ use StructurizrPHP\Core\Model\SoftwareSystem;
 
 final class ContainerView extends StaticView
 {
-    public function __construct(?SoftwareSystem $softwareSystem, string $description, string $key, ViewSet $viewSet)
-    {
-        parent::__construct($softwareSystem, $description, $key, $viewSet);
+    public function __construct(
+        ?SoftwareSystem $softwareSystem,
+        string $key,
+        string $description,
+        ViewSet $viewSet
+    ) {
+        parent::__construct($softwareSystem, $key, $description, $viewSet);
     }
 
     public static function hydrate(array $viewData, ViewSet $viewSet) : self
     {
         $view = new self(
-            $viewSet->getModel()->getSoftwareSystem($viewData['softwareSystemId']),
-            $viewData['description'] ?? '',
+            $viewSet->getModel()->getSoftwareSystem(
+                $viewData['softwareSystemId']
+            ),
             $viewData['key'],
+            $viewData['description'] ?? '',
             $viewSet
         );
 

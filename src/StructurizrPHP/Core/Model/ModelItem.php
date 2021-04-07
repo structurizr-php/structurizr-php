@@ -89,6 +89,11 @@ abstract class ModelItem
         }
     }
 
+    public function hasTag(string $tag) : bool
+    {
+        return \in_array($tag, $this->tags->getTags(), true);
+    }
+
     public function setProperties(Properties $properties) : void
     {
         $this->properties = $properties;

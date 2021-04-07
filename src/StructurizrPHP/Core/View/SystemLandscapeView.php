@@ -28,9 +28,13 @@ final class SystemLandscapeView extends StaticView
      */
     private $enterpriseBoundaryVisible = true;
 
-    public function __construct(Model $model, string $description, string $key, ViewSet $viewSet)
-    {
-        parent::__construct(null, $description, $key, $viewSet);
+    public function __construct(
+        Model $model,
+        string $key,
+        string $description,
+        ViewSet $viewSet
+    ) {
+        parent::__construct(null, $key, $description, $viewSet);
         $this->model = $model;
     }
 
@@ -38,8 +42,8 @@ final class SystemLandscapeView extends StaticView
     {
         $view = new self(
             $viewSet->getModel(),
-            $viewData['description'],
             $viewData['key'],
+            $viewData['description'],
             $viewSet
         );
 

@@ -1,6 +1,8 @@
 ## [Unreleased] - 2021-04-07
 
 ### Added
+- [#75](https://github.com/structurizr-php/structurizr-php/pull/75) - **Added possibility to get Elements from Model by Tag** - [@alleknalle](https://github.com/alleknalle)
+- [#75](https://github.com/structurizr-php/structurizr-php/pull/75) - **Added (undocumented) tag for response relationships** - [@alleknalle](https://github.com/alleknalle)
 - [#72](https://github.com/structurizr-php/structurizr-php/pull/72) - **Added support for externalContainerBoundariesVisible for ComponentView** - [@alleknalle](https://github.com/alleknalle)
 - [#72](https://github.com/structurizr-php/structurizr-php/pull/72) - **Added addAllNearestNeighbours() for ComponentView to automatically add all nearest neighbours to view** - [@alleknalle](https://github.com/alleknalle)
 - [#72](https://github.com/structurizr-php/structurizr-php/pull/72) - **Added addAllNearestNeighbours() for ContainerView to automatically add all nearest neighbours to view** - [@alleknalle](https://github.com/alleknalle)
@@ -11,6 +13,7 @@
 - [#72](https://github.com/structurizr-php/structurizr-php/pull/72) - **Only add Elements and Relationships to View if they don't already exist to keep the JSON clean** - [@alleknalle](https://github.com/alleknalle)
 
 ### Fixed
+- [#75](https://github.com/structurizr-php/structurizr-php/pull/75) - **Corrected order of parameters in constructor for all Views** - [@alleknalle](https://github.com/alleknalle)
 - [#74](https://github.com/structurizr-php/structurizr-php/pull/74) - **External boundaries in ComponentView was not working as expected** - [@alleknalle](https://github.com/alleknalle)
 
 ## [0.2.0] - 2021-04-04

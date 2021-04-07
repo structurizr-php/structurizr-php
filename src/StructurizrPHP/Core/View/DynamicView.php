@@ -46,7 +46,12 @@ final class DynamicView extends View
     public function __construct(Model $model, string $key, string $description, ViewSet $viewSet, ?Element $element = null)
     {
         if ($element instanceof Container) {
-            parent::__construct($element->getParent(), $key, $description, $viewSet);
+            parent::__construct(
+                $element->getParent(),
+                $key,
+                $description,
+                $viewSet
+            );
         }
 
         if ($element instanceof SoftwareSystem) {
@@ -67,7 +72,7 @@ final class DynamicView extends View
 
     public static function softwareSystem(SoftwareSystem $softwareSystem, string $key, string $description, ViewSet $viewSet) : self
     {
-        $view = new self($softwareSystem->getModel(), $description, $key, $viewSet, $softwareSystem);
+        $view = new self($softwareSystem->getModel(), $key, $description, $viewSet, $softwareSystem);
         $view->model = $softwareSystem->getModel();
         $view->element = $softwareSystem;
 
@@ -87,8 +92,8 @@ final class DynamicView extends View
     {
         $view = new self(
             $viewSet->getModel(),
-            $viewData['description'],
             $viewData['key'],
+            $viewData['description'],
             $viewSet,
             isset($viewData['elementId']) ? $viewSet->getModel()->getElement($viewData['elementId']) : null
         );

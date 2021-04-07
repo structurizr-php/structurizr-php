@@ -33,7 +33,12 @@ final class ComponentView extends StaticView
 
     public function __construct(Container $container, string $key, string $description, ViewSet $viewSet)
     {
-        parent::__construct($container->getSoftwareSystem(), $description, $key, $viewSet);
+        parent::__construct(
+            $container->getSoftwareSystem(),
+            $key,
+            $description,
+            $viewSet
+        );
 
         $this->container = $container;
     }
@@ -42,8 +47,8 @@ final class ComponentView extends StaticView
     {
         $view = new self(
             $viewSet->getModel()->getContainer($viewData['containerId']),
-            $viewData['description'],
             $viewData['key'],
+            $viewData['description'],
             $viewSet
         );
 
