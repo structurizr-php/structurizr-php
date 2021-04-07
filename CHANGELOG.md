@@ -1,6 +1,7 @@
 ## [Unreleased] - 2021-04-07
 
 ### Added
+- [#76](https://github.com/structurizr-php/structurizr-php/pull/76) - **Added more supported paper sizes for views** - [@alleknalle](https://github.com/alleknalle)
 - [#75](https://github.com/structurizr-php/structurizr-php/pull/75) - **Added possibility to get Elements from Model by Tag** - [@alleknalle](https://github.com/alleknalle)
 - [#75](https://github.com/structurizr-php/structurizr-php/pull/75) - **Added (undocumented) tag for response relationships** - [@alleknalle](https://github.com/alleknalle)
 - [#72](https://github.com/structurizr-php/structurizr-php/pull/72) - **Added support for externalContainerBoundariesVisible for ComponentView** - [@alleknalle](https://github.com/alleknalle)
