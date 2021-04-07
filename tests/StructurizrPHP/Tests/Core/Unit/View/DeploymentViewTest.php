@@ -26,7 +26,7 @@ final class DeploymentViewTest extends TestCase
         $viewSet = new ViewSet($model);
         $softwareSystem = $model->addSoftwareSystem('system', 'description');
 
-        $view = new DeploymentView($softwareSystem, 'test', 'test', $viewSet);
+        $view = new DeploymentView($softwareSystem, 'testKey', 'testDescription', $viewSet);
         $view->setEnvironment('prod');
 
         $this->assertEquals($view, DeploymentView::hydrate($view->toArray(), $viewSet));

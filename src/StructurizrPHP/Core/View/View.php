@@ -74,8 +74,8 @@ abstract class View
 
     public function __construct(
         ?SoftwareSystem $softwareSystem,
-        string $description,
         string $key,
+        string $description,
         ViewSet $viewSet
     ) {
         $this->softwareSystem = $softwareSystem;

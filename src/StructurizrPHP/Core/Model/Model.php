@@ -205,6 +205,24 @@ final class Model
         throw new RuntimeException(\sprintf('Element with id "%s" does not exists.', $id));
     }
 
+    /**
+     * @return Element[]
+     */
+    public function getElementsByTag(string $tag) : array
+    {
+        $elements = [];
+
+        foreach ($this->elementsById as $element) {
+            if (!$element->hasTag($tag)) {
+                continue;
+            }
+
+            $elements[] = $element;
+        }
+
+        return $elements;
+    }
+
     public function getDeploymentNode(string $id) : DeploymentNode
     {
         $element = $this->getElement($id);

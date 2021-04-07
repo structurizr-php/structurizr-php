@@ -31,6 +31,8 @@ final class Tags
 
     public const RELATIONSHIP = 'Relationship';
 
+    public const RELATIONSHIP_RESPONSE = 'Relationship/Response';
+
     public const CONTAINER_INSTANCE = 'Container Instance';
 
     public const INFRASTRUCTURE_NODE = 'Infrastructure Node';
@@ -51,6 +53,14 @@ final class Tags
     public function add(string $tag) : void
     {
         $this->tags[] = $tag;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTags() : array
+    {
+        return $this->tags;
     }
 
     public function toArray() : ?string
