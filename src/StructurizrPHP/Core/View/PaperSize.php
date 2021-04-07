@@ -75,6 +75,26 @@ final class PaperSize
         return new self('A2_Landscape');
     }
 
+    public static function A1_Portrait() : self
+    {
+        return new self('A1_Portrait');
+    }
+
+    public static function A1_Landscape() : self
+    {
+        return new self('A1_Landscape');
+    }
+
+    public static function A0_Portrait() : self
+    {
+        return new self('A0_Portrait');
+    }
+
+    public static function A0_Landscape() : self
+    {
+        return new self('A0_Landscape');
+    }
+
     public static function Letter_Portrait() : self
     {
         return new self('Letter_Portrait');
@@ -103,6 +123,11 @@ final class PaperSize
     public static function Slide_16_9() : self
     {
         return new self('Slide_16_9');
+    }
+
+    public static function Slide_16_10() : self
+    {
+        return new self('Slide_16_10');
     }
 
     public static function hydrate(string $size) : self
