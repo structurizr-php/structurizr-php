@@ -28,9 +28,8 @@ final class ComponentView extends StaticView
 
     /**
      * @var bool
-     *           TODO : documentation states this should do something, but I can't find the correct use-case
      */
-    private $externalContainersBoundariesVisible = true;
+    private $externalContainerBoundariesVisible = true;
 
     public function __construct(Container $container, string $key, string $description, ViewSet $viewSet)
     {
@@ -48,7 +47,7 @@ final class ComponentView extends StaticView
             $viewSet
         );
 
-        $view->externalContainersBoundariesVisible = $viewData['externalContainersBoundariesVisible'];
+        $view->externalContainerBoundariesVisible = $viewData['externalContainersBoundariesVisible'];
 
         parent::hydrateView($view, $viewData);
 
@@ -109,10 +108,10 @@ final class ComponentView extends StaticView
         return $this->container->id();
     }
 
-    public function setExternalContainersBoundariesVisible(
-        bool $externalContainersBoundariesVisible
+    public function setExternalContainerBoundariesVisible(
+        bool $externalContainerBoundariesVisible
     ) : void {
-        $this->externalContainersBoundariesVisible = $externalContainersBoundariesVisible;
+        $this->externalContainerBoundariesVisible = $externalContainerBoundariesVisible;
     }
 
     public function toArray() : array
@@ -121,7 +120,7 @@ final class ComponentView extends StaticView
             parent::toArray(),
             [
                 'containerId' => $this->container->id(),
-                'externalContainersBoundariesVisible' => $this->externalContainersBoundariesVisible,
+                'externalContainerBoundariesVisible' => $this->externalContainerBoundariesVisible,
             ]
         );
     }
