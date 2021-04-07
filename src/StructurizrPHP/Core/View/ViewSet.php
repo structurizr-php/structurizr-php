@@ -153,8 +153,8 @@ final class ViewSet
     ) : SystemContextView {
         $view = new SystemContextView(
             $softwareSystem,
-            $description,
             $key,
+            $description,
             $this
         );
 
@@ -167,8 +167,8 @@ final class ViewSet
     {
         $view = new SystemLandscapeView(
             $this->model,
-            $description,
             $key,
+            $description,
             $this
         );
 
@@ -218,7 +218,7 @@ final class ViewSet
 
     public function createContainerView(SoftwareSystem $softwareSystem, string $key, string $description) : ContainerView
     {
-        $view = new ContainerView($softwareSystem, $description, $key, $this);
+        $view = new ContainerView($softwareSystem, $key, $description, $this);
 
         $this->containerViews[] = $view;
 
@@ -236,7 +236,7 @@ final class ViewSet
 
     public function createDeploymentView(SoftwareSystem $softwareSystem, string $key, string $description) : DeploymentView
     {
-        $view = new DeploymentView($softwareSystem, $description, $key, $this);
+        $view = new DeploymentView($softwareSystem, $key, $description, $this);
         $this->deploymentViews[] = $view;
 
         return $view;
