@@ -170,6 +170,8 @@ final class DeploymentNode extends DeploymentElement
 
     public function setParent(self $parent) : void
     {
+        $parent->addChild($this);
+
         $this->parent = $parent;
     }
 
@@ -204,10 +206,7 @@ final class DeploymentNode extends DeploymentElement
 
     public function addDeploymentNode(string $name, ?string $environment = null, ?string $description = null, ?string $technology = null, ?int $instances = null, ?Properties $properties = null) : self
     {
-        $deploymentNode = $this->getModel()->addDeploymentNodeWithParent($this, $name, $environment, $description, $technology, $instances, $properties);
-        $this->children[] = $deploymentNode;
-
-        return $deploymentNode;
+        return $this->getModel()->addDeploymentNodeWithParent($this, $name, $environment, $description, $technology, $instances, $properties);
     }
 
     public function addInfrastructureNode(string $name, ?string $description = null, ?string $technology = null, ?Properties $properties = null) : InfrastructureNode
@@ -306,5 +305,15 @@ final class DeploymentNode extends DeploymentElement
         }
 
         return self::CANONICAL_NAME_SEPARATOR . 'Deployment' . self::CANONICAL_NAME_SEPARATOR . parent::formatForCanonicalName($this->getEnvironment()) . self::CANONICAL_NAME_SEPARATOR . parent::formatForCanonicalName($this->getName());
+    }
+
+    private function addChild(self $child) : void
+    {
+        if (\in_array($child, $this->getChildren(), true)) {
+            // do nothing
+            return;
+        }
+
+        $this->children[] = $child;
     }
 }
