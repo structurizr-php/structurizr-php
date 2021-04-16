@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\Core\Model;
 
-use StructurizrPHP\Core\Model\Relationship\InteractionStyle;
-
 abstract class StaticStructureElementInstance extends DeploymentElement
 {
     protected const DEFAULT_HEALTH_CHECK_INTERVAL_IN_SECONDS = 60;
@@ -42,16 +40,5 @@ abstract class StaticStructureElementInstance extends DeploymentElement
         $this->healthChecks[] = $healthCheck;
 
         return $healthCheck;
-    }
-
-    public function usesInfrastructureNode(InfrastructureNode $infrastructureNode, string $description = 'Uses', string $technology = null, InteractionStyle $interactionStyle = null) : Relationship
-    {
-        return $this->getModel()->addRelationship(
-            $this,
-            $infrastructureNode,
-            $description,
-            $technology,
-            $interactionStyle
-        );
     }
 }

@@ -55,7 +55,7 @@ final class ContainerInstance extends StaticStructureElementInstance
             }
         }
 
-        parent::hydrateDeploymentElement($instance, $containerInstanceData);
+        parent::hydrateDeploymentElement($instance, $containerInstanceData, $model);
 
         return $instance;
     }
@@ -63,11 +63,6 @@ final class ContainerInstance extends StaticStructureElementInstance
     public function getContainer() : Container
     {
         return $this->container;
-    }
-
-    public function getParent() : ?Element
-    {
-        return $this->container->getParent();
     }
 
     public function getCanonicalName() : string

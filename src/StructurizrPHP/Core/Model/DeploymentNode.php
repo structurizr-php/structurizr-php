@@ -33,11 +33,6 @@ use StructurizrPHP\Core\Model\Relationship\InteractionStyle;
 final class DeploymentNode extends DeploymentElement
 {
     /**
-     * @var null|DeploymentNode
-     */
-    private $parent;
-
-    /**
      * @var null|string
      */
     private $technology;
@@ -77,11 +72,6 @@ final class DeploymentNode extends DeploymentElement
         $deploymentNode->instances = $deploymentNodeData['instances'];
         $deploymentNode->setName($deploymentNodeData['name']);
 
-        if (isset($deploymentNodeData['parent'])) {
-            $element = $model->getElement($deploymentNodeData['parent']);
-            $deploymentNode->parent = ($element instanceof self) ? $element : null;
-        }
-
         if (isset($deploymentNodeData['technology'])) {
             $deploymentNode->technology = $deploymentNodeData['technology'];
         }
@@ -110,7 +100,7 @@ final class DeploymentNode extends DeploymentElement
             }
         }
 
-        parent::hydrateDeploymentElement($deploymentNode, $deploymentNodeData);
+        parent::hydrateDeploymentElement($deploymentNode, $deploymentNodeData, $model);
 
         return $deploymentNode;
     }
@@ -168,16 +158,13 @@ final class DeploymentNode extends DeploymentElement
         $this->technology = $technology;
     }
 
-    public function setParent(self $parent) : void
+    public function setParent(?self $parent) : void
     {
-        $parent->addChild($this);
+        if (null !== $parent) {
+            $parent->addChild($this);
+        }
 
-        $this->parent = $parent;
-    }
-
-    public function getParent() : ?Element
-    {
-        return $this->parent;
+        parent::setParent($parent);
     }
 
     /**
@@ -283,10 +270,6 @@ final class DeploymentNode extends DeploymentElement
 
         if ($this->technology !== null) {
             $data['technology'] = $this->technology;
-        }
-
-        if ($this->parent) {
-            $data['parent'] = $this->parent->id();
         }
 
         return $data;

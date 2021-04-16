@@ -99,8 +99,6 @@ abstract class Element extends ModelItem
         return $this->name;
     }
 
-    abstract public function getParent() : ?self;
-
     public function getCanonicalName() : string
     {
         return $this->formatForCanonicalName($this->name);

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\Core\Model;
 
-use StructurizrPHP\Core\Model\Relationship\InteractionStyle;
-
 /**
  * <p>
  *   Represents an infrastructure node, which is something like:
@@ -32,7 +30,7 @@ final class InfrastructureNode extends DeploymentElement
     /**
      * @var DeploymentNode
      */
-    private $parent;
+    protected $parent;
 
     /**
      * @var null|string
@@ -62,7 +60,7 @@ final class InfrastructureNode extends DeploymentElement
             $infrastructureNode->technology = $infrastructureNodeData['technology'];
         }
 
-        parent::hydrateDeploymentElement($infrastructureNode, $infrastructureNodeData);
+        parent::hydrateDeploymentElement($infrastructureNode, $infrastructureNodeData, $model);
 
         return $infrastructureNode;
     }
@@ -70,22 +68,6 @@ final class InfrastructureNode extends DeploymentElement
     public function setTechnology(?string $technology) : void
     {
         $this->technology = $technology;
-    }
-
-    public function getParent() : Element
-    {
-        return $this->parent;
-    }
-
-    public function usesDeploymentElement(DeploymentElement $deploymentElement, string $description = 'Uses', string $technology = null, InteractionStyle $interactionStyle = null) : Relationship
-    {
-        return $this->getModel()->addRelationship(
-            $this,
-            $deploymentElement,
-            $description,
-            $technology,
-            $interactionStyle
-        );
     }
 
     public function toArray() : array

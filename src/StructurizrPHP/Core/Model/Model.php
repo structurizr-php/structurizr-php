@@ -370,7 +370,7 @@ final class Model
         return $deploymentNode;
     }
 
-    public function addContainerInstance(DeploymentElement $deploymentElement, Container $container, bool $replicateContainerRelationships = true) : ContainerInstance
+    public function addContainerInstance(DeploymentNode $parent, Container $container, bool $replicateContainerRelationships = true) : ContainerInstance
     {
         $instanceNumber = \count(\array_unique(\array_map(
             function (DeploymentNode $deploymentNode) {
@@ -383,7 +383,8 @@ final class Model
             $this->deploymentNodes,
         )));
 
-        $containerInstance = new ContainerInstance($container, $instanceNumber, $deploymentElement->getEnvironment(), $this->idGenerator->generateId(), $this);
+        $containerInstance = new ContainerInstance($container, $instanceNumber, $parent->getEnvironment(), $this->idGenerator->generateId(), $this);
+        $containerInstance->setParent($parent);
 
         if ($replicateContainerRelationships) {
             // get all ContainerInstance objects
@@ -408,8 +409,8 @@ final class Model
                     },
                     $this->deploymentNodes
                 )),
-                function (ContainerInstance $containerInstance) use ($deploymentElement) {
-                    return $containerInstance->getEnvironment() === $deploymentElement->getEnvironment();
+                function (ContainerInstance $containerInstance) use ($parent) {
+                    return $containerInstance->getEnvironment() === $parent->getEnvironment();
                 }
             );
 
@@ -683,15 +684,17 @@ final class Model
             return false;
         }
 
-        /** @var Element $parent */
-        $parent = $e2->getParent();
+        if (\method_exists($e2, 'getParent')) {
+            /** @var Element $parent */
+            $parent = $e2->getParent();
 
-        while ($parent !== null) {
-            if ($parent->id() === $e1->id()) {
-                return true;
+            while ($parent !== null) {
+                if ($parent->id() === $e1->id()) {
+                    return true;
+                }
+
+                $parent = $parent->getParent();
             }
-
-            $parent = $parent->getParent();
         }
 
         return false;
