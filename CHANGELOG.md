@@ -1,4 +1,4 @@
-## [Unreleased] - 2021-04-07
+## [Unreleased] - 2021-04-12
 
 ### Added
 - [#76](https://github.com/structurizr-php/structurizr-php/pull/76) - **Added more supported paper sizes for views** - [@alleknalle](https://github.com/alleknalle)
@@ -14,6 +14,7 @@
 - [#72](https://github.com/structurizr-php/structurizr-php/pull/72) - **Only add Elements and Relationships to View if they don't already exist to keep the JSON clean** - [@alleknalle](https://github.com/alleknalle)
 
 ### Fixed
+- [#77](https://github.com/structurizr-php/structurizr-php/pull/77) - **When adding a child deployment node from model, it was not added to the children of the parent** - [@alleknalle](https://github.com/alleknalle)
 - [#75](https://github.com/structurizr-php/structurizr-php/pull/75) - **Corrected order of parameters in constructor for all Views** - [@alleknalle](https://github.com/alleknalle)
 - [#74](https://github.com/structurizr-php/structurizr-php/pull/74) - **External boundaries in ComponentView was not working as expected** - [@alleknalle](https://github.com/alleknalle)
 
