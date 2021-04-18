@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace StructurizrPHP\Core\View;
 
+use StructurizrPHP\Core\Model\ContainerInstance;
 use StructurizrPHP\Core\Model\DeploymentNode;
 use StructurizrPHP\Core\Model\Element;
+use StructurizrPHP\Core\Model\InfrastructureNode;
 use StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\Core\Model\Relationship;
 use StructurizrPHP\Core\Model\SoftwareSystem;
@@ -74,20 +76,63 @@ final class DeploymentView extends View
         }
     }
 
-    public function add(DeploymentNode $deploymentNode, bool $addRelationships = true) : void
-    {
-        if ($this->addContainerInstancesAndDeploymentNodesAndInfrastructureNodes($deploymentNode, $addRelationships)) {
-            $parent = $deploymentNode->getParent();
+    public function add(
+        DeploymentNode $deploymentNode,
+        bool $addRelationships = true,
+        bool $addChildren = true
+    ) : void {
+        $addElement = false;
 
-            while ($parent !== null) {
-                $this->addElement($parent, $addRelationships);
-                $parent = $parent->getParent();
+        if ($addChildren) {
+            if ($this->hasContainerInstancesOrDeploymentNodesOrInfrastructureNodes(
+                $deploymentNode
+            )) {
+                $addElement = true;
+
+                $this->addContainerInstancesAndDeploymentNodesAndInfrastructureNodes(
+                    $deploymentNode,
+                    $addRelationships
+                );
             }
+        } else {
+            $addElement = true;
+
+            $this->addElement($deploymentNode, $addRelationships);
+        }
+
+        if (!$addElement) {
+            return;
+        }
+
+        $parent = $deploymentNode->getParent();
+
+        while ($parent !== null) {
+            $this->addElement($parent, $addRelationships);
+            $parent = $parent->getParent();
         }
     }
 
-    public function addRelationship(Relationship $relationship) : ?RelationshipView
-    {
+    public function addContainerInstance(
+        ContainerInstance $containerInstance,
+        bool $addRelationships = true
+    ) : void {
+        $this->addElement($containerInstance, $addRelationships);
+
+        $this->add($containerInstance->getParent(), $addRelationships, false);
+    }
+
+    public function addInfrastructureNode(
+        InfrastructureNode $infrastructureNode,
+        bool $addRelationships = true
+    ) : void {
+        $this->addElement($infrastructureNode, $addRelationships);
+
+        $this->add($infrastructureNode->getParent(), $addRelationships, false);
+    }
+
+    public function addRelationship(
+        Relationship $relationship
+    ) : ?RelationshipView {
         return parent::addRelationship($relationship);
     }
 
@@ -107,32 +152,71 @@ final class DeploymentView extends View
         return true;
     }
 
-    private function addContainerInstancesAndDeploymentNodesAndInfrastructureNodes(DeploymentNode $deploymentNode, bool $addRelationships) : bool
-    {
-        $hasContainersOrInfrastructureNodes = false;
-
-        foreach ($deploymentNode->getContainerInstances() as $containerInstance) {
+    private function hasContainerInstancesOrDeploymentNodesOrInfrastructureNodes(
+        DeploymentNode $deploymentNode
+    ) : bool {
+        foreach (
+            $deploymentNode->getContainerInstances() as $containerInstance
+        ) {
             $container = $containerInstance->getContainer();
 
-            if ($this->softwareSystem === null || $container->getParent()->equals($this->softwareSystem)) {
-                $this->addElement($containerInstance, $addRelationships);
-                $hasContainersOrInfrastructureNodes = true;
+            if ($this->softwareSystem === null || $container->getParent(
+                )->equals($this->softwareSystem)) {
+                return true;
             }
         }
 
-        foreach ($deploymentNode->getInfrastructureNodes() as $infrastructureNode) {
-            $this->addElement($infrastructureNode, $addRelationships);
-            $hasContainersOrInfrastructureNodes = true;
+        if (!empty($deploymentNode->getInfrastructureNodes())) {
+            return true;
         }
 
         foreach ($deploymentNode->getChildren() as $child) {
-            $hasContainersOrInfrastructureNodes = (bool) ($hasContainersOrInfrastructureNodes | $this->addContainerInstancesAndDeploymentNodesAndInfrastructureNodes($child, $addRelationships));
+            if ($this->hasContainerInstancesOrDeploymentNodesOrInfrastructureNodes(
+                $child
+            )) {
+                return true;
+            }
         }
 
-        if ($hasContainersOrInfrastructureNodes) {
-            $this->addElement($deploymentNode, $addRelationships);
+        return false;
+    }
+
+    private function addContainerInstancesAndDeploymentNodesAndInfrastructureNodes(
+        DeploymentNode $deploymentNode,
+        bool $addRelationships
+    ) : bool {
+        if (!$this->hasContainerInstancesOrDeploymentNodesOrInfrastructureNodes(
+            $deploymentNode
+        )) {
+            return false;
         }
 
-        return $hasContainersOrInfrastructureNodes;
+        foreach (
+            $deploymentNode->getContainerInstances() as $containerInstance
+        ) {
+            $container = $containerInstance->getContainer();
+
+            if ($this->softwareSystem === null || $container->getParent(
+                )->equals($this->softwareSystem)) {
+                $this->addElement($containerInstance, $addRelationships);
+            }
+        }
+
+        foreach (
+            $deploymentNode->getInfrastructureNodes() as $infrastructureNode
+        ) {
+            $this->addElement($infrastructureNode, $addRelationships);
+        }
+
+        foreach ($deploymentNode->getChildren() as $child) {
+            $this->addContainerInstancesAndDeploymentNodesAndInfrastructureNodes(
+                $child,
+                $addRelationships
+            );
+        }
+
+        $this->addElement($deploymentNode, $addRelationships);
+
+        return true;
     }
 }

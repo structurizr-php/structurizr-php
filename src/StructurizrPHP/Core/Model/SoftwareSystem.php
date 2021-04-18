@@ -39,8 +39,10 @@ final class SoftwareSystem extends StaticStructureElement
         $this->setTags(new Tags(Tags::ELEMENT, Tags::SOFTWARE_SYSTEM));
     }
 
-    public static function hydrate(array $softwareSystemData, Model $model) : self
-    {
+    public static function hydrate(
+        array $softwareSystemData,
+        Model $model
+    ) : self {
         $softwareSystem = new self(
             $softwareSystemData['id'],
             $model
@@ -49,14 +51,20 @@ final class SoftwareSystem extends StaticStructureElement
         parent::hydrateElement($softwareSystem, $softwareSystemData);
 
         if (isset($softwareSystemData['location'])) {
-            $softwareSystem->setLocation(Location::hydrate($softwareSystemData['location']));
+            $softwareSystem->setLocation(
+                Location::hydrate($softwareSystemData['location'])
+            );
         }
 
         if (isset($softwareSystemData['containers'])) {
             if (\is_array($softwareSystemData['containers'])) {
                 // hydrate containers without relationships
                 foreach ($softwareSystemData['containers'] as $containerData) {
-                    $container = Container::hydrate($containerData, $softwareSystem, $model);
+                    $container = Container::hydrate(
+                        $containerData,
+                        $softwareSystem,
+                        $model
+                    );
                     $softwareSystem->add($container);
                 }
             }
@@ -65,17 +73,29 @@ final class SoftwareSystem extends StaticStructureElement
         return $softwareSystem;
     }
 
-    public static function hydrateContainersRelationships(self $softwareSystem, array $softwareSystemData) : void
-    {
+    public static function hydrateContainersRelationships(
+        self $softwareSystem,
+        array $softwareSystemData
+    ) : void {
         if (isset($softwareSystemData['containers'])) {
             if (\is_array($softwareSystemData['containers'])) {
                 // hydrate containers missing relationships
                 foreach ($softwareSystemData['containers'] as $containerData) {
-                    Container::hydrateRelationships($softwareSystem->getContainer($containerData['id']), $containerData);
+                    Container::hydrateRelationships(
+                        $softwareSystem->getContainer($containerData['id']),
+                        $containerData
+                    );
 
-                    if (isset($containerData['components']) && \is_array($containerData['components'])) {
+                    if (isset($containerData['components']) && \is_array(
+                        $containerData['components']
+                    )) {
                         foreach ($containerData['components'] as $componentData) {
-                            Component::hydrateRelationships($softwareSystem->getContainer($containerData['id'])->getComponent($componentData['id']), $componentData);
+                            Component::hydrateRelationships(
+                                $softwareSystem->getContainer(
+                                    $containerData['id']
+                                )->getComponent($componentData['id']),
+                                $componentData
+                            );
                         }
                     }
                 }
@@ -109,12 +129,22 @@ final class SoftwareSystem extends StaticStructureElement
             }
         }
 
-        throw new InvalidArgumentException(\sprintf('Continer with id %s does not exists', $id));
+        throw new InvalidArgumentException(
+            \sprintf('Container with id %s does not exists', $id)
+        );
     }
 
-    public function addContainer(string $name, string $description, string $technology) : Container
-    {
-        return $this->getModel()->addContainer($this, $name, $description, $technology);
+    public function addContainer(
+        string $name,
+        string $description,
+        string $technology
+    ) : Container {
+        return $this->getModel()->addContainer(
+            $this,
+            $name,
+            $description,
+            $technology
+        );
     }
 
     public function findContainerWithName(string $containerName) : ?Container
@@ -134,6 +164,11 @@ final class SoftwareSystem extends StaticStructureElement
     public function setLocation(Location $location) : void
     {
         $this->location = $location;
+    }
+
+    public function getLocation() : Location
+    {
+        return $this->location;
     }
 
     public function toArray() : array

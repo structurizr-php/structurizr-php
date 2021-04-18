@@ -17,6 +17,12 @@ use StructurizrPHP\Core\Assertion;
 
 final class Location
 {
+    public const TYPE_EXTERNAL = 'External';
+
+    public const TYPE_INTERNAL = 'Internal';
+
+    public const TYPE_UNSPECIFIED = 'Unspecified';
+
     private $type;
 
     private function __construct(string $type)
@@ -26,22 +32,22 @@ final class Location
 
     public static function external() : self
     {
-        return new self('External');
+        return new self(self::TYPE_EXTERNAL);
     }
 
     public static function internal() : self
     {
-        return new self('Internal');
+        return new self(self::TYPE_INTERNAL);
     }
 
     public static function unspecified() : self
     {
-        return new self('Unspecified');
+        return new self(self::TYPE_UNSPECIFIED);
     }
 
     public static function hydrate(string $type) : self
     {
-        Assertion::inArray($type, ['External', 'Internal', 'Unspecified']);
+        Assertion::inArray($type, [self::TYPE_EXTERNAL, self::TYPE_INTERNAL, self::TYPE_UNSPECIFIED]);
 
         return new self($type);
     }
