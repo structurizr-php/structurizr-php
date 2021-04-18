@@ -1,6 +1,9 @@
-## [Unreleased] - 2021-04-12
+## [Unreleased] - 2021-04-18
 
 ### Added
+- [#78](https://github.com/structurizr-php/structurizr-php/pull/78) - **Added constants for Location types** - [@alleknalle](https://github.com/alleknalle)
+- [#78](https://github.com/structurizr-php/structurizr-php/pull/78) - **Added getLocation() to SoftwareSystem** - [@alleknalle](https://github.com/alleknalle)
+- [#78](https://github.com/structurizr-php/structurizr-php/pull/78) - **Added functionality to only add a single ContainerInstance/InfrastructureNode and it's parents to a DeploymentView** - [@alleknalle](https://github.com/alleknalle)
 - [#76](https://github.com/structurizr-php/structurizr-php/pull/76) - **Added more supported paper sizes for views** - [@alleknalle](https://github.com/alleknalle)
 - [#75](https://github.com/structurizr-php/structurizr-php/pull/75) - **Added possibility to get Elements from Model by Tag** - [@alleknalle](https://github.com/alleknalle)
 - [#75](https://github.com/structurizr-php/structurizr-php/pull/75) - **Added (undocumented) tag for response relationships** - [@alleknalle](https://github.com/alleknalle)
@@ -11,12 +14,19 @@
 - [#72](https://github.com/structurizr-php/structurizr-php/pull/72) - **Added getters for basic View data** - [@alleknalle](https://github.com/alleknalle)
 
 ### Changed
+- [#78](https://github.com/structurizr-php/structurizr-php/pull/78) - **Moved parent from ContainerInstance/DeploymentNode to DeploymentElement** - [@alleknalle](https://github.com/alleknalle)
+- [#78](https://github.com/structurizr-php/structurizr-php/pull/78) - **Moved usesDeploymentElement() from InfrastructureNode to DeploymentElement** - [@alleknalle](https://github.com/alleknalle)
+- [#78](https://github.com/structurizr-php/structurizr-php/pull/78) - **Fixes for parent in all deployment layers to be compatible changes in parent** - [@alleknalle](https://github.com/alleknalle)
 - [#72](https://github.com/structurizr-php/structurizr-php/pull/72) - **Only add Elements and Relationships to View if they don't already exist to keep the JSON clean** - [@alleknalle](https://github.com/alleknalle)
 
 ### Fixed
 - [#77](https://github.com/structurizr-php/structurizr-php/pull/77) - **When adding a child deployment node from model, it was not added to the children of the parent** - [@alleknalle](https://github.com/alleknalle)
 - [#75](https://github.com/structurizr-php/structurizr-php/pull/75) - **Corrected order of parameters in constructor for all Views** - [@alleknalle](https://github.com/alleknalle)
 - [#74](https://github.com/structurizr-php/structurizr-php/pull/74) - **External boundaries in ComponentView was not working as expected** - [@alleknalle](https://github.com/alleknalle)
+
+### Removed
+- [#78](https://github.com/structurizr-php/structurizr-php/pull/78) - **Removed getParent() from Element, since Element doesn't have a parent** - [@alleknalle](https://github.com/alleknalle)
+- [#78](https://github.com/structurizr-php/structurizr-php/pull/78) - **Removed usesInfrastructureNode() from StaticStructureElementInstance since usesDeploymentElement() is part of it and can be used instead** - [@alleknalle](https://github.com/alleknalle)
 
 ## [0.2.0] - 2021-04-04
 
