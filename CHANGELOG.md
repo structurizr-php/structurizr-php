@@ -1,4 +1,4 @@
-## [Unreleased] - 2021-04-18
+## [0.3.0] - 2021-04-18
 
 ### Added
 - [#78](https://github.com/structurizr-php/structurizr-php/pull/78) - **Added constants for Location types** - [@alleknalle](https://github.com/alleknalle)
