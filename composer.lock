@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af5011f69671c772c29bbc1a490f82d5",
+    "content-hash": "d2938cf8a00d810d83d6110c9355dca8",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3650,16 +3650,16 @@
         },
         {
             "name": "sensiolabs-de/deptrac-shim",
-            "version": "0.12.0",
+            "version": "0.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/qossmic/deptrac-shim.git",
-                "reference": "227a4359dbac8f844a0bab6d9f54a21ec0b0eb94"
+                "reference": "fb549413b7fadb165bf911586ef7b41281f4a9bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/qossmic/deptrac-shim/zipball/227a4359dbac8f844a0bab6d9f54a21ec0b0eb94",
-                "reference": "227a4359dbac8f844a0bab6d9f54a21ec0b0eb94",
+                "url": "https://api.github.com/repos/qossmic/deptrac-shim/zipball/fb549413b7fadb165bf911586ef7b41281f4a9bb",
+                "reference": "fb549413b7fadb165bf911586ef7b41281f4a9bb",
                 "shasum": ""
             },
             "require": {
@@ -3692,10 +3692,10 @@
             "description": "deptrac phar distribution",
             "support": {
                 "issues": "https://github.com/qossmic/deptrac-shim/issues",
-                "source": "https://github.com/qossmic/deptrac-shim/tree/0.12.0"
+                "source": "https://github.com/qossmic/deptrac-shim/tree/0.13.0"
             },
             "abandoned": "qossmic/deptrac-shim",
-            "time": "2021-03-12T08:42:24+00:00"
+            "time": "2021-04-16T13:40:43+00:00"
         },
         {
             "name": "structurizr-php/extensions-php",
