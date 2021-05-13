@@ -5098,16 +5098,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v5.2.7",
+            "version": "v5.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "27cb9f7cfa3853c736425c7233a8f68814b19636"
+                "reference": "d693200a73fae179d27f8f1b16b4faf3e8569eba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/27cb9f7cfa3853c736425c7233a8f68814b19636",
-                "reference": "27cb9f7cfa3853c736425c7233a8f68814b19636",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/d693200a73fae179d27f8f1b16b4faf3e8569eba",
+                "reference": "d693200a73fae179d27f8f1b16b4faf3e8569eba",
                 "shasum": ""
             },
             "require": {
@@ -5166,7 +5166,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v5.2.7"
+                "source": "https://github.com/symfony/var-dumper/tree/v5.2.8"
             },
             "funding": [
                 {
@@ -5182,7 +5182,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-19T14:07:32+00:00"
+            "time": "2021-05-07T13:42:21+00:00"
         },
         {
             "name": "thecodingmachine/phpstan-strict-rules",
