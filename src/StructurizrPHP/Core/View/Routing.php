@@ -15,6 +15,9 @@ namespace StructurizrPHP\Core\View;
 
 final class Routing
 {
+    /**
+     * @var string
+     */
     private $type;
 
     private function __construct(string $type)

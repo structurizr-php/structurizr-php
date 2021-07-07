@@ -15,6 +15,9 @@ namespace StructurizrPHP\Core\View\Configuration;
 
 final class Shape
 {
+    /**
+     * @var string
+     */
     private $name;
 
     private function __construct(string $name)

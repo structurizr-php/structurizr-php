@@ -17,8 +17,6 @@ use StructurizrPHP\Core\Model\Element;
 
 final class Section
 {
-    private $elementId;
-
     /**
      * @var Element
      */

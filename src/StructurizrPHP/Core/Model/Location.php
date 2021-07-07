@@ -23,6 +23,9 @@ final class Location
 
     public const TYPE_UNSPECIFIED = 'Unspecified';
 
+    /**
+     * @var string
+     */
     private $type;
 
     private function __construct(string $type)

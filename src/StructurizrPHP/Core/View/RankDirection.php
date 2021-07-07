@@ -15,6 +15,9 @@ namespace StructurizrPHP\Core\View;
 
 final class RankDirection
 {
+    /**
+     * @var string
+     */
     private $direction;
 
     private function __construct(string $direction)

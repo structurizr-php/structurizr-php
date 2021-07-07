@@ -37,7 +37,7 @@ final class Documentation
     private $template;
 
     /**
-     * @var array
+     * @var Decision[]
      */
     private $decisions;
 
@@ -158,7 +158,7 @@ final class Documentation
 final class DocumentationDataObject
 {
     /**
-     * @var array
+     * @var array<mixed>
      */
     private $documentationSetData;
 

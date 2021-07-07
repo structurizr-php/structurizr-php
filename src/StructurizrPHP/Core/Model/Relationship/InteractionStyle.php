@@ -17,6 +17,9 @@ use StructurizrPHP\Core\Assertion;
 
 final class InteractionStyle
 {
+    /**
+     * @var string
+     */
     private $style;
 
     private function __construct(string $type)

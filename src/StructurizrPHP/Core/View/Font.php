@@ -17,8 +17,14 @@ use StructurizrPHP\Core\Assertion;
 
 final class Font
 {
+    /**
+     * @var string
+     */
     private $name;
 
+    /**
+     * @var string
+     */
     private $url;
 
     public function __construct(string $name, string $url)

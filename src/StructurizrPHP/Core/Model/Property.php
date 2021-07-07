@@ -15,8 +15,14 @@ namespace StructurizrPHP\Core\Model;
 
 final class Property
 {
+    /**
+     * @var string
+     */
     private $key;
 
+    /**
+     * @var string
+     */
     private $value;
 
     public function __construct(string $key, string $value)

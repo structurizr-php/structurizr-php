@@ -406,7 +406,7 @@ final class ViewSet
 final class ViewSetDataObject
 {
     /**
-     * @var array
+     * @var array<mixed>
      */
     private $viewSetData;
 

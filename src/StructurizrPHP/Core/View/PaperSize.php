@@ -18,6 +18,9 @@ namespace StructurizrPHP\Core\View;
  */
 final class PaperSize
 {
+    /**
+     * @var string
+     */
     private $size;
 
     private function __construct(string $size)
