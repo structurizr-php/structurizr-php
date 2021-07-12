@@ -15,6 +15,9 @@ namespace StructurizrPHP\Core\View\Configuration;
 
 final class Border
 {
+    /**
+     * @var string
+     */
     private $type;
 
     private function __construct(string $type)

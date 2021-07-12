@@ -27,6 +27,9 @@ final class DecisionStatus
 
     private const REJECTED = 'Rejected';
 
+    /**
+     * @var string
+     */
     private $name;
 
     private function __construct(string $name)

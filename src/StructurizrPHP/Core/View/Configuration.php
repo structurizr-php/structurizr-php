@@ -27,6 +27,9 @@ final class Configuration
      */
     private $lastSavedView;
 
+    /**
+     * @var Branding
+     */
     private $branding;
 
     public function __construct()

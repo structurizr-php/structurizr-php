@@ -389,7 +389,7 @@ final class Model
         if ($replicateContainerRelationships) {
             // get all ContainerInstance objects
             /** @return ContainerInstance[] */
-            $getContainerInstances = function (DeploymentNode $deploymentNode) use (&$getContainerInstances) : ?array {
+            $getContainerInstances = function (DeploymentNode $deploymentNode) use (&$getContainerInstances) : array {
                 $containerInstances = [];
                 $containerInstances = \array_merge($containerInstances, $deploymentNode->getContainerInstances());
 
@@ -704,12 +704,12 @@ final class Model
 final class ModelDataObject
 {
     /**
-     * @var array
+     * @var array<mixed>
      */
     private $modelData;
 
     /**
-     * @var array
+     * @param array<mixed> $modelData
      */
     public function __construct(array $modelData)
     {
