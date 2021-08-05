@@ -23,7 +23,7 @@
     "require-dev": {
         "symfony/http-client": "^4.3 || ^5.0",
         "nyholm/psr7": "^1.2",
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "friendsofphp/php-cs-fixer": "^2.16 || ^3.0",
         "phpunit/phpunit": "^8.4 || ^9.0",
         "symfony/var-dumper": "^4.3 || ^5.0",
         "phpstan/phpstan": "^0.12.34",
