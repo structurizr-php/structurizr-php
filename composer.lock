@@ -5029,16 +5029,16 @@
         },
         {
             "name": "thecodingmachine/phpstan-strict-rules",
-            "version": "v0.12.1",
+            "version": "v0.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/phpstan-strict-rules.git",
-                "reference": "4bb334f6f637ebfba83cfdc7392d549a8a3fbba7"
+                "reference": "ed65c3cf33e3b668c5a072d49741965114c881b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/phpstan-strict-rules/zipball/4bb334f6f637ebfba83cfdc7392d549a8a3fbba7",
-                "reference": "4bb334f6f637ebfba83cfdc7392d549a8a3fbba7",
+                "url": "https://api.github.com/repos/thecodingmachine/phpstan-strict-rules/zipball/ed65c3cf33e3b668c5a072d49741965114c881b5",
+                "reference": "ed65c3cf33e3b668c5a072d49741965114c881b5",
                 "shasum": ""
             },
             "require": {
@@ -5078,9 +5078,9 @@
             "description": "A set of additional rules for PHPStan based on best practices followed at TheCodingMachine",
             "support": {
                 "issues": "https://github.com/thecodingmachine/phpstan-strict-rules/issues",
-                "source": "https://github.com/thecodingmachine/phpstan-strict-rules/tree/master"
+                "source": "https://github.com/thecodingmachine/phpstan-strict-rules/tree/v0.12.2"
             },
-            "time": "2020-09-08T09:14:10+00:00"
+            "time": "2021-11-08T09:01:22+00:00"
         },
         {
             "name": "theseer/tokenizer",
