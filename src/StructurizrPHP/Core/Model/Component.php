@@ -46,6 +46,8 @@ final class Component extends StaticStructureElement
             $component->setType($componentData['type']);
         }
 
+        parent::hydrateElement($component, $componentData);
+
         $model->addElementToInternalStructures($component);
 
         return $component;
