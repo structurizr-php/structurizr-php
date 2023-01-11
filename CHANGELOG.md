@@ -1,7 +1,10 @@
-## [Unreleased] - 2021-07-12
+## [Unreleased] - 2023-01-11
 
 ### Added
 - [#99](https://github.com/structurizr-php/structurizr-php/pull/99) - **Allow PHP 8.0** - [@tomaszhanc](https://github.com/tomaszhanc)
+
+### Fixed
+- [#186](https://github.com/structurizr-php/structurizr-php/pull/186) - **Missing data in Component hydratation** - [@tazorax](https://github.com/tazorax)
 
 ## [0.3.0] - 2021-04-18
 
