@@ -142,7 +142,7 @@ final class RelationshipStyle
     {
         Assertion::hexColorCode($color);
 
-        $this->color = strtolower($color);
+        $this->color = \strtolower($color);
 
         return $this;
     }

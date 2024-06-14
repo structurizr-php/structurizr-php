@@ -40,7 +40,7 @@ const MOBILE_APP_TAG = 'Mobile App';
 const DATABASE_TAG = 'Database';
 const FAILOVER_TAG = 'Failover';
 
-$workspace = new Workspace((string) getenv('STRUCTURIZR_WORKSPACE_ID'), 'Big Bank plc', 'This is an example workspace to illustrate the key features of Structurizr, based around a fictional online banking system.');
+$workspace = new Workspace((string) \getenv('STRUCTURIZR_WORKSPACE_ID'), 'Big Bank plc', 'This is an example workspace to illustrate the key features of Structurizr, based around a fictional online banking system.');
 $model = $workspace->getModel();
 $views = $workspace->getViews();
 
@@ -103,7 +103,7 @@ $securityComponent = $apiApplication->addComponent('Security Component', 'Provid
 $mainframeBankingSystemFacade = $apiApplication->addComponent('Mainframe Banking System Facade', 'A facade onto the mainframe banking system.', '', 'Spring Bean');
 $emailComponent = $apiApplication->addComponent('E-mail Component', 'Sends e-mails to users.', '', 'Spring Bean');
 
-$controllers = array_filter(
+$controllers = \array_filter(
     $apiApplication->getComponents(),
     function (Component $component) {
         return $component->getTechnology() === 'Spring MVC Rest Controller';
@@ -171,7 +171,7 @@ $secondaryDatabaseServer = $bigBankDataCenter->addDeploymentNode('bigbank-db02',
     ->addDeploymentNode('Oracle - Secondary', 'Live', 'A secondary, standby database server, used for failover purposes only.', 'Oracle 12c');
 $secondaryDatabase = $secondaryDatabaseServer->add($database);
 
-$relationships = array_filter(
+$relationships = \array_filter(
     $model->getRelationships(),
     function (Relationship $relationship) use ($secondaryDatabase) {
         return $relationship->getDestination()->equals($secondaryDatabase);
@@ -308,11 +308,11 @@ $template->addDeploymentSection(
 );
 
 $client = new Client(
-    new Credentials((string) getenv('STRUCTURIZR_API_KEY'), (string) getenv('STRUCTURIZR_API_SECRET')),
+    new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
     new UrlMap('https://api.structurizr.com'),
     new Psr18Client(),
     new SymfonyRequestFactory(),
     // Logger can be replaced with new NullLogger()
-    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . basename(__FILE__) . '.log', Logger::DEBUG))
+    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . \basename(__FILE__) . '.log', Logger::DEBUG))
 );
 $client->put($workspace);

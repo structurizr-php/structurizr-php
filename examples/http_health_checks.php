@@ -27,7 +27,7 @@ require __DIR__ . '/../vendor/autoload.php';
 const DATABASE_TAG = 'Database';
 
 $workspace = new Workspace(
-    $id = (string) getenv('STRUCTURIZR_WORKSPACE_ID'),
+    $id = (string) \getenv('STRUCTURIZR_WORKSPACE_ID'),
     $name = 'Http Health Checks',
     $description = 'An example of how to use the HTTP-based health checks feature'
 );
@@ -60,12 +60,12 @@ $workspace->getViews()->getConfiguration()->getStyles()->addElementStyle(Tags::E
 $workspace->getViews()->getConfiguration()->getStyles()->addElementStyle(DATABASE_TAG)->shape(Shape::cylinder());
 
 $client = new Client(
-    new Credentials((string) getenv('STRUCTURIZR_API_KEY'), (string) getenv('STRUCTURIZR_API_SECRET')),
+    new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
     new UrlMap('https://api.structurizr.com'),
     new Psr18Client(),
     new SymfonyRequestFactory(),
     // Logger can be replaced with new NullLogger()
-    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . basename(__FILE__) . '.log', Logger::DEBUG))
+    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . \basename(__FILE__) . '.log', Logger::DEBUG))
 );
 
 $client->put($workspace);

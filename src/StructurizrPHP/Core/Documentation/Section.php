@@ -147,15 +147,15 @@ final class Section
     private function str_hashcode(string $s) : int
     {
         $hash = 0;
-        $len = mb_strlen($s, 'UTF-8');
+        $len = \mb_strlen($s, 'UTF-8');
 
         if ($len === 0) {
             return $hash;
         }
 
         for ($i = 0; $i < $len; $i++) {
-            $c = mb_substr($s, $i, 1, 'UTF-8');
-            $cc = unpack('V', (string) iconv('UTF-8', 'UCS-4LE', $c))[1];
+            $c = \mb_substr($s, $i, 1, 'UTF-8');
+            $cc = \unpack('V', (string) \iconv('UTF-8', 'UCS-4LE', $c))[1];
             $hash = (($hash << 5) - $hash) + $cc;
             $hash &= $hash; // 16bit > 32bit
         }

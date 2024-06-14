@@ -231,7 +231,7 @@ final class DeploymentNode extends DeploymentElement
 
     public function toArray() : array
     {
-        $data = array_merge(
+        $data = \array_merge(
             [
                 'id' => $this->id(),
                 'name' => $this->getName(),
@@ -242,7 +242,7 @@ final class DeploymentNode extends DeploymentElement
         );
 
         if (\count($this->children)) {
-            $data['children'] = array_map(
+            $data['children'] = \array_map(
                 function (self $child) {
                     return $child->toArray();
                 },
@@ -251,7 +251,7 @@ final class DeploymentNode extends DeploymentElement
         }
 
         if (\count($this->containerInstances)) {
-            $data['containerInstances'] = array_map(
+            $data['containerInstances'] = \array_map(
                 function (ContainerInstance $containerInstance) {
                     return $containerInstance->toArray();
                 },
@@ -260,7 +260,7 @@ final class DeploymentNode extends DeploymentElement
         }
 
         if (\count($this->infrastructureNodes)) {
-            $data['infrastructureNodes'] = array_map(
+            $data['infrastructureNodes'] = \array_map(
                 function (InfrastructureNode $infrastructureNode) {
                     return $infrastructureNode->toArray();
                 },

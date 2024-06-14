@@ -89,7 +89,7 @@ final class Component extends StaticStructureElement
 
     public function toArray() : array
     {
-        return array_merge(
+        return \array_merge(
             [
                 'type' => $this->type,
                 'technology' => $this->technology,

@@ -85,7 +85,7 @@ abstract class Element extends ModelItem
 
         // sort relationships by ID
         if (isset($elementData['relationships'])) {
-            usort(
+            \usort(
                 $elementData['relationships'],
                 function (array $relationshipA, array $relationshipB) {
                     return (int) $relationshipA['id'] > (int) $relationshipB['id'] ? 1 : 0;
@@ -130,7 +130,7 @@ abstract class Element extends ModelItem
             }
         }
 
-        throw new RuntimeException(sprintf('There is no efferent relationship between %s[#%s] and %s[#%s]', $this->getName(), $this->id(), $element->getName(), $element->id()));
+        throw new RuntimeException(\sprintf('There is no efferent relationship between %s[#%s] and %s[#%s]', $this->getName(), $this->id(), $element->getName(), $element->id()));
     }
 
     public function getModel() : Model
@@ -176,7 +176,7 @@ abstract class Element extends ModelItem
         $data = parent::toArray();
 
         if (\count($this->relationships)) {
-            $data['relationships'] = array_map(
+            $data['relationships'] = \array_map(
                 function (Relationship $relationship) {
                     return $relationship->toArray();
                 },
@@ -201,6 +201,6 @@ abstract class Element extends ModelItem
 
     protected function formatForCanonicalName(string $name) : string
     {
-        return mb_strtolower(str_replace(self::CANONICAL_NAME_SEPARATOR, '', $name));
+        return \mb_strtolower(\str_replace(self::CANONICAL_NAME_SEPARATOR, '', $name));
     }
 }

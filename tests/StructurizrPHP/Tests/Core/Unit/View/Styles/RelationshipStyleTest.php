@@ -31,11 +31,11 @@ final class RelationshipStyleTest extends TestCase
         $relationshipStyle = new RelationshipStyle('tag');
 
         $relationshipStyle
-            ->thickness(random_int(1, 100))
-            ->fontSize(random_int(1, 100))
-            ->width(random_int(1, 100))
-            ->opacity(random_int(0, 100))
-            ->setPosition(random_int(0, 100))
+            ->thickness(\random_int(1, 100))
+            ->fontSize(\random_int(1, 100))
+            ->width(\random_int(1, 100))
+            ->opacity(\random_int(0, 100))
+            ->setPosition(\random_int(0, 100))
             ->color('#ffffff')
             ->dashed(true)
             ->setRouting(Routing::direct());

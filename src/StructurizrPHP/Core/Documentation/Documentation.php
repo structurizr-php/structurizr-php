@@ -69,7 +69,7 @@ final class Documentation
 
         if (!$this->model->contains($element)) {
             throw new InvalidArgumentException(
-                sprintf('The element named %s does not exist in the model associated with this documentation.', $element->getName())
+                \sprintf('The element named %s does not exist in the model associated with this documentation.', $element->getName())
             );
         }
 
@@ -102,13 +102,13 @@ final class Documentation
         $data = [];
 
         if (\count($this->sections)) {
-            $data['sections'] = array_map(function (Section $section) {
+            $data['sections'] = \array_map(function (Section $section) {
                 return $section->toArray();
             }, $this->sections);
         }
 
         if (\count($this->decisions)) {
-            $data['decisions'] = array_map(function (Decision $decisions) {
+            $data['decisions'] = \array_map(function (Decision $decisions) {
                 return $decisions->toArray();
             }, $this->decisions);
         }
@@ -134,7 +134,7 @@ final class Documentation
             foreach ($this->sections as $section) {
                 if ($title === $section->getTitle()) {
                     throw new InvalidArgumentException(
-                        sprintf('A section with a title of %s already exists for this workspace.', $title)
+                        \sprintf('A section with a title of %s already exists for this workspace.', $title)
                     );
                 }
             }
@@ -142,7 +142,7 @@ final class Documentation
             foreach ($this->sections as $section) {
                 if ($title === $section->getTitle()) {
                     throw new InvalidArgumentException(
-                        sprintf('A section with a title of %s already exists for the element named %s.', $title, $element->getName())
+                        \sprintf('A section with a title of %s already exists for the element named %s.', $title, $element->getName())
                     );
                 }
             }
@@ -174,7 +174,7 @@ final class DocumentationDataObject
      */
     public function hydrateSections(Model $model) : array
     {
-        return array_map(
+        return \array_map(
             function (array $sectionData) use ($model) {
                 return Section::hydrate(
                     $sectionData,
@@ -203,7 +203,7 @@ final class DocumentationDataObject
      */
     public function hydrateDecisions(Model $model) : array
     {
-        return array_map(
+        return \array_map(
             function (array $decisionData) use ($model) {
                 return Decision::hydrate(
                     $decisionData,

@@ -47,11 +47,11 @@ final class StylesTest extends TestCase
 
         $style = $styles->addRelationshipStyle('TEST3');
         $style
-            ->thickness(random_int(1, 100))
-            ->fontSize(random_int(1, 100))
-            ->width(random_int(1, 100))
-            ->opacity(random_int(0, 100))
-            ->setPosition(random_int(0, 100))
+            ->thickness(\random_int(1, 100))
+            ->fontSize(\random_int(1, 100))
+            ->width(\random_int(1, 100))
+            ->opacity(\random_int(0, 100))
+            ->setPosition(\random_int(0, 100))
             ->color('#ffffff')
             ->dashed(true)
             ->setRouting(Routing::direct());

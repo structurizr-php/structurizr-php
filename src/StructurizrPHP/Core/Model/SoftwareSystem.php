@@ -130,7 +130,7 @@ final class SoftwareSystem extends StaticStructureElement
         }
 
         throw new InvalidArgumentException(
-            sprintf('Container with id %s does not exists', $id)
+            \sprintf('Container with id %s does not exists', $id)
         );
     }
 
@@ -173,10 +173,10 @@ final class SoftwareSystem extends StaticStructureElement
 
     public function toArray() : array
     {
-        return array_merge(
+        return \array_merge(
             [
                 'location' => $this->location->type(),
-                'containers' => array_map(
+                'containers' => \array_map(
                     function (Container $container) {
                         return $container->toArray();
                     },

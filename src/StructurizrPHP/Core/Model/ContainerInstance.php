@@ -72,7 +72,7 @@ final class ContainerInstance extends StaticStructureElementInstance
 
     public function toArray() : array
     {
-        $data = array_merge(
+        $data = \array_merge(
             [
                 'containerId' => $this->container->id(),
                 'instanceId' => $this->instanceId,
@@ -81,7 +81,7 @@ final class ContainerInstance extends StaticStructureElementInstance
         );
 
         if (\count($this->healthChecks)) {
-            $data['healthChecks'] = array_map(
+            $data['healthChecks'] = \array_map(
                 function (HttpHealthCheck $healthCheck) {
                     return $healthCheck->toArray();
                 },

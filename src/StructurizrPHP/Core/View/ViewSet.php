@@ -250,7 +250,7 @@ final class ViewSet
     public function copyLayoutInformationFrom(self $source) : void
     {
         foreach ($this->systemContextViews as $contextView) {
-            $sourceSystemContextView = current(array_filter(
+            $sourceSystemContextView = \current(\array_filter(
                 $source->systemContextViews,
                 function (SystemContextView $nextSystemContextView) use ($contextView) {
                     return $nextSystemContextView->keyEquals($contextView);
@@ -263,7 +263,7 @@ final class ViewSet
         }
 
         foreach ($this->systemLandscapeViews as $landscapeView) {
-            $sourceLandscapeView = current(array_filter(
+            $sourceLandscapeView = \current(\array_filter(
                 $source->systemLandscapeViews,
                 function (SystemLandscapeView $nextLandscapeView) use ($landscapeView) {
                     return $nextLandscapeView->keyEquals($landscapeView);
@@ -276,7 +276,7 @@ final class ViewSet
         }
 
         foreach ($this->dynamicViews as $dynamicView) {
-            $sourceDynamicView = current(array_filter(
+            $sourceDynamicView = \current(\array_filter(
                 $source->dynamicViews,
                 function (DynamicView $nextDynamicView) use ($dynamicView) {
                     return $nextDynamicView->keyEquals($dynamicView);
@@ -289,7 +289,7 @@ final class ViewSet
         }
 
         foreach ($this->containerViews as $containerView) {
-            $sourceContainerView = current(array_filter(
+            $sourceContainerView = \current(\array_filter(
                 $source->containerViews,
                 function (ContainerView $nextContainerView) use ($containerView) {
                     return $nextContainerView->keyEquals($containerView);
@@ -302,7 +302,7 @@ final class ViewSet
         }
 
         foreach ($this->componentViews as $componentView) {
-            $sourceComponentView = current(array_filter(
+            $sourceComponentView = \current(\array_filter(
                 $source->componentViews,
                 function (ComponentView $nextComponentView) use ($componentView) {
                     return $nextComponentView->keyEquals($componentView);
@@ -315,7 +315,7 @@ final class ViewSet
         }
 
         foreach ($this->deploymentViews as $deploymentView) {
-            $sourceDeploymentView = current(array_filter(
+            $sourceDeploymentView = \current(\array_filter(
                 $source->deploymentViews,
                 function (DeploymentView $nextDeploymentView) use ($deploymentView) {
                     return $nextDeploymentView->keyEquals($deploymentView);
@@ -346,7 +346,7 @@ final class ViewSet
         ];
 
         if (\count($this->systemContextViews)) {
-            $data['systemContextViews'] = array_map(
+            $data['systemContextViews'] = \array_map(
                 function (SystemContextView $systemContextView) {
                     return $systemContextView->toArray();
                 },
@@ -355,7 +355,7 @@ final class ViewSet
         }
 
         if (\count($this->systemLandscapeViews)) {
-            $data['systemLandscapeViews'] = array_map(
+            $data['systemLandscapeViews'] = \array_map(
                 function (SystemLandscapeView $systemLandscapeView) {
                     return $systemLandscapeView->toArray();
                 },
@@ -364,7 +364,7 @@ final class ViewSet
         }
 
         if (\count($this->containerViews)) {
-            $data['containerViews'] = array_map(
+            $data['containerViews'] = \array_map(
                 function (ContainerView $containerView) {
                     return $containerView->toArray();
                 },
@@ -373,7 +373,7 @@ final class ViewSet
         }
 
         if (\count($this->componentViews)) {
-            $data['componentViews'] = array_map(
+            $data['componentViews'] = \array_map(
                 function (ComponentView $componentView) {
                     return $componentView->toArray();
                 },
@@ -382,7 +382,7 @@ final class ViewSet
         }
 
         if (\count($this->dynamicViews)) {
-            $data['dynamicViews'] = array_map(
+            $data['dynamicViews'] = \array_map(
                 function (DynamicView $dynamicView) {
                     return $dynamicView->toArray();
                 },
@@ -391,7 +391,7 @@ final class ViewSet
         }
 
         if (\count($this->deploymentViews)) {
-            $data['deploymentViews'] = array_map(
+            $data['deploymentViews'] = \array_map(
                 function (DeploymentView $deploymentView) {
                     return $deploymentView->toArray();
                 },
@@ -417,7 +417,7 @@ final class ViewSetDataObject
 
     public function map(string $type, callable $callback) : array
     {
-        return array_map($callback, $this->viewSetData[$type]);
+        return \array_map($callback, $this->viewSetData[$type]);
     }
 
     public function hasViews(string $name) : bool

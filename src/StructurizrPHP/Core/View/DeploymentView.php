@@ -138,7 +138,7 @@ final class DeploymentView extends View
 
     public function toArray() : array
     {
-        return array_merge(
+        return \array_merge(
             [
                 'environment' => $this->environment,
                 'softwareSystemId' => $this->softwareSystem->id(),

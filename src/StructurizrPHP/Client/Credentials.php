@@ -41,15 +41,15 @@ final class Credentials
 
     public function hmac(string $werb, string $uri, int $nonce, ?string $workspaceDefinition) : string
     {
-        $messageDigest = sprintf(
+        $messageDigest = \sprintf(
             "%s\n%s\n%s\n%s\n%d\n",
             $werb,
             $uri,
-            (!$workspaceDefinition) ? 'd41d8cd98f00b204e9800998ecf8427e' : md5($workspaceDefinition),
+            (!$workspaceDefinition) ? 'd41d8cd98f00b204e9800998ecf8427e' : \md5($workspaceDefinition),
             ($werb === 'PUT') ? 'application/json; charset=UTF-8' : '',
             $nonce
         );
 
-        return hash_hmac('sha256', $messageDigest, $this->apiSecret);
+        return \hash_hmac('sha256', $messageDigest, $this->apiSecret);
     }
 }
