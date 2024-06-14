@@ -100,7 +100,7 @@ final class Model
             }
         }
 
-        \usort(
+        usort(
             $model->people,
             function (Person $personA, Person $personB) {
                 return (int) $personA->id() > (int) $personB->id()
@@ -109,7 +109,7 @@ final class Model
             }
         );
 
-        \usort(
+        usort(
             $model->softwareSystems,
             function (SoftwareSystem $softwareSystemA, SoftwareSystem $softwareSystemB) {
                 return (int) $softwareSystemA->id() > (int) $softwareSystemB->id()
@@ -118,7 +118,7 @@ final class Model
             }
         );
 
-        \usort(
+        usort(
             $model->deploymentNodes,
             function (DeploymentNode $deploymentNodeA, DeploymentNode $deploymentNodeB) {
                 return (int) $deploymentNodeA->id() > (int) $deploymentNodeB->id()
@@ -193,7 +193,7 @@ final class Model
             return $this->relationshipsById[$id];
         }
 
-        throw new InvalidArgumentException(\sprintf('Relationship with id %s does not exists', $id));
+        throw new InvalidArgumentException(sprintf('Relationship with id %s does not exists', $id));
     }
 
     public function getElement(string $id) : Element
@@ -202,7 +202,7 @@ final class Model
             return $this->elementsById[$id];
         }
 
-        throw new RuntimeException(\sprintf('Element with id "%s" does not exists.', $id));
+        throw new RuntimeException(sprintf('Element with id "%s" does not exists.', $id));
     }
 
     /**
@@ -231,7 +231,7 @@ final class Model
             return $element;
         }
 
-        throw new RuntimeException(\sprintf('Deployment Node with id "%s" does not exists.', $id));
+        throw new RuntimeException(sprintf('Deployment Node with id "%s" does not exists.', $id));
     }
 
     public function getSoftwareSystem(string $id) : SoftwareSystem
@@ -242,7 +242,7 @@ final class Model
             return $element;
         }
 
-        throw new RuntimeException(\sprintf('Software System with id "%s" does not exists.', $id));
+        throw new RuntimeException(sprintf('Software System with id "%s" does not exists.', $id));
     }
 
     public function getContainer(string $id) : Container
@@ -255,7 +255,7 @@ final class Model
             }
         }
 
-        throw new RuntimeException(\sprintf('Container with id "%s" does not exists.', $id));
+        throw new RuntimeException(sprintf('Container with id "%s" does not exists.', $id));
     }
 
     public function addRelationship(Element $source, Element $destination, string $description = '', string $technology = null, InteractionStyle $interactionStyle = null) : Relationship
@@ -338,7 +338,7 @@ final class Model
             return $container;
         }
 
-        throw new RuntimeException(\sprintf('A container named "%s" already exists for this software system.', $name));
+        throw new RuntimeException(sprintf('A container named "%s" already exists for this software system.', $name));
     }
 
     /**
@@ -349,7 +349,7 @@ final class Model
         Assertion::notEmpty($name);
 
         if ($this->findDeploymentNodeWithName($name, $environment)) {
-            throw new InvalidArgumentException(\sprintf('Deployment node "%s" already exists for "%s" environment', $name, $environment ? $environment : DeploymentNode::DEFAULT_DEPLOYMENT_ENVIRONMENT));
+            throw new InvalidArgumentException(sprintf('Deployment node "%s" already exists for "%s" environment', $name, $environment ? $environment : DeploymentNode::DEFAULT_DEPLOYMENT_ENVIRONMENT));
         }
 
         $deploymentNode = new DeploymentNode($this->idGenerator->generateId(), $this);
@@ -372,7 +372,7 @@ final class Model
 
     public function addContainerInstance(DeploymentNode $parent, Container $container, bool $replicateContainerRelationships = true) : ContainerInstance
     {
-        $instanceNumber = \count(\array_unique(\array_map(
+        $instanceNumber = \count(array_unique(array_map(
             function (DeploymentNode $deploymentNode) {
                 foreach ($deploymentNode->getContainerInstances() as $instance) {
                     return 1;
@@ -391,10 +391,10 @@ final class Model
             /** @return ContainerInstance[] */
             $getContainerInstances = function (DeploymentNode $deploymentNode) use (&$getContainerInstances) : array {
                 $containerInstances = [];
-                $containerInstances = \array_merge($containerInstances, $deploymentNode->getContainerInstances());
+                $containerInstances = array_merge($containerInstances, $deploymentNode->getContainerInstances());
 
                 foreach ($deploymentNode->getChildren() as $child) {
-                    $containerInstances = \array_merge($containerInstances, $getContainerInstances($child));
+                    $containerInstances = array_merge($containerInstances, $getContainerInstances($child));
                 }
 
                 return $containerInstances;
@@ -402,8 +402,8 @@ final class Model
 
             // find all ContainerInstance objects in the same deployment environment
             /** @var ContainerInstance[] $containerInstances */
-            $containerInstances = \array_filter(
-                \array_merge(...\array_map(
+            $containerInstances = array_filter(
+                array_merge(...array_map(
                     function (DeploymentNode $deploymentNode) use (&$getContainerInstances) {
                         return $getContainerInstances($deploymentNode);
                     },
@@ -447,7 +447,7 @@ final class Model
         Assertion::notEmpty($name);
 
         if ($this->findDeploymentNodeWithName($name, $environment)) {
-            throw new InvalidArgumentException(\sprintf('Deployment node "%s" already exists for "%s" environment', $name, $environment ? $environment : DeploymentNode::DEFAULT_DEPLOYMENT_ENVIRONMENT));
+            throw new InvalidArgumentException(sprintf('Deployment node "%s" already exists for "%s" environment', $name, $environment ? $environment : DeploymentNode::DEFAULT_DEPLOYMENT_ENVIRONMENT));
         }
 
         $deploymentNode = new DeploymentNode($this->idGenerator->generateId(), $this);
@@ -535,12 +535,12 @@ final class Model
                         if (!\in_array($source, $objMap, true)) {
                             $objMap[] = $source;
                         }
-                        $sourceKey = (int) \array_search($source, $objMap, true);
+                        $sourceKey = (int) array_search($source, $objMap, true);
 
                         if (!\in_array($destination, $objMap, true)) {
                             $objMap[] = $destination;
                         }
-                        $destinationKey = (int) \array_search($destination, $objMap, true);
+                        $destinationKey = (int) array_search($destination, $objMap, true);
 
                         if (!\array_key_exists($sourceKey, $candidateRelationships)) {
                             $candidateRelationships[$sourceKey] = [];
@@ -649,19 +649,19 @@ final class Model
         }
 
         if (\count($this->people)) {
-            $data['people'] = \array_map(function (Person $person) {
+            $data['people'] = array_map(function (Person $person) {
                 return $person->toArray();
             }, $this->people);
         }
 
         if (\count($this->softwareSystems)) {
-            $data['softwareSystems'] = \array_map(function (SoftwareSystem $softwareSystem) {
+            $data['softwareSystems'] = array_map(function (SoftwareSystem $softwareSystem) {
                 return $softwareSystem->toArray();
             }, $this->softwareSystems);
         }
 
         if (\count($this->deploymentNodes)) {
-            $data['deploymentNodes'] = \array_map(function (DeploymentNode $deploymentNode) {
+            $data['deploymentNodes'] = array_map(function (DeploymentNode $deploymentNode) {
                 return $deploymentNode->toArray();
             }, $this->deploymentNodes);
         }
@@ -684,7 +684,7 @@ final class Model
             return false;
         }
 
-        if (\method_exists($e2, 'getParent')) {
+        if (method_exists($e2, 'getParent')) {
             /** @var Element $parent */
             $parent = $e2->getParent();
 
@@ -721,7 +721,7 @@ final class ModelDataObject
      */
     public function hydrateSoftwareSystems(Model $model) : array
     {
-        return \array_map(
+        return array_map(
             function (array $softwareSystemData) use ($model) {
                 return SoftwareSystem::hydrate($softwareSystemData, $model);
             },
@@ -734,7 +734,7 @@ final class ModelDataObject
      */
     public function hydratePeople(Model $model) : array
     {
-        return \array_map(
+        return array_map(
             function (array $personData) use ($model) {
                 return Person::hydrate($personData, $model);
             },
@@ -747,7 +747,7 @@ final class ModelDataObject
      */
     public function hydrateDeploymentNodes(Model $model) : array
     {
-        return \array_map(
+        return array_map(
             function (array $deploymentNodeData) use ($model) {
                 return DeploymentNode::hydrate($deploymentNodeData, $model);
             },

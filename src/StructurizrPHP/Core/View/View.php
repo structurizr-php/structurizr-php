@@ -179,7 +179,7 @@ abstract class View
             }
         }
 
-        throw new RuntimeException(\sprintf('Relationship view for relationship with id "%s" does not exists', $relationship->id()));
+        throw new RuntimeException(sprintf('Relationship view for relationship with id "%s" does not exists', $relationship->id()));
     }
 
     public function setPaperSize(?PaperSize $paperSize) : void
@@ -229,14 +229,14 @@ abstract class View
     public function removeElement(Element $element) : void
     {
         if (!$this->canBeRemoved($element)) {
-            throw new InvalidArgumentException(\sprintf('The element named "%s" cannot be removed from this view.', $element->getName()));
+            throw new InvalidArgumentException(sprintf('The element named "%s" cannot be removed from this view.', $element->getName()));
         }
 
-        $this->elementViews = \array_values(\array_filter($this->elementViews, function (ElementView $elementView) use ($element) : bool {
+        $this->elementViews = array_values(array_filter($this->elementViews, function (ElementView $elementView) use ($element) : bool {
             return !$elementView->element()->equals($element);
         }));
 
-        $this->relationshipsViews = \array_values(\array_filter($this->relationshipsViews, function (RelationshipView $relationshipView) use ($element) : bool {
+        $this->relationshipsViews = array_values(array_filter($this->relationshipsViews, function (RelationshipView $relationshipView) use ($element) : bool {
             return !$relationshipView->getRelationship()->getDestination()->equals($element)
                 && !$relationshipView->getRelationship()->getSource()->equals($element);
         }));
@@ -257,13 +257,13 @@ abstract class View
             'key' => $this->key,
             'paperSize' => $this->paperSize ? $this->paperSize->size() : null,
             'automaticLayout' => $this->automaticLayout ? $this->automaticLayout->toArray() : null,
-            'elements' => \array_map(
+            'elements' => array_map(
                 function (ElementView $elementView) {
                     return $elementView->toArray();
                 },
                 $this->elementViews
             ),
-            'relationships' => \array_map(
+            'relationships' => array_map(
                 function (RelationshipView $relationshipView) {
                     return $relationshipView->toArray();
                 },
@@ -308,8 +308,8 @@ abstract class View
 
     protected function removeRelationship(Relationship $relationship) : void
     {
-        $this->relationshipsViews = \array_values(
-            \array_filter(
+        $this->relationshipsViews = array_values(
+            array_filter(
                 $this->relationshipsViews,
                 function (RelationshipView $relationshipView) use ($relationship) : bool {
                     return !$relationshipView->getRelationship()->equals($relationship);
@@ -320,7 +320,7 @@ abstract class View
 
     protected function isElementInView(Element $element) : bool
     {
-        return (bool) \array_filter(
+        return (bool) array_filter(
             $this->elementViews,
             function (ElementView $ev) use ($element) {
                 return $ev->element()->equals($element);
@@ -330,7 +330,7 @@ abstract class View
 
     protected function getElementViewByElement(Element $element) : ?ElementView
     {
-        $elementViews = \array_filter(
+        $elementViews = array_filter(
             $this->elementViews,
             function (ElementView $ev) use ($element) {
                 return $ev->element()->equals($element);
@@ -341,7 +341,7 @@ abstract class View
             return null;
         }
 
-        return \array_pop($elementViews);
+        return array_pop($elementViews);
     }
 
     abstract protected function canBeRemoved(Element $element) : bool;

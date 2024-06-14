@@ -38,8 +38,8 @@ final class Properties
         return
             \count($this->properties)
                 ?
-                \array_merge(
-                    ...\array_map(
+                array_merge(
+                    ...array_map(
                         function (Property $property) {
                             return $property->toArray();
                         },

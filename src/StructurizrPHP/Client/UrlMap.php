@@ -24,7 +24,7 @@ final class UrlMap
     {
         Assertion::url($serverUrl);
 
-        $this->serverUrl = \rtrim($serverUrl, '/');
+        $this->serverUrl = rtrim($serverUrl, '/');
     }
 
     public function workspaceUrl(string $workspaceId) : string
@@ -34,6 +34,6 @@ final class UrlMap
 
     public function workspaceURIPath(string $workspaceId) : string
     {
-        return \sprintf('/workspace/%s', $workspaceId);
+        return sprintf('/workspace/%s', $workspaceId);
     }
 }

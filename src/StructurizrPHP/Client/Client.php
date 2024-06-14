@@ -91,10 +91,10 @@ final class Client
         }
 
         try {
-            $nonce = (int) \round(\microtime(true) * 1000);
+            $nonce = (int) round(microtime(true) * 1000);
 
             $workspaceData = $workspace->toArray(self::AGENT_NAME);
-            $workspaceDefinition = \json_encode($workspaceData, JSON_THROW_ON_ERROR);
+            $workspaceDefinition = json_encode($workspaceData, JSON_THROW_ON_ERROR);
 
             $this->logger->debug('Pre PUT workspace', [
                 'workspace' => $workspaceData,
@@ -107,11 +107,11 @@ final class Client
                     $url,
                     'PUT',
                     [
-                        'X-Authorization' => $this->credentials->apiKey() . ':' . \base64_encode($this->credentials->hmac('PUT', $this->urlMap->workspaceURIPath($workspace->id()), $nonce, $workspaceDefinition)),
+                        'X-Authorization' => $this->credentials->apiKey() . ':' . base64_encode($this->credentials->hmac('PUT', $this->urlMap->workspaceURIPath($workspace->id()), $nonce, $workspaceDefinition)),
                         'Nonce' => $nonce,
                         'User-Agent' => self::AGENT_NAME,
                         'Content-Type' => 'application/json; charset=UTF-8',
-                        'Content-MD5' => \base64_encode(\md5($workspaceDefinition)),
+                        'Content-MD5' => base64_encode(md5($workspaceDefinition)),
                     ],
                     $workspaceDefinition
                 )
@@ -134,11 +134,11 @@ final class Client
                     'body' => $content,
                 ]);
 
-                throw new Exception(\sprintf('Status: %d, Message: %s', $response->getStatusCode(), $content));
+                throw new Exception(sprintf('Status: %d, Message: %s', $response->getStatusCode(), $content));
             }
 
             $this->logger->debug('Post PUT workspace', [
-                'revision' => \json_decode($content, true, 512, JSON_THROW_ON_ERROR)['revision'],
+                'revision' => json_decode($content, true, 512, JSON_THROW_ON_ERROR)['revision'],
             ]);
         } catch (ClientExceptionInterface $e) {
             throw new Exception('Can\'t put Workspace', 0, $e);
@@ -147,7 +147,7 @@ final class Client
 
     public function get(string $workspaceId) : ?Workspace
     {
-        $nonce = (int) \round(\microtime(true) * 1000);
+        $nonce = (int) round(microtime(true) * 1000);
 
         try {
             $this->logger->debug('Pre GET workspace', [
@@ -159,11 +159,11 @@ final class Client
                     $this->urlMap->workspaceUrl($workspaceId),
                     'GET',
                     [
-                        'X-Authorization' => $this->credentials->apiKey() . ':' . \base64_encode($this->credentials->hmac('GET', $this->urlMap->workspaceURIPath($workspaceId), $nonce, null)),
+                        'X-Authorization' => $this->credentials->apiKey() . ':' . base64_encode($this->credentials->hmac('GET', $this->urlMap->workspaceURIPath($workspaceId), $nonce, null)),
                         'Nonce' => $nonce,
                         'User-Agent' => self::AGENT_NAME,
                         'Content-Type' => 'application/json; charset=UTF-8',
-                        'Content-MD5' => \base64_encode('d41d8cd98f00b204e9800998ecf8427e'),
+                        'Content-MD5' => base64_encode('d41d8cd98f00b204e9800998ecf8427e'),
                     ],
                     null
                 )
@@ -186,10 +186,10 @@ final class Client
                     'body' => $content,
                 ]);
 
-                throw new Exception(\sprintf('Invalid API responses, expected 200, got %d', $response->getStatusCode()));
+                throw new Exception(sprintf('Invalid API responses, expected 200, got %d', $response->getStatusCode()));
             }
 
-            $workspaceDefinition = (array) \json_decode(
+            $workspaceDefinition = (array) json_decode(
                 $content,
                 true,
                 512,

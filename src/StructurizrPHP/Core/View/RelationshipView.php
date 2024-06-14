@@ -83,7 +83,7 @@ final class RelationshipView
         }
 
         if (isset($viewData['vertices'])) {
-            $view->setVertices(...\array_map(
+            $view->setVertices(...array_map(
                 function (array $vertexData) {
                     return Vertex::hydrate($vertexData);
                 },
@@ -171,7 +171,7 @@ final class RelationshipView
     {
         $data = [
             'id' => $this->relationship->id(),
-            'vertices' => \array_map(
+            'vertices' => array_map(
                 function (Vertex $vertex) {
                     return $vertex->toArray();
                 },

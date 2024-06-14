@@ -62,7 +62,7 @@ final class SystemLandscapeView extends StaticView
 
     public function toArray() : array
     {
-        return \array_merge(
+        return array_merge(
             [
                 'enterpriseBoundaryVisible' => $this->enterpriseBoundaryVisible,
             ],

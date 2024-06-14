@@ -33,7 +33,7 @@ final class DefaultLayoutMergeStrategy implements LayoutMergeStrategy
         }
 
         foreach ($destinationView->getElements() as $destinationElementView) {
-            $sourceElementView = \current(\array_filter(
+            $sourceElementView = current(array_filter(
                 $sourceView->getElements(),
                 function (ElementView $elementView) use ($destinationElementView) {
                     return $elementView->element()->id() === $destinationElementView->element()->id();

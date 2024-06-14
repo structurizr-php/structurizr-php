@@ -59,7 +59,7 @@ final class Font
     public function setUrl(string $url) : void
     {
         Assertion::url($url);
-        $this->url = \rtrim($url, '/');
+        $this->url = rtrim($url, '/');
     }
 
     public function toArray() : array

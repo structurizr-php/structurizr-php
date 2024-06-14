@@ -82,11 +82,11 @@ abstract class StaticView extends View
     {
         $this->addElement($element);
 
-        $destinations = \array_map(
+        $destinations = array_map(
             function (Relationship $relationship) {
                 return $relationship->getDestination();
             },
-            \array_filter(
+            array_filter(
                 $this->getModel()->getRelationships(),
                 function (Relationship $relationship) use ($element, $typeOfElement) {
                     return $relationship->getSource()->equals($element) && \get_class($relationship->getDestination()) === $typeOfElement;
@@ -98,11 +98,11 @@ abstract class StaticView extends View
             $this->addElement($destination);
         }
 
-        $sources = \array_map(
+        $sources = array_map(
             function (Relationship $relationship) {
                 return $relationship->getSource();
             },
-            \array_filter(
+            array_filter(
                 $this->getModel()->getRelationships(),
                 function (Relationship $relationship) use ($element, $typeOfElement) {
                     return $relationship->getDestination()->equals($element) && \get_class($relationship->getSource()) === $typeOfElement;

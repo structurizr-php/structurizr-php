@@ -147,7 +147,7 @@ final class Relationship extends ModelItem
 
     public function toArray() : array
     {
-        $data = \array_merge(
+        $data = array_merge(
             [
                 'description' => $this->description,
                 'sourceId' => $this->source->id(),

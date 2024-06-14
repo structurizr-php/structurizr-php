@@ -73,7 +73,7 @@ final class Person extends StaticStructureElement
 
     public function toArray() : array
     {
-        return \array_merge(
+        return array_merge(
             [
                 'location' => $this->location->type(),
             ],

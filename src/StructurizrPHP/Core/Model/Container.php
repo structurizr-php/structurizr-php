@@ -109,7 +109,7 @@ final class Container extends StaticStructureElement
     {
         Assertion::notEmpty($name, 'A component name must be provided.');
 
-        $component = \current(\array_filter(
+        $component = current(array_filter(
             $this->components,
             function (Component $component) use ($name) {
                 return $component->getName() === $name;
@@ -121,7 +121,7 @@ final class Container extends StaticStructureElement
 
     public function getComponent(string $id) : ?Component
     {
-        $component = \current(\array_filter(
+        $component = current(array_filter(
             $this->components,
             function (Component $component) use ($id) {
                 return $component->id() === $id;
@@ -148,7 +148,7 @@ final class Container extends StaticStructureElement
 
     public function toArray() : array
     {
-        $data = \array_merge(
+        $data = array_merge(
             [
                 'description' => $this->description(),
                 'technology' => $this->technology,
@@ -157,7 +157,7 @@ final class Container extends StaticStructureElement
         );
 
         if (\count($this->components)) {
-            $data['components'] = \array_map(
+            $data['components'] = array_map(
                 function (Component $component) {
                     return $component->toArray();
                 },

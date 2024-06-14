@@ -75,7 +75,7 @@ final class ContainerView extends StaticView
 
     public function toArray() : array
     {
-        return \array_merge(
+        return array_merge(
             [
                 'softwareSystemId' => $this->softwareSystem->id(),
             ],

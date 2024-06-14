@@ -54,7 +54,7 @@ final class Styles
 
     public function addElementStyle(string $tag) : ElementStyle
     {
-        Assertion::keyNotExists($this->elementsStyles, $tag, \sprintf('An element style for the tag "%s" already exists .', $tag));
+        Assertion::keyNotExists($this->elementsStyles, $tag, sprintf('An element style for the tag "%s" already exists .', $tag));
 
         $elementStyle = new ElementStyle($tag);
 
@@ -65,7 +65,7 @@ final class Styles
 
     public function addRelationshipStyle(string $tag) : RelationshipStyle
     {
-        Assertion::keyNotExists($this->relationshipsStyles, $tag, \sprintf('A relationship style for the tag "%s" already exists .', $tag));
+        Assertion::keyNotExists($this->relationshipsStyles, $tag, sprintf('A relationship style for the tag "%s" already exists .', $tag));
 
         $relationshipStyle = new RelationshipStyle($tag);
 
@@ -77,10 +77,10 @@ final class Styles
     public function toArray() : array
     {
         return [
-            'elements' => \array_values(\array_map(function (ElementStyle $elementStyle) {
+            'elements' => array_values(array_map(function (ElementStyle $elementStyle) {
                 return $elementStyle->toArray();
             }, $this->elementsStyles)),
-            'relationships' => \array_values(\array_map(function (RelationshipStyle $relationshipStyle) {
+            'relationships' => array_values(array_map(function (RelationshipStyle $relationshipStyle) {
                 return $relationshipStyle->toArray();
             }, $this->relationshipsStyles)),
         ];

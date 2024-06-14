@@ -40,7 +40,7 @@ const MOBILE_APP_TAG = 'Mobile App';
 const DATABASE_TAG = 'Database';
 const FAILOVER_TAG = 'Failover';
 
-$workspace = new Workspace((string) \getenv('STRUCTURIZR_WORKSPACE_ID'), 'Big Bank plc', 'This is an example workspace to illustrate the key features of Structurizr, based around a fictional online banking system.');
+$workspace = new Workspace((string) getenv('STRUCTURIZR_WORKSPACE_ID'), 'Big Bank plc', 'This is an example workspace to illustrate the key features of Structurizr, based around a fictional online banking system.');
 $model = $workspace->getModel();
 $views = $workspace->getViews();
 
@@ -103,7 +103,7 @@ $securityComponent = $apiApplication->addComponent('Security Component', 'Provid
 $mainframeBankingSystemFacade = $apiApplication->addComponent('Mainframe Banking System Facade', 'A facade onto the mainframe banking system.', '', 'Spring Bean');
 $emailComponent = $apiApplication->addComponent('E-mail Component', 'Sends e-mails to users.', '', 'Spring Bean');
 
-$controllers = \array_filter(
+$controllers = array_filter(
     $apiApplication->getComponents(),
     function (Component $component) {
         return $component->getTechnology() === 'Spring MVC Rest Controller';
@@ -171,7 +171,7 @@ $secondaryDatabaseServer = $bigBankDataCenter->addDeploymentNode('bigbank-db02',
     ->addDeploymentNode('Oracle - Secondary', 'Live', 'A secondary, standby database server, used for failover purposes only.', 'Oracle 12c');
 $secondaryDatabase = $secondaryDatabaseServer->add($database);
 
-$relationships = \array_filter(
+$relationships = array_filter(
     $model->getRelationships(),
     function (Relationship $relationship) use ($secondaryDatabase) {
         return $relationship->getDestination()->equals($secondaryDatabase);
@@ -268,51 +268,51 @@ $styles->addElementStyle(FAILOVER_TAG)->opacity(25);
 $styles->addRelationshipStyle(FAILOVER_TAG)->opacity(25)->position(70);
 
 $template = new StructurizrDocumentationTemplate($workspace);
-        $template->addContextSection(
-            $internetBankingSystem,
-            Format::markdown(),
-            "Here is some context about the Internet Banking System...\n" .
-            "![](embed:SystemLandscape)\n" .
-            "![](embed:SystemContext)\n" .
-            "### Internet Banking System\n...\n" .
-            "### Mainframe Banking System\n...\n"
-        );
-        $template->addContainersSection(
-            $internetBankingSystem,
-            Format::markdown(),
-            "Here is some information about the containers within the Internet Banking System...\n" .
-            "![](embed:Containers)\n" .
-            "### Web Application\n...\n" .
-            "### Database\n...\n"
-        );
-        $template->addComponentsSection(
-            $webApplication,
-            Format::markdown(),
-            "Here is some information about the API Application...\n" .
-            "![](embed:Components)\n" .
-            "### Sign in process\n" .
-            "Here is some information about the Sign In Controller, including how the sign in process works...\n" .
-            '![](embed:SignIn)'
-        );
-        $template->addDevelopmentEnvironmentSection(
-            $internetBankingSystem,
-            Format::markdown(),
-            "Here is some information about how to set up a development environment for the Internet Banking System...\n" .
-            'image::embed:DevelopmentDeployment[]'
-        );
-        $template->addDeploymentSection(
-            $internetBankingSystem,
-            Format::markdown(),
-            "Here is some information about the live deployment environment for the Internet Banking System...\n" .
-            'image::embed:LiveDeployment[]'
-        );
+$template->addContextSection(
+    $internetBankingSystem,
+    Format::markdown(),
+    "Here is some context about the Internet Banking System...\n" .
+    "![](embed:SystemLandscape)\n" .
+    "![](embed:SystemContext)\n" .
+    "### Internet Banking System\n...\n" .
+    "### Mainframe Banking System\n...\n"
+);
+$template->addContainersSection(
+    $internetBankingSystem,
+    Format::markdown(),
+    "Here is some information about the containers within the Internet Banking System...\n" .
+    "![](embed:Containers)\n" .
+    "### Web Application\n...\n" .
+    "### Database\n...\n"
+);
+$template->addComponentsSection(
+    $webApplication,
+    Format::markdown(),
+    "Here is some information about the API Application...\n" .
+    "![](embed:Components)\n" .
+    "### Sign in process\n" .
+    "Here is some information about the Sign In Controller, including how the sign in process works...\n" .
+    '![](embed:SignIn)'
+);
+$template->addDevelopmentEnvironmentSection(
+    $internetBankingSystem,
+    Format::markdown(),
+    "Here is some information about how to set up a development environment for the Internet Banking System...\n" .
+    'image::embed:DevelopmentDeployment[]'
+);
+$template->addDeploymentSection(
+    $internetBankingSystem,
+    Format::markdown(),
+    "Here is some information about the live deployment environment for the Internet Banking System...\n" .
+    'image::embed:LiveDeployment[]'
+);
 
 $client = new Client(
-    new Credentials((string) \getenv('STRUCTURIZR_API_KEY'), (string) \getenv('STRUCTURIZR_API_SECRET')),
+    new Credentials((string) getenv('STRUCTURIZR_API_KEY'), (string) getenv('STRUCTURIZR_API_SECRET')),
     new UrlMap('https://api.structurizr.com'),
     new Psr18Client(),
     new SymfonyRequestFactory(),
     // Logger can be replaced with new NullLogger()
-    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . \basename(__FILE__) . '.log', Logger::DEBUG))
+    (new Logger('structurizr'))->pushHandler(new StreamHandler(__DIR__ . '/var/logs/' . basename(__FILE__) . '.log', Logger::DEBUG))
 );
 $client->put($workspace);

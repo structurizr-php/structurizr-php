@@ -121,7 +121,7 @@ final class ComponentView extends StaticView
 
     public function toArray() : array
     {
-        return \array_merge(
+        return array_merge(
             parent::toArray(),
             [
                 'containerId' => $this->container->id(),

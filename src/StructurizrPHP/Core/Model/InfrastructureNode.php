@@ -72,7 +72,7 @@ final class InfrastructureNode extends DeploymentElement
 
     public function toArray() : array
     {
-        $data = \array_merge(
+        $data = array_merge(
             [
                 'id' => $this->id(),
                 'name' => $this->getName(),

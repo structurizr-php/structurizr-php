@@ -23,7 +23,6 @@
     "require-dev": {
         "symfony/http-client": "^4.3 || ^5.0",
         "nyholm/psr7": "^1.2",
-        "friendsofphp/php-cs-fixer": "^2.16",
         "phpunit/phpunit": "^8.4 || ^9.0",
         "symfony/var-dumper": "^4.3 || ^5.0",
         "phpstan/phpstan": "^0.12.34",
@@ -32,7 +31,8 @@
         "ergebnis/phpstan-rules": "^0.15.0",
         "monolog/monolog": "^2.0",
         "structurizr-php/extensions-php": "@dev",
-        "qossmic/deptrac": "^2.0"
+        "qossmic/deptrac": "^2.0",
+        "php-cs-fixer/shim": "^3.58"
     },
     "suggest": {
         "symfony/http-client": "Psr18Client http factory works out of the box with StructurizrPHP\\StructurizrPHP\\SDK\\Client",

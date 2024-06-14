@@ -65,7 +65,7 @@ final class DynamicView extends View
             if ($element instanceof SoftwareSystem || $element instanceof Container) {
                 $this->element = $element;
             } else {
-                throw new InvalidArgumentException(\sprintf('Dynamic View accepts only SoftwareSystem or Container types for Element, %s given', \get_class($element)));
+                throw new InvalidArgumentException(sprintf('Dynamic View accepts only SoftwareSystem or Container types for Element, %s given', \get_class($element)));
             }
         }
     }
@@ -151,7 +151,7 @@ final class DynamicView extends View
 
     public function toArray() : array
     {
-        return \array_merge(
+        return array_merge(
             [
                 'elementId' => $this->element->id(),
                 'externalBoundariesVisible' => $this->getExternalBoundariesVisible(),

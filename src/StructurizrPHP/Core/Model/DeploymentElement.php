@@ -74,7 +74,7 @@ abstract class DeploymentElement extends Element
 
     public function toArray() : array
     {
-        $data = \array_merge(
+        $data = array_merge(
             [
                 'environment' => $this->environment,
             ],
