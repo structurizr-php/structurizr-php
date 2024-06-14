@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac26331a2caadd2f116cacc081b01357",
+    "content-hash": "59fcf92858f12fd862c4e8dd488a2061",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1983,6 +1983,62 @@
             "time": "2023-04-10T20:10:41+00:00"
         },
         {
+            "name": "qossmic/deptrac-shim",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/qossmic/deptrac-shim.git",
+                "reference": "3179a2c4978654add865309e3c280ef3d60f0043"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/qossmic/deptrac-shim/zipball/3179a2c4978654add865309e3c280ef3d60f0043",
+                "reference": "3179a2c4978654add865309e3c280ef3d60f0043",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-tokenizer": "*",
+                "ext-zlib": "*",
+                "php": "^8.1"
+            },
+            "replace": {
+                "qossmic/deptrac": "self.version"
+            },
+            "suggest": {
+                "ext-dom": "For using the JUnit output formatter"
+            },
+            "bin": [
+                "deptrac"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tim Glabisch"
+                },
+                {
+                    "name": "Simon Mönch",
+                    "email": "simon.moench@qossmic.com"
+                },
+                {
+                    "name": "Denis Brumann",
+                    "email": "denis.brumann@qossmic.com",
+                    "role": "maintainer"
+                }
+            ],
+            "description": "deptrac phar distribution",
+            "support": {
+                "issues": "https://github.com/qossmic/deptrac-shim/issues",
+                "source": "https://github.com/qossmic/deptrac-shim/tree/1.0.2"
+            },
+            "abandoned": "qossmic/deptrac",
+            "time": "2022-12-02T11:47:53+00:00"
+        },
+        {
             "name": "sebastian/cli-parser",
             "version": "1.0.1",
             "source": {
@@ -2945,55 +3001,6 @@
                 }
             ],
             "time": "2020-09-28T06:39:44+00:00"
-        },
-        {
-            "name": "sensiolabs-de/deptrac-shim",
-            "version": "0.14.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/qossmic/deptrac-shim.git",
-                "reference": "e4d67be0fff9cec8dc1943f50e1dbacd08fd5bf1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/qossmic/deptrac-shim/zipball/e4d67be0fff9cec8dc1943f50e1dbacd08fd5bf1",
-                "reference": "e4d67be0fff9cec8dc1943f50e1dbacd08fd5bf1",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "ext-tokenizer": "*",
-                "ext-zlib": "*",
-                "php": "^7.2 || 8.0.*"
-            },
-            "replace": {
-                "qossmic/deptrac": "self.version"
-            },
-            "suggest": {
-                "ext-dom": "For using the JUnit output formatter"
-            },
-            "bin": [
-                "deptrac"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Simon Mönch",
-                    "email": "simon.moench@qossmic.com",
-                    "role": "maintainer"
-                }
-            ],
-            "description": "deptrac phar distribution",
-            "support": {
-                "issues": "https://github.com/qossmic/deptrac-shim/issues",
-                "source": "https://github.com/qossmic/deptrac-shim/tree/0.14.1"
-            },
-            "abandoned": "qossmic/deptrac-shim",
-            "time": "2021-07-04T10:19:55+00:00"
         },
         {
             "name": "structurizr-php/extensions-php",
@@ -4860,5 +4867,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

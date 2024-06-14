@@ -1,0 +1,17 @@
+deptrac:
+  paths:
+    - ./src
+  exclude_files: ~
+  layers:
+    - name: Client
+      collectors:
+        - type: directory
+          regex: src/StructurizrPHP/Client/.*
+    - name: Core
+      collectors:
+        - type: directory
+          regex: src/StructurizrPHP/Core/.*
+  ruleset:
+    Client:
+      - Core
+    Core: ~
