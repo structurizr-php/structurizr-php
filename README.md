@@ -1,8 +1,8 @@
 # Structurizr for PHP
 
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.3-8892BF.svg)](https://php.net/)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.1-8892BF.svg)](https://php.net/)
 [![Latest Stable Version](https://poser.pugx.org/structurizr-php/structurizr-php/version)](https://packagist.org/packages/structurizr-php/structurizr-php)
-![](https://github.com/structurizr-php/structurizr-php/workflows/Tests/badge.svg?branch=master)
+[![Tests](https://github.com/structurizr-php/structurizr-php/actions/workflows/test.yml/badge.svg?branch=1.x)](https://github.com/structurizr-php/structurizr-php/actions/workflows/test.yml)
 [![Total Downloads](https://poser.pugx.org/structurizr-php/structurizr-php/downloads)](https://packagist.org/packages/structurizr-php/structurizr-php)
 ![License](https://img.shields.io/github/license/structurizr-php/structurizr-php)
 
