@@ -6,11 +6,11 @@ deptrac:
     - name: Client
       collectors:
         - type: directory
-          regex: src/StructurizrPHP/Client/.*
+          value: src/StructurizrPHP/Client/.*
     - name: Core
       collectors:
         - type: directory
-          regex: src/StructurizrPHP/Core/.*
+          value: src/StructurizrPHP/Core/.*
   ruleset:
     Client:
       - Core

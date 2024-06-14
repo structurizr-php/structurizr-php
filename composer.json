@@ -32,7 +32,7 @@
         "ergebnis/phpstan-rules": "^0.15.0",
         "monolog/monolog": "^2.0",
         "structurizr-php/extensions-php": "@dev",
-        "qossmic/deptrac-shim": "^1.0"
+        "qossmic/deptrac": "^2.0"
     },
     "suggest": {
         "symfony/http-client": "Psr18Client http factory works out of the box with StructurizrPHP\\StructurizrPHP\\SDK\\Client",
