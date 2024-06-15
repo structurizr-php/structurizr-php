@@ -24,24 +24,15 @@ services:
             - phpstan.rules.rule
 
 parameters:
-    level: 6
+    level: 7
     paths:
         - src
         - tests
         - examples
     ignoreErrors:
         -
-            message: '#Parameter \#1 \$softwareSystem of method (.*)::__construct(.*)#'
-            path: src/StructurizrPHP/Core/View/DynamicView.php
-        -
-            message: '#Property (.*)\$softwareSystem(.*)#'
-            path: src/StructurizrPHP/Core/View/DynamicView.php
-        -
             message: '#Method (.*)::(toArray|map)\(\) return type has no value type specified in iterable type array.#'
             path: *
         -
             message: '#Method (.*)::hydrate(.*) has parameter (.*) with no value type specified in iterable type array.#'
-            path: *
-        -
-            message: '#Method (.*)::__construct(.*) has parameter (.*) with no value type specified in iterable type array.#'
             path: *

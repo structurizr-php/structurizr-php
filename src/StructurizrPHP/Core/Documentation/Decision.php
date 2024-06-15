@@ -18,11 +18,6 @@ use StructurizrPHP\Core\Model\Element;
 final class Decision
 {
     /**
-     * @var string
-     */
-    private $elementId;
-
-    /**
      * @var Element
      */
     private $element;
@@ -93,7 +88,7 @@ final class Decision
      */
     public function getElementId() : string
     {
-        return $this->elementId;
+        return $this->element->id();
     }
 
     /**

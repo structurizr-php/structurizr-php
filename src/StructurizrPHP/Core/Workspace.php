@@ -96,6 +96,9 @@ final class Workspace
         return $this->viewSet;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(string $agentName) : array
     {
         $data = [

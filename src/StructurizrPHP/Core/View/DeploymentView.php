@@ -17,17 +17,11 @@ use StructurizrPHP\Core\Model\ContainerInstance;
 use StructurizrPHP\Core\Model\DeploymentNode;
 use StructurizrPHP\Core\Model\Element;
 use StructurizrPHP\Core\Model\InfrastructureNode;
-use StructurizrPHP\Core\Model\Model;
 use StructurizrPHP\Core\Model\Relationship;
 use StructurizrPHP\Core\Model\SoftwareSystem;
 
 final class DeploymentView extends View
 {
-    /**
-     * @var Model
-     */
-    private $model;
-
     /**
      * @var null|string
      */
@@ -40,8 +34,6 @@ final class DeploymentView extends View
         ViewSet $viewSet
     ) {
         parent::__construct($softwareSystem, $key, $description, $viewSet);
-
-        $this->model = $softwareSystem->getModel();
     }
 
     public static function hydrate(array $viewData, ViewSet $viewSet) : self

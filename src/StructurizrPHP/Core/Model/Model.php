@@ -573,8 +573,8 @@ final class Model
 
         foreach ($candidateRelationships as $sourceKey => $source) {
             foreach ($candidateRelationships[$sourceKey] as $destinationKey => $destination) {
-                $possibleDescriptions = $candidateRelationships[$sourceKey][$destinationKey][$descriptionKey] ?? [];
-                $possibleTechnologies = $candidateRelationships[$sourceKey][$destinationKey][$technologyKey] ?? [];
+                $possibleDescriptions = $candidateRelationships[$sourceKey][$destinationKey][$descriptionKey];
+                $possibleTechnologies = $candidateRelationships[$sourceKey][$destinationKey][$technologyKey];
 
                 $description = '';
 

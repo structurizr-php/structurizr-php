@@ -47,7 +47,7 @@ final class DynamicView extends View
     {
         if ($element instanceof Container) {
             parent::__construct(
-                $element->getParent(),
+                $element->getSoftwareSystem(),
                 $key,
                 $description,
                 $viewSet
@@ -82,7 +82,7 @@ final class DynamicView extends View
     public static function container(Container $container, string $key, string $description, ViewSet $viewSet) : self
     {
         $view = new self($container->getModel(), $key, $description, $viewSet, $container);
-        $view->softwareSystem = $container->getParent();
+        $view->softwareSystem = $container->getSoftwareSystem();
         $view->element = $container;
 
         return $view;

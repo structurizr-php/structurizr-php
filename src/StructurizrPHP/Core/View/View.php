@@ -249,9 +249,12 @@ abstract class View
         }
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray() : array
     {
-        $data = [
+        return [
             'title' => $this->title ? $this->title : null,
             'description' => $this->description,
             'key' => $this->key,
@@ -270,8 +273,6 @@ abstract class View
                 $this->relationshipsViews
             ),
         ];
-
-        return $data;
     }
 
     protected function getModel() : ?Model

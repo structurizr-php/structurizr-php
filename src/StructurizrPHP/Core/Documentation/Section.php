@@ -155,8 +155,9 @@ final class Section
 
         for ($i = 0; $i < $len; $i++) {
             $c = \mb_substr($s, $i, 1, 'UTF-8');
-            $cc = \unpack('V', (string) \iconv('UTF-8', 'UCS-4LE', $c))[1];
-            $hash = (($hash << 5) - $hash) + $cc;
+            $cc = \unpack('V', (string) \iconv('UTF-8', 'UCS-4LE', $c));
+            \assert($cc !== false);
+            $hash = (($hash << 5) - $hash) + $cc[1];
             $hash &= $hash; // 16bit > 32bit
         }
 

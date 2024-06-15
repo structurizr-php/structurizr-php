@@ -113,7 +113,7 @@ final class Documentation
             }, $this->decisions);
         }
 
-        if (isset($this->template)) {
+        if ($this->template !== null) {
             $data['template'] = $this->template->toArray();
         }
 
@@ -162,6 +162,9 @@ final class DocumentationDataObject
      */
     private $documentationSetData;
 
+    /**
+     * @param array<mixed> $documentationSetData
+     */
     public function __construct(array $documentationSetData)
     {
         $this->documentationSetData = $documentationSetData;

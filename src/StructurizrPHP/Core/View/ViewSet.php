@@ -410,6 +410,9 @@ final class ViewSetDataObject
      */
     private $viewSetData;
 
+    /**
+     * @param array<mixed> $viewSetData
+     */
     public function __construct(array $viewSetData)
     {
         $this->viewSetData = $viewSetData;
