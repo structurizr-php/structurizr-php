@@ -21,7 +21,7 @@
         }
     },
     "require-dev": {
-        "symfony/http-client": "^4.3 || ^5.0",
+        "symfony/http-client": "^4.3 || ^5.0 || ^6.0",
         "nyholm/psr7": "^1.2",
         "phpunit/phpunit": "^8.4 || ^9.0",
         "symfony/var-dumper": "^4.3 || ^5.0",
