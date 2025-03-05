@@ -1,6 +1,7 @@
-## [Unreleased] - 2024-06-15
+## [Unreleased] - 2025-03-05
 
 ### Changed
+- [#279](https://github.com/structurizr-php/structurizr-php/pull/279) - **Update action cache from @v2 to @v4 in Github Action workflows** - [@norberttech](https://github.com/norberttech)
 - [#249](https://github.com/structurizr-php/structurizr-php/pull/249) - **Drop support for php 7.3, 7.4 and 8.0, add tests for 8.1, 8.2, 8.3** - [@akondas](https://github.com/akondas)
 
 ## [0.4.0] - 2024-06-14
